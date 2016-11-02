@@ -53,10 +53,6 @@ void SalinKata(){
     else
       i++;
   }
-  if (i<=50)
-    CKata.Length = i;
-  else
-    CKata.Length = 50;
 }
 /* Mengakuisisi kata, menyimpan dalam CKata
    I.S. : CC adalah karakter pertama dari kata
