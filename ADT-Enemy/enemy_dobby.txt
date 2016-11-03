@@ -1,0 +1,15 @@
+Dobby
+100
+100
+100
+0
+A B F A
+A B F F
+F B F B
+F B A A
+A F F A
+F B F B
+A B A A
+A A F A
+B F B A
+F A B F

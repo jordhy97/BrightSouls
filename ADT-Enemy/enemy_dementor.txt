@@ -1,0 +1,15 @@
+Dementor
+100
+109
+100
+0
+A B F F
+A A F F
+F F A B
+F B F A
+A F A B
+F A F A
+A B B F
+A A F A
+B F A B
+F B B A
