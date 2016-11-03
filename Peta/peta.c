@@ -7,30 +7,40 @@
 #include "../Matriks/mesinkar.h"
 #include <stdio.h>
 
+
+/****************** KONSTRUKTOR (VIA FILE EKSTERNAL) ******************/
 void LoadPeta(Peta *P, char *namafileSubPeta, char *namafileKoneksi)
+/* I.S. P sembarang, namafileSubPeta dan namafileKoneksi terdefinisi */
+/* F.S. Terbentuk Peta P sesuai dengan data yang ada di dalam file eksternal */
 {
 	/* ALGORITMA */
 	LoadSubPeta(P, namafileSubPeta);
 	LoadKoneksi(P, namafileKoneksi);
+	CreateKoneksi(P);
 }
 
 void LoadSubPeta(Peta *P, char *namafile)
+/* I.S. P sembarang, namafile terdefinisi */
+/* F.S. Terbentuk SubPeta P (kumpulan Area) sesuai dengan data yang ada di file dengan nama namafile */
 {
 	/* KAMUS LOKAL */
 	ID i;
 
 	/* ALGORITMA */
-	i = 1;
+	i = 0;
 	STARTMATRIKS(namafile);
 	while(!EndMATRIKS)
 	{
-		SubPeta(*P,i) = Alokasi(CMATRIKS);
 		i++;
+		InitArea(&SubPeta(*P,i), CMATRIKS);
 		ADVMATRIKS();
 	}
+	IDEff(*P) = i;
 }
 
 void LoadKoneksi(Peta *P, char *namafile)
+/* I.S. P sembarang, namafile terdefinisi */
+/* F.S. Terbentuk koneksi antar-Area di P sesuai dengan data yang ada di file dengan nama namafile */
 {
 	/* KAMUS LOKAL */
 	ID Node, tetangga;
@@ -58,32 +68,6 @@ void LoadKoneksi(Peta *P, char *namafile)
 			}
 			arah++;
 			Koneksi(*P,Node,arah) = tetangga;
-			if(tetangga != 0)
-			{
-				switch(arah)
-				{
-					case 1 :
-					{
-						InsNorth(&SubPeta(*P,Node), SubPeta(*P,tetangga));
-						break;
-					}
-					case 2 :
-					{
-						InsEast(&SubPeta(*P,Node), SubPeta(*P,tetangga));
-						break;
-					}
-					case 3 :
-					{
-						InsSouth(&SubPeta(*P,Node), SubPeta(*P,tetangga));
-						break;
-					}
-					case 4 :
-					{
-						InsWest(&SubPeta(*P,Node), SubPeta(*P,tetangga));
-						break;
-					}
-				}
-			}
 			if(CC == BLANK)
 			{
 				ADV();
@@ -95,3 +79,65 @@ void LoadKoneksi(Peta *P, char *namafile)
 		}
 	}
 }
+
+void CreateKoneksi(Peta *P)
+/* I.S. P terdefinisi */
+/* F.S. Antar-Area pada P terhubung berdasarkan data koneksi P */
+{
+	/* KAMUS LOKAL */
+	int Node, tetangga, arah;
+
+	/* ALGORITMA */
+	for(Node = 1; Node <= IDEff(*P); Node++)
+	{
+		for(arah = 1; arah <= 4; arah++)
+		{
+			tetangga = Koneksi(*P,Node,arah);
+			if(tetangga)
+			{
+				switch(arah)
+				{
+					case 1 :
+					{
+						SetNorth(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						break;
+					}
+					case 2 :
+					{
+						SetEast(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						break;
+					}
+					case 3 :
+					{
+						SetSouth(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						break;
+					}
+					case 4 :
+					{
+						printf("Node %d\n", Node);
+						SetWest(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
+/****************** Manajemen Memori ******************/
+void DealokasiPeta(Peta *P)
+/* I.S. P terdefinisi */
+/* F.S. Semua address di P dikembalikan ke sistem */
+/* Melakukan dealokasi/pengembalian semua address (Area) di P */
+{	
+	/* KAMUS LOKAL */
+	int i;
+	
+	/* ALGORITMA */
+	for(i = 1; i <= IDEff(*P); i++)
+	{
+		Dealokasi(SubPeta(*P,i));
+	}
+}
+
+// void CetakPeta
