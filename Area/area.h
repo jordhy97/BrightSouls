@@ -35,10 +35,6 @@ typedef address Area;
 #define East(P) (P)->east
 
 /* PROTOTYPE */
-/****************** TEST AREA KOSONG ******************/
-boolean IsAreaEmpty (Area A);
-/* Mengirim true jika A kosong. Lihat definisi di atas. */
-
 /****************** KONSTRUKTOR ******************/
 void CreateEmptyArea (Area *A);
 /* I.S. A sembarang  */
@@ -63,21 +59,17 @@ void Dealokasi (address P);
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void InsNorth (Area *A, Area P);
+void SetNorth (Area *A, Area P);
 /* I.S. A tidak kosong */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen North dengan nilai X jika alokasi berhasil. Jika alokasi gagal: I.S. = F.S.*/
-void InsSouth (Area *A, Area P);
+/* F.S. Area A dan Area P terhubung dengan North(A) = P */
+void SetSouth (Area *A, Area P);
 /* I.S. A tidak kosong */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen South dengan nilai X jika alokasi berhasil. Jika alokasi gagal: I.S. = F.S.*/
-void InsWest (Area *A, Area P);
+/* F.S. Area A dan Area P terhubung dengan South(A) = P */
+void SetWest (Area *A, Area P);
 /* I.S. A tidak kosong */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen West dengan nilai X jika alokasi berhasil. Jika alokasi gagal: I.S. = F.S.*/
-void InsEast (Area *A, Area P);
+/* F.S. Area A dan Area P terhubung dengan West(A) = P */
+void SetEast (Area *A, Area P);
 /* I.S. A tidak kosong */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen East dengan nilai X jika alokasi berhasil. Jika alokasi gagal: I.S. = F.S.*/
+/* F.S. Area A dan Area P terhubung dengan West(A) = P */
 
 #endif
