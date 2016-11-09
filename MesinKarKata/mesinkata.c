@@ -1,23 +1,23 @@
 #include "boolean.h"
 #include "mesinkar.h"
 #include "mesinkata.h"
-#include <string.h>
 #include <stdio.h>
 
 boolean EndKata;
 Kata CKata;
-
-void BacaKata(){
-  char str[255];
-  scanf("%s", str);
-  i=1;
-  j=0;
-  while (j<strlen(str)){
-    CKata.TabKata[i] = str[j];
-    i++;
-    j++;
+void BacaKata(Kata (*K)){
+  int i;
+  char C;
+  C='a';
+  i=0;
+  while (C!='\n'){
+    scanf("%c", &C);
+    if (C!='\n'){
+      i++;
+      (*K).TabKata[i]=C;
+    }
   }
-  CKata.Length = strlen(str);
+  ((*K)).Length=i;
 }
 
 void IgnoreBlank(){

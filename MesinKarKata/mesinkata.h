@@ -20,6 +20,8 @@ typedef struct {
 extern boolean EndKata;
 extern Kata CKata;
 
+void BacaKata(Kata *K);
+
 void IgnoreBlank();
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : CC sembarang 
