@@ -7,6 +7,9 @@
 #include "boolean.h"
 
 #define MARK '.'
+#define BLANK ' '
+#define ENTER '\n'
+
 /* State Mesin */
 extern char CC;
 extern boolean EOP;

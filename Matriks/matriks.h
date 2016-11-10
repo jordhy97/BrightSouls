@@ -4,9 +4,7 @@
 #define MATRIKS_H
 
 #include "boolean.h"
-
-#define BLANK ' '
-#define ENTER '\n'
+#include "../MesinKarKata/mesinkar.h"
 
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define BrsMin 1
@@ -61,7 +59,7 @@ void STARTMATRIKS(char *namafile);
    F.S. : EndMATRIKS = true, dan CC = MARK; 
           atau EndMATRIKS = false, CMATRIKS adalah MATRIKS yang sudah diakuisisi,
           CC karakter pertama sesudah karakter terakhir MATRIKS 
-   Proses : Membuka file dengan nama namafile dan membaca ukuran MATRIKS yang akan dibaca, kemudian mengakuisisi MATRIKS dengan procedure SalinMATRIKS */
+   Proses : Membuka file dengan nama namafile dan membaca ukuran MATRIKS yang akan dibaca dan membuat MATRIKS CMATRIKS dengan ukuran tersebut, kemudian mengakuisisi MATRIKS dengan procedure SalinMATRIKS */
 
 void ADVMATRIKS();
 /* I.S. : CC adalah karakter pertama MATRIKS yang akan diakuisisi 

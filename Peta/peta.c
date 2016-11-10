@@ -4,7 +4,7 @@
 /* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada peta.h */
 
 #include "peta.h"
-#include "../Matriks/mesinkar.h"
+#include "../MesinKarKata/mesinkar.h"
 #include <stdio.h>
 
 
@@ -139,5 +139,3 @@ void DealokasiPeta(Peta *P)
 		Dealokasi(SubPeta(*P,i));
 	}
 }
-
-// void CetakPeta

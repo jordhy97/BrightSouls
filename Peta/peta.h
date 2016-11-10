@@ -7,17 +7,20 @@
 #define PETA_H
 
 #include "../Matriks/matriks.h"
-#include "../Area/area.h"
+#include "area.h"
+#include "../MesinKarKata/mesinkata.h"
 
 /* Kamus Umum */
 #define IDMax 10
 #define IDMin 1
+#define EnMax 10
 
 /* Definisi Type Data */
 typedef int ID; /* type ID */
 typedef struct {
 	Area SubPeta[IDMax+1];
 	ID Koneksi[IDMax+1][5];
+	Kata NamaEnemy[IDMax+1][EnMax+1];
 	int IDEff;
 } Peta;
 

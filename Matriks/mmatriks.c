@@ -14,14 +14,25 @@ void CetakMATRIKS(MATRIKS M);
 
 int main()
 {
-	int baris, kol;
-	STARTMATRIKS("coba.txt");
+	int baris, kol, Neff, i;
+	MATRIKS MTest[100];
+	Neff = 0;
+	printf("TESTING MATRIKS\n");
+	printf("BACA MATRIKS DARI FILE 'test.txt'\n\n");
+	STARTMATRIKS("test.txt");
 	while(!EndMATRIKS)
 	{
-		CetakMATRIKS(CMATRIKS);
+		Neff++;
+		AssignMATRIKS(CMATRIKS,&MTest[Neff]);
 		ADVMATRIKS();
+	}
+	printf("ISI FILE 'test.txt' :\n");
+	for(i = 1; i <= Neff; i++)
+	{
+		CetakMATRIKS(MTest[i]);
 		printf("\n");
 	}
+
 	return 0;
 }
 
@@ -40,7 +51,7 @@ void CetakMATRIKS(MATRIKS M)
 		for(j = GetFirstIdxKol(M); j <= GetLastIdxKol(M); j++)
 		{
 			printf("%c", Elmt(M,i,j));
-			if(j != GetLastIdxKol)
+			if(j != GetLastIdxKol(M))
 			{
 				printf(" ");
 			}

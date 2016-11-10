@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 #include "matriks.h"
-#include "mesinkar.h"
 
 boolean EndMATRIKS;
 MATRIKS CMATRIKS;
@@ -65,7 +64,7 @@ void STARTMATRIKS(char *namafile)
    F.S. : EndMATRIKS = true, dan CC = MARK; 
           atau EndMATRIKS = false, CMATRIKS adalah MATRIKS yang sudah diakuisisi,
           CC karakter pertama sesudah karakter terakhir MATRIKS 
-   Proses : Membuka file dengan nama namafile dan membaca ukuran MATRIKS yang akan dibaca, kemudian mengakuisisi MATRIKS dengan procedure SalinMATRIKS */
+   Proses : Membuka file dengan nama namafile dan membaca ukuran MATRIKS yang akan dibaca dan membuat MATRIKS CMATRIKS dengan ukuran tersebut, kemudian mengakuisisi MATRIKS dengan procedure SalinMATRIKS */
 {
 	/* KAMUS LOKAL */
 		int NB, NK;
