@@ -5,6 +5,7 @@
 
 #include "area.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /* PROTOTYPE */
 /****************** KONSTRUKTOR ******************/
@@ -14,23 +15,6 @@ void CreateEmptyArea (Area *A)
 {
 	/* ALGORITMA */
 	*A = Nil;
-}
-
-void InitArea(Area *A, infotype X)
-/* I.S. A sembarang */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen A dengan nilai X jika alokasi berhasil (Info(A) = X). Jika alokasi gagal: Peta adalah PETA kosong*/
-{
-	/* KAMUS LOKAL */
-	address P;
-
-	/* ALGORITMA */
-	CreateEmptyArea(A);
-	P = Alokasi(X);
-	if(P != Nil)
-	{
-		*A = P;
-	}
 }
 
 /****************** Manajemen Memori ******************/
@@ -65,7 +49,6 @@ void Dealokasi (address P)
 	free(P);
 }
 
-/****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void SetNorth (Area *A, Area P)
 /* I.S. A tidak kosong */
@@ -97,4 +80,31 @@ void SetEast (Area *A, Area P)
 {
 	/* ALGORITMA */
 	East(*A) = P;
+}
+
+/*** Proses Current Area ***/
+void PrintArea (Area A, POINT P)
+/* I.S. A tidak kosong dan P (posisi Player) terdefinisi*/
+/* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
+{
+	int i, j;
+	for(i = GetFirstIdxBrs(Info(A)); i <= GetLastIdxBrs(Info(A)); i++)
+	{
+		for(j = GetFirstIdxKol(Info(A)); j <= GetLastIdxKol(Info(A)); j++)
+		{
+			if(Absis(P) == j && Ordinat(P) == i)
+			{
+				printf("P");
+			}
+			else
+			{
+				printf("%c", Elmt(Info(A),i,j));
+			}
+			if(j != GetLastIdxKol(Info(A)))
+			{
+				printf(" ");
+			}
+		}
+		printf("\n");
+	}
 }

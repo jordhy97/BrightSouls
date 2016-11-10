@@ -4,7 +4,6 @@
 //Topik praktikum	: Modularisasi
 
 #include "point.h"
-#include <math.h>
 #include <stdio.h>
 
 POINT MakePOINT (int X, int Y)

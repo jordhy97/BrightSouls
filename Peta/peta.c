@@ -32,7 +32,8 @@ void LoadSubPeta(Peta *P, char *namafile)
 	while(!EndMATRIKS)
 	{
 		i++;
-		InitArea(&SubPeta(*P,i), CMATRIKS);
+		CreateEmptyArea(&SubPeta(*P,i));
+		SubPeta(*P,i) = Alokasi(CMATRIKS);
 		ADVMATRIKS();
 	}
 	IDEff(*P) = i;

@@ -1,35 +1,9 @@
 #include <stdio.h>
 #include "peta.h"
-#include "../Matriks/matriks.h"
-#include "../Matriks/mesinkar.h"
-#include "../Area/area.h"
 #include <stdlib.h>
 
 int posx, posy;
 
-void CetakMATRIKS (MATRIKS M)
-{
-	int i, j;
-	for(i = GetFirstIdxBrs(M); i <= GetLastIdxBrs(M); i++)
-	{
-		for(j = GetFirstIdxKol(M); j <= GetLastIdxKol(M); j++)
-		{
-			if(posx == j && posy == i)
-			{
-				printf("P");
-			}
-			else
-			{
-				printf("%c", Elmt(M,i,j));
-			}
-			if(j != GetLastIdxKol(M))
-			{
-				printf(" ");
-			}
-		}
-		printf("\n");
-	}
-}
 
 int main()
 {
@@ -94,5 +68,6 @@ int main()
 		printf("INPUT: ");
 		scanf("\n%c", &pilihan);
 	}
+	Dealokasi(&MAP);
 	return 0;
 }

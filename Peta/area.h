@@ -7,6 +7,7 @@
 #define AREA_H
 
 #include "../Matriks/matriks.h"
+#include "../Point/point.h"
 
 /* Kamus Umum */
 #define Nil NULL
@@ -40,11 +41,6 @@ void CreateEmptyArea (Area *A);
 /* I.S. A sembarang  */
 /* F.S. Terbentuk Area kosong. Lihat definisi di atas. */
 
-void InitArea(Area *A, infotype X);
-/* I.S. A sembarang */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menambahkan elemen A dengan nilai X jika alokasi berhasil (Info(A) = X). Jika alokasi gagal: I.S. = F.S.*/
-
 /****************** Manajemen Memori ******************/
 address Alokasi (infotype X);
 /* Mengirimkan address hasil alokasi sebuah elemen */
@@ -57,7 +53,6 @@ void Dealokasi (address P);
 /* F.S. P dikembalikan ke sistem */
 /* Melakukan dealokasi/pengembalian address P */
 
-/****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void SetNorth (Area *A, Area P);
 /* I.S. A tidak kosong */
@@ -72,4 +67,8 @@ void SetEast (Area *A, Area P);
 /* I.S. A tidak kosong */
 /* F.S. Area A dan Area P terhubung dengan West(A) = P */
 
+/*** Proses Current Area ***/
+void PrintArea (Area A, POINT P);
+/* I.S. A tidak kosong dan P terdefinisi*/
+/* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
 #endif
