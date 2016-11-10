@@ -108,3 +108,9 @@ void PrintArea (Area A, POINT P)
 		printf("\n");
 	}
 }
+
+boolean IsPassable(Area A, int i, int j)
+/* Menghasilkan true jika Elmt(Info(A),i,j) dapat dilewati dan false jika tidak */
+{
+	return (Elmt(Info(A),i,j) != '#');
+}

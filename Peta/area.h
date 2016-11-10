@@ -6,6 +6,7 @@
 #ifndef AREA_H
 #define AREA_H
 
+#include "boolean.h"
 #include "../Matriks/matriks.h"
 #include "../Point/point.h"
 
@@ -71,4 +72,9 @@ void SetEast (Area *A, Area P);
 void PrintArea (Area A, POINT P);
 /* I.S. A tidak kosong dan P terdefinisi*/
 /* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
+
+/*** TEST Daerah***/
+boolean IsPassable(Area A, int i, int j);
+/* Menghasilkan true jika Elmt(Info(A),i,j) dapat dilewati dan false jika tidak */
+
 #endif
