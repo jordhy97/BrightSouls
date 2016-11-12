@@ -4,8 +4,8 @@
 #define __ENEMY_H__
 
 #include "boolean.h"
-#include "mesinkata.h"
-#include "stackqueue.h"
+#include "../MesinKarKata/mesinkata.h"
+#include "../StackQueue/stackqueue.h"
 
 typedef struct { 
 	Kata e_name;

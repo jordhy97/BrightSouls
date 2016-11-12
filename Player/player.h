@@ -2,8 +2,8 @@
 #define player_H
 
 #include "boolean.h"
-#include "point.h"
-#include "mesinkata.h"
+#include "../Point/point.h"
+#include "../MesinKarKata/mesinkata.h"
 
 typedef struct {
     char word[100];

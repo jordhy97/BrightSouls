@@ -9,14 +9,14 @@ void CreateEmptyS (Stack *S) {
 /* I.S. sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxEl */
 /* jadi indeksnya antara 1.. MaxEl+1 karena 0 tidak dipakai */
-/* Ciri stack kosong : TOP bernilai Nil */
-	Top(*S) = Nil;
+/* Ciri stack kosong : TOP bernilai Nill */
+	Top(*S) = Nill;
 }
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
 boolean IsEmptyS (Stack S) {
 /* Mengirim true jika Stack kosong*/
-	return (Top(S)==Nil);
+	return (Top(S)==Nill);
 }
 
 boolean IsFullS (Stack S) {
@@ -42,7 +42,7 @@ void Pop (Stack * S, ElmtStack* Q) {
 
 boolean IsEmptyQ (ElmtStack Q) {
 /* Mengirim true jika Q kosong */
-	return ((Head(Q)==Nil) && (Tail(Q)==Nil));
+	return ((Head(Q)==Nill) && (Tail(Q)==Nill));
 }
 
 boolean IsFullQ (ElmtStack Q) {
@@ -71,13 +71,13 @@ void CreateEmptyQ (ElmtStack * Q) {
 /* I.S. sembarang */
 /* F.S. Sebuah Q kosong terbentuk dengan
 Head(Q) = Nil dan Tail(Q) = Nil */
-	Head(*Q) = Nil;
-	Tail(*Q) = Nil;
+	Head(*Q) = Nill;
+	Tail(*Q) = Nill;
 }
 
 
 /* *** Primitif Add/Delete *** */
-void Add (ElmtStack * Q, infotype X) {
+void Add (ElmtStack * Q, infotipe X) {
 /* Proses: Menambahkan X pada Q dengan aturan FIFO */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X menjadi TAIL yang baru, TAIL "maju" dengan mekanisme circular buffer */
@@ -95,15 +95,15 @@ void Add (ElmtStack * Q, infotype X) {
 	}
 }
 
-void Del (ElmtStack * Q, infotype * X) {
+void Del (ElmtStack * Q, infotipe * X) {
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 
         Q mungkin kosong */
 	*X = InfoHead(*Q);
 	if (NBElmtQ(*Q) == 1) {
-		Head(*Q) = Nil;
-		Tail(*Q) = Nil;
+		Head(*Q) = Nill;
+		Tail(*Q) = Nill;
 	}
 	else {
 		Head(*Q)++;

@@ -5,23 +5,23 @@
 #include <stdlib.h>
 
 /* Konstanta */
-#define Nil 0
+#define Nill 0
 #define MaxEl 20
 
 /* Deklarasi infotype dan address */
-typedef char infotype;
-typedef int address;
+typedef char infotipe;
+typedef int alamat;
 
 /* Stack dengan representasi Queue */
-typedef struct { infotype T[5];   /* tabel penyimpan elemen */
-                 address HEAD;  /* alamat penghapusan */
-                 address TAIL;  /* alamat penambahan */
+typedef struct { infotipe T[5];   /* tabel penyimpan elemen */
+                 alamat HEAD;  /* alamat penghapusan */
+                 alamat TAIL;  /* alamat penambahan */
 } ElmtStack;
 
 /* Type stack dengan ciri TOP : */
 typedef struct { 
 	ElmtStack T[MaxEl+1]; /* tabel penyimpan elemen */
-	address TOP;  /* alamat TOP: elemen puncak */
+	alamat TOP;  /* alamat TOP: elemen puncak */
 } Stack;
 
 /* Selektor */
@@ -38,7 +38,7 @@ void CreateEmptyS (Stack *S);
 /* I.S. sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxEl */
 /* jadi indeksnya antara 1.. MaxEl+1 karena 0 tidak dipakai */
-/* Ciri stack kosong : TOP bernilai Nil */
+/* Ciri stack kosong : TOP bernilai Nill */
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
 boolean IsEmptyS (Stack S);
@@ -73,11 +73,11 @@ void CreateEmptyQ (ElmtStack * Q);
 Head(Q) = Nil dan Tail(Q) = Nil */
 
 /* *** Primitif Add/Delete *** */
-void Add (ElmtStack * Q, infotype X);
+void Add (ElmtStack * Q, infotipe X);
 /* Proses: Menambahkan X pada Q dengan aturan FIFO */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X menjadi TAIL yang baru, TAIL "maju" dengan mekanisme circular buffer */
-void Del (ElmtStack * Q, infotype * X);
+void Del (ElmtStack * Q, infotipe * X);
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 

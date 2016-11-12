@@ -91,7 +91,6 @@ void main_menu(int *choice)
 	int pilihan, ch;
 	boolean chosen;
 	title = create_newwin(29, 121, (LINES - 29)/2, (COLS - 121)/2);
-	// BACA title.txt
 	START("title.txt");
 	wattron(title, COLOR_PAIR(1));
 	while(!EOP)
