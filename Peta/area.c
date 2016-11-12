@@ -109,6 +109,7 @@ void PrintArea (Area A, POINT P)
 	}
 }
 
+/*** TEST Daerah***/
 boolean IsPassable(Area A, int i, int j)
 /* Menghasilkan true jika Elmt(Info(A),i,j) dapat dilewati dan false jika tidak */
 {

@@ -6,7 +6,7 @@
 
 #include "boolean.h"
 
-#define MARK '.'
+#define MARK '*'
 #define BLANK ' '
 #define ENTER '\n'
 

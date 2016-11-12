@@ -18,8 +18,8 @@ int main()
 	MATRIKS MTest[100];
 	Neff = 0;
 	printf("TESTING MATRIKS\n");
-	printf("BACA MATRIKS DARI FILE 'test.txt'\n\n");
-	STARTMATRIKS("test.txt");
+	printf("BACA MATRIKS DARI FILE 'testmatriks.txt'\n\n");
+	STARTMATRIKS("testmatriks.txt");
 	while(!EndMATRIKS)
 	{
 		Neff++;
