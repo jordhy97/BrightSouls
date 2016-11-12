@@ -1,0 +1,15 @@
+Centaur
+100
+100
+100
+0
+B B F A
+A B A F
+F A B B
+A B F B
+A A B F
+F B A F
+B F F A
+A B A A
+B A B B
+A B F B
