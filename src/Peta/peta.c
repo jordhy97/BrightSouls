@@ -115,7 +115,6 @@ void CreateKoneksi(Peta *P)
 					}
 					case 4 :
 					{
-						printf("Node %d\n", Node);
 						SetWest(&SubPeta(*P,Node), SubPeta(*P,tetangga));
 						break;
 					}

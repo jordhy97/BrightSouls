@@ -3,20 +3,6 @@
 #include "enemy.h"
 #include <stdio.h>
 
-int WordToInteger (Kata CKata)
-/*Prekondisi: kata tedefinisi*/
-/*Konversi kata menjadi bilangan bertipe integer*/
-{
-	int bil, X, i;
-	bil = 0;
-	for (i = 1; i <= CKata.Length; i++)
-	{
-		X = (CKata.TabKata[i] - '0');
-		bil = (bil * 10) + X;
-	}
-	return bil;
-}
-
 void LoadFileEnemy (Enemy *TEnemy,char *filename)
 /*I.S. File eksternal berisi informasi dan pola serang musuh*/
 /*F.S. Tipe bentukan Enemy sudah terisi oleh informasi dan pola serang musuh dari file eksternal*/
@@ -27,13 +13,13 @@ void LoadFileEnemy (Enemy *TEnemy,char *filename)
 	STARTKATA(filename);
 	e_name(*TEnemy) = CKata;
 	ADVKATA();
-	e_hp(*TEnemy) = WordToInteger(CKata);
+	e_hp(*TEnemy) = KataToInteger(CKata);
 	ADVKATA();
-	e_str(*TEnemy) = WordToInteger(CKata);
+	e_str(*TEnemy) = KataToInteger(CKata);
 	ADVKATA();
-	e_def(*TEnemy) = WordToInteger(CKata);
+	e_def(*TEnemy) = KataToInteger(CKata);
 	ADVKATA();
-	e_exp(*TEnemy) = WordToInteger(CKata);
+	e_exp(*TEnemy) = KataToInteger(CKata);
 	for (j = 1; j <= 10; j++)
 	{
 		CreateEmptyQ(&Q);

@@ -9,6 +9,7 @@
 #include "boolean.h"
 #include "../Matriks/matriks.h"
 #include "../Point/point.h"
+#include <ncurses.h>
 
 /* Kamus Umum */
 #define Nil NULL
@@ -70,6 +71,10 @@ void SetEast (Area *A, Area P);
 
 /*** Proses Current Area ***/
 void PrintArea (Area A, POINT P);
+/* I.S. A tidak kosong dan P terdefinisi*/
+/* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
+
+void wPrintArea (WINDOW *menu, Area A, POINT P);
 /* I.S. A tidak kosong dan P terdefinisi*/
 /* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
 

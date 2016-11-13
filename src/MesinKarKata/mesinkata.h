@@ -6,6 +6,7 @@
 
 #include "boolean.h"
 #include "mesinkar.h"
+#include <ncurses.h>
 
 #define NMax 50
 
@@ -19,15 +20,25 @@ extern boolean EndKata;
 extern Kata CKata;
 
 void BacaKata(Kata *K);
+/* I.S. : K sembarang */
+/* F.S. : K berisi kata yang merupakan input dari user */
+/* Proses : Membaca input dari user sampai diinput ENTER atau BLANK */
+
+void wBacaKata(WINDOW *win, Kata *K);
+/* I.S. : K sembarang */
+/* F.S. : K berisi kata yang merupakan input dari user */
+/* Proses : Membaca input dari user sampai diinput ENTER atau BLANK */
+
+void wTulisKata(WINDOW *win, Kata K);
 
 void IgnoreBlank();
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 
-void STARTKATA(char *C);
-/* I.S. : CC sembarang 
-   F.S. : EndKata = true, dan CC = MARK; 
+void STARTKATA(char *namafile);
+/* I.S. : CC sembarang, namafile adalah namafile eksternal yang ingin diakses 
+   F.S. : EndKata = true, dan CC = MARK{} 
           atau EndKata = false, CKata adalah kata yang sudah diakuisisi,
           CC karakter pertama sesudah karakter terakhir kata */
 
@@ -47,5 +58,14 @@ void SalinKata();
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
 boolean IsKataSama (Kata K1, Kata K2);
+/*  Mengembalikan true jika K1 = K2; dua kata dikatakan sama jika panjangnya sama 
+  dan urutan karakter yang menyusun kata juga sama */
+
+boolean IsKataEmpty(Kata K);
+/* Mengembalikan true jika K kosong (K.Length = 0) dan false jika tidak */
+
+int KataToInteger (Kata K);
+/* Prekondisi: K tedefinisi*/
+/* Mengembalikan hasil konversi K menjadi bilangan bertipe integer */
 
 #endif

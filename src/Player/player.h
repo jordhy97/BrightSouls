@@ -4,14 +4,10 @@
 #include "boolean.h"
 #include "../Point/point.h"
 #include "../MesinKarKata/mesinkata.h"
+#include <ncurses.h>
 
 typedef struct {
-    char word[100];
-    int length;
-} Word;
-
-typedef struct {
-	Word name;
+	Kata name;
 	int hp;
 	int str;
 	int def;
@@ -31,8 +27,17 @@ typedef struct {
 void GetPlayerData ();
 /*Mengambil data player dari file eksternal*/
 
-void CreatePlayer (Player * P);
-/*Membentuk player baru dengan nama yang ditentukan user*/
+void CreatePlayer (Player *P, Kata nama);
+/* I.S. P sembarang, nama terdefinisi */
+/* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
+
+void wCreatePlayer(WINDOW *menu, Player *P, Kata nama);
+/* I.S. P sembarang, menu dan nama terdefinisi */
+/* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
+
+void print_choice(WINDOW *menu_win, int pilihan);
+/* I.S. menu_win dan pilihan[1..5] terdefinisi */
+/* F.S. Menampilkan menu dengan pilihan ke-pilihan ditunjuk dengan '>' */
 
 void LevelUp (Player * P);
 /* Menaikan level player bila sudah mencapai Exp tertentu */

@@ -102,10 +102,37 @@ void PrintArea (Area A, POINT P)
 			}
 			if(j != GetLastIdxKol(Info(A)))
 			{
-				printf(" ");
+				printf("  ");
 			}
 		}
-		printf("\n");
+		printf("\n\n");
+	}
+}
+
+void wPrintArea (WINDOW *menu, Area A, POINT P)
+/* I.S. A tidak kosong dan P terdefinisi*/
+/* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
+{
+	int i, j, startx;
+	startx = (86 - ((GetLastIdxKol(Info(A)) - 1) * 3 + 1)) / 2;
+	for(i = GetFirstIdxBrs(Info(A)); i <= GetLastIdxBrs(Info(A)); i++)
+	{
+		wmove(menu, 2 * i - 1, startx);
+		for(j = GetFirstIdxKol(Info(A)); j <= GetLastIdxKol(Info(A)); j++)
+		{
+			if(Absis(P) == j && Ordinat(P) == i)
+			{
+				wprintw(menu, "P", startx);
+			}
+			else
+			{
+				wprintw(menu, "%c", Elmt(Info(A),i,j));
+			}
+			if(j != GetLastIdxKol(Info(A)))
+			{
+				wprintw(menu, "  ");
+			}
+		}
 	}
 }
 

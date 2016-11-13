@@ -1,6 +1,5 @@
 //NIM				: 13515145
 //Nama				: Erfandi Suryo Putra
-//Tanggal			: 1 September 2016
 //Topik praktikum	: Modularisasi
 
 #include "point.h"
@@ -8,15 +7,12 @@
 
 POINT MakePOINT (int X, int Y)
 /* Membentuk sebuah POINT dari komponen-komponennya */
-
-
 {
 	POINT P;
 
 	Absis(P) = X;
 	Ordinat(P) = Y;
 	return P;
-
 }
 
 /* *** KELOMPOK Interaksi dengan I/O device, BACA/TULIS  *** */                                                 
@@ -48,9 +44,7 @@ POINT PlusDelta (POINT P, int deltaX, int deltaY)
 	Absis(Pcopy) = Absis(P) + deltaX;
 	Ordinat(Pcopy) = Ordinat(P) + deltaY;
 	return Pcopy;
-
 }
-
 
 void Geser (POINT *P, int deltaX, int deltaY)
 /* I.S. P terdefinisi */
@@ -77,5 +71,4 @@ void GeserKeSbY (POINT *P)
 /* Contoh : Jika koordinat semula (9,9), maka menjadi (0,9) */
 {
 	*P=MakePOINT(0, Ordinat(*P));
-
 }

@@ -17,9 +17,8 @@ extern boolean EOP;
 void START(char *C);
 /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
    Karakter pertama yang ada pada pita posisinya adalah pada jendela.
-   I.S. : sembarang
-   F.S. : CC adalah karakter pertama pada pita
-          Jika CC != MARK maka EOP akan padam (false)
+   I.S. : namafile adalah namafile file eksternal yang ingin diakses
+   F.S. : CC adalah karakter pertama pada pita. Jika CC != MARK maka EOP akan padam (false).
           Jika CC = MARK maka EOP akan menyala (true) */
 
 void ADV();

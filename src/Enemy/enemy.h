@@ -24,10 +24,6 @@ typedef struct {
 #define e_exp(TEnemy) (TEnemy).e_exp
 #define e_attack(TEnemy) (TEnemy).e_attack
 
-int WordToInteger (Kata CKata);
-/*Prekondisi: kata tedefinisi*/
-/*Konversi kata menjadi bilangan bertipe integer*/
-
 void LoadFileEnemy (Enemy *TEnemy,char *filename);
 /*I.S. File eksternal berisi informasi dan pola serang musuh*/
 /*F.S. Tipe bentukan Enemy sudah terisi oleh informasi dan pola serang musuh dari file eksternal*/

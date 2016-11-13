@@ -1,7 +1,7 @@
 /* NIM/Nama     : 13515004/Jordhy Fernando 			*/
 /* Nama file    : mmpeta.c                 			*/
 /* Tanggal      : 10 November 2016         			*/
-/* Deskripsi    : Driver untuk peta.c  dan area.c   */
+/* Deskripsi    : Driver untuk peta.c dan area.c    */
 
 #include <stdio.h>
 #include "peta.h"
@@ -10,7 +10,6 @@
 int main()
 {
 	int i;
-	char pilihan;
 	Peta MAP;
 	Area Start;
 	POINT P;
