@@ -4,8 +4,8 @@
 #define __ENEMY_H__
 
 #include "boolean.h"
-#include "../MesinKarKata/mesinkata.h"
-#include "../StackQueue/stackqueue.h"
+#include "mesinkata.h"
+#include "stackqueue.h"
 
 typedef struct { 
 	Kata e_name;
@@ -16,6 +16,21 @@ typedef struct {
 	Stack e_attack;
 } Enemy;
 
+/*  Kamus Umum */
+#define IdxMax 50
+/* Indeks maksimum array, sekaligus ukuran maksimum array dalam C */
+#define IdxMin 1
+/* Indeks minimum array */
+#define IdxUndef -999 
+/* Indeks tak terdefinisi*/
+
+typedef int IdxType;  /* type indeks */
+typedef Kata ElType;   /* type elemen tabel */
+typedef struct { 
+	ElType TI[IdxMax+1]; /* memori tempat penyimpan elemen (container) */
+	int Neff; /* >=0, banyaknya elemen efektif */
+} TabInt;
+
 /*SELEKTOR*/
 #define e_name(TEnemy) (TEnemy).e_name
 #define e_hp(TEnemy) (TEnemy).e_hp
@@ -24,17 +39,29 @@ typedef struct {
 #define e_exp(TEnemy) (TEnemy).e_exp
 #define e_attack(TEnemy) (TEnemy).e_attack
 
-void LoadFileEnemy (Enemy *TEnemy,char *filename);
+#define Neff(T)   (T).Neff
+#define TI(T)     (T).TI
+#define Elmt(T,i) (T).TI[(i)]
+
+int WordToInteger (Kata CKata);
+/*Prekondisi: kata tedefinisi*/
+/*Konversi kata menjadi bilangan bertipe integer*/
+
+void PrintWord (Kata CKata);
+/*I.S. Kata terdefinisi*/
+/*F.S. Kata ditampilkan ke layar*/
+
+void LoadNamaEnemy (TabInt *NEnemy);
+/*I.S. File eksternal nama-nama enemy terdefinisi*/
+/*F.S. Tabel yang berisi nama-nama enemy terdefinisi*/
+
+void LoadFileEnemy (Enemy *TEnemy,char *filename, char in);
 /*I.S. File eksternal berisi informasi dan pola serang musuh*/
 /*F.S. Tipe bentukan Enemy sudah terisi oleh informasi dan pola serang musuh dari file eksternal*/
 
 void AttackEnemy (Enemy *TEnemy, ElmtStack *Q);
 /*I.S. Tipe bentukan enemy telah terdefinisi*/
 /*F.S. Tipe bentukan enemy telah diupdate dan mengeluarkan char pola serang musuh yang pertama*/
-
-void LoadEnemy (Enemy *TDementor, Enemy *TCentaur, Enemy *TDobby, Enemy *TGoblin, Enemy *TThrestral);
-/*I.S. File eksternal untuk masing-masing enemy terdefinisi*/
-/*F.S. Load masing-masing file eksternal ke tipe bentukan untuk masing-masing enemy*/
 
 void PrintEnemy (Enemy TEnemy);
 /*I.S. Tipe bentukan enemy terdefinisi*/
