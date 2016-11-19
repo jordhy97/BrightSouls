@@ -1,7 +1,7 @@
 #ifndef _STACKQUEUE_H
 #define _STACKQUEUE_H
 
-#include "../Shared/boolean.h"
+#include "boolean.h"
 #include <stdlib.h>
 
 /* Konstanta */
@@ -97,4 +97,18 @@ void PrintQueue (ElmtStack Q, int pos1, int pos2);
 /* I.S. Elemen stack tidak kosong*/
 /* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar dengan dua aksi ditutupi oleh '#' */
 
+void PrintQueueNR (ElmtStack Q);
+/* Proses: menampilkan urutan aksi dari salah satu ronde battle*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar*/
+
+void PrintQueueBattleE (ElmtStack Q,int i, int y, int z);
+/* Proses: menampilkan urutan aksi enemy dari salah satu ronde battle pada stack pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi enemy dari salah satu ronde battle pada stack ditampilkan ke layar pada saat kalkulasi damage*/
+
+void PrintQueueBattleP (ElmtStack Q, int i);
+/* Proses: menampilkan urutan aksi dari salah satu ronde battle pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi player dari salah satu ronde battle ditampilkan ke layar pada saat kalkulasi damage*/
 #endif
