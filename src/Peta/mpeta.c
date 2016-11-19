@@ -9,8 +9,8 @@
 
 int main()
 {
-	int i;
-	Peta MAP;
+	int i, j;
+	Peta MAP, MTemp;
 	Area Start;
 	POINT P;
 	Kata Masukan, GU, GD, GL, GR, EXIT;
@@ -32,8 +32,8 @@ int main()
 	EXIT.TabKata[3] = 'I';
 	EXIT.TabKata[4] = 'T';
 	EXIT.Length = 4;
-	LoadPeta(&MAP, "peta.txt", "koneksi.txt");
 	P = MakePOINT(3,3);
+	CreateRandomPeta(&MAP,"peta.txt");
 	Start = SubPeta(MAP,1);
 	system("clear");
 	printf("TESTING PETA AND AREA WITH SIMPLE MAP NAVIGATION\n\n");

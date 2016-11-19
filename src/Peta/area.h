@@ -13,6 +13,7 @@
 
 /* Kamus Umum */
 #define Nil NULL
+#define Wall '#'
 
 /* Definisi Type Data */
 typedef MATRIKS infotype;
@@ -23,6 +24,10 @@ typedef struct tElmtArea {
 	address south;
 	address west;
 	address east;
+	POINT P_north;
+	POINT P_south;
+	POINT P_west;
+	POINT P_east;
 } ElmtArea;
 typedef address Area;
 
@@ -36,6 +41,10 @@ typedef address Area;
 #define South(P) (P)->south
 #define West(P) (P)->west
 #define East(P) (P)->east
+#define P_North(P) (P)->P_north
+#define P_South(P) (P)->P_south
+#define P_West(P) (P)->P_west
+#define P_East(P) (P)->P_east
 
 /* PROTOTYPE */
 /****************** KONSTRUKTOR ******************/
@@ -77,6 +86,8 @@ void PrintArea (Area A, POINT P);
 void wPrintArea (WINDOW *menu, Area A, POINT P);
 /* I.S. A tidak kosong dan P terdefinisi*/
 /* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
+
+void SetAreaPoint(Area *A);
 
 /*** TEST Daerah***/
 boolean IsPassable(Area A, int i, int j);

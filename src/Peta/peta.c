@@ -6,7 +6,9 @@
 #include "peta.h"
 #include "../MesinKarKata/mesinkar.h"
 #include <stdio.h>
-
+#include <time.h>
+#include <stdlib.h>
+#include "boolean.h"
 
 /****************** KONSTRUKTOR (VIA FILE EKSTERNAL) ******************/
 void LoadPeta(Peta *P, char *namafileSubPeta, char *namafileKoneksi)
@@ -137,5 +139,121 @@ void DealokasiPeta(Peta *P)
 	for(i = 1; i <= IDEff(*P); i++)
 	{
 		Dealokasi(SubPeta(*P,i));
+	}
+}
+
+void CreateRandomPeta(Peta *PHasil, char *namafile)
+{
+	/* KAMUS LOKAL */
+	Peta P;
+	int arah, count, i;
+	ID next, start;
+	boolean used[IDMax+1];
+
+	/* ALGORITMA */
+	LoadSubPeta(&P, namafile);
+	for(i = 1; i <= IDEff(P); i++)
+	{
+		used[i] = false;
+	}
+	srand(time(NULL));
+	count = 1;
+	next = rand() % IDEff(P) + 1;
+	SubPeta(*PHasil, count) = SubPeta(P, next);
+	SetAreaPoint(&SubPeta(*PHasil, count));
+	for(i = 1; i <= 4; i++)
+	{
+		Koneksi(*PHasil, count, i) = IDUndef;
+	}
+	used[next] = true;
+	do
+	{ 
+		do
+		{
+			start = rand() % count + 1;			// Choosing current area to process
+			i = 1;
+			while((i < 4) && Koneksi(*PHasil, start, i) != IDUndef)
+			{
+				i++;
+			}
+		}while(Koneksi(*PHasil, start, i) != IDUndef);
+		do
+		{
+			arah = rand() % 4 + 1;				// Choosing the direction to connect
+		}while(Koneksi(*PHasil, start, arah) != IDUndef);
+		do
+		{
+			next = rand() % IDEff(P) + 1;		// Choosing next area to connect to current area
+		}while(used[next]);
+		count++;
+		SubPeta(*PHasil, count) = SubPeta(P, next);
+		SetAreaPoint(&SubPeta(*PHasil, count));
+		for(i = 1; i <= 4; i++)
+		{
+			Koneksi(*PHasil, count, i) = IDUndef;
+		}
+		used[next] = true;
+		switch(arah)
+		{
+			case 1 :
+			{
+				Koneksi(*PHasil, start, 1) = count;
+				Koneksi(*PHasil, count, 3) = start;
+				break;
+			}
+			case 2 :
+			{
+				Koneksi(*PHasil, start, 2) = count;
+				Koneksi(*PHasil, count, 4) = start;
+				break;
+			}
+				case 3 :
+			{
+				Koneksi(*PHasil, start, 3) = count;
+				Koneksi(*PHasil, count, 1) = start;
+				break;
+			}
+			case 4 :
+			{
+				Koneksi(*PHasil, start, 4) = count;
+				Koneksi(*PHasil, count, 2) = start;
+				break;
+			}
+		}
+	}while(count != IDEff(P));
+	IDEff(*PHasil) = count;
+	CreateKoneksi(PHasil);
+	CloseUnconnectedSubMapPoint(PHasil);
+}
+
+void CloseUnconnectedSubMapPoint(Peta *P)
+{
+	/* KAMUS LOKAL */
+	int i, j;
+
+	/* ALGORITMA */
+	for(i = IDMin; i <= IDEff(*P); i++)
+	{
+		for(j = 1; j <= 4; j++)
+		{
+			if(Koneksi(*P, i, j) == IDUndef)
+			{
+				switch(j)
+				{
+					case 1:
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_North(SubPeta(*P,i))), Absis(P_North(SubPeta(*P,i)))) = '#';
+						break;
+					case 2:
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_East(SubPeta(*P,i))), Absis(P_East(SubPeta(*P,i)))) = '#';
+						break;
+					case 3:
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_South(SubPeta(*P,i))), Absis(P_South(SubPeta(*P,i)))) = '#';
+						break;
+					case 4:
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_West(SubPeta(*P,i))), Absis(P_West(SubPeta(*P,i)))) = '#';
+						break;
+				}
+			}
+		}
 	}
 }

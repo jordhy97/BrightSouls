@@ -33,6 +33,7 @@ void delay(float s);
 /* F.S. Proses ditunda selama s second */
 void explore(Player *P);
 
+void battle();
 
 int main()
 {
@@ -53,6 +54,8 @@ int main()
 	bkgd(COLOR_PAIR(1));
 	curs_set(0);
 	refresh();
+	battle();
+	delay(100);
 	main_menu(&pilihan, 0.001);
 	nama.Length = 0;
 	mulai = false;
@@ -250,7 +253,7 @@ void explore(Player *P)
 	/* COBA PETA */
 	Peta Test;
 	Area START;
-	LoadPeta(&Test, "src/Peta/peta.txt", "src/Peta/koneksi.txt");
+	CreateRandomPeta(&Test, "src/Peta/peta.txt");
 	START = SubPeta(Test,1);
 	Position(*P) = MakePOINT(3,3);
 	Kata Masukan, GU, GD, GL, GR, EXIT;
@@ -380,4 +383,53 @@ void explore(Player *P)
 		wBacaKata(Command,&Masukan);
 	}
 	DealokasiPeta(&Test);
+}
+
+void battle()
+{
+	/* KAMUS LOKAL */
+	WINDOW *P_Name, *P_Lvl, *P_HP, *P_Str, *P_Def, *P_Exp, *Round, *E_Name, *E_HP, *E_Command, *Message, *P_Command, *Inserted_Command;
+	int starty, startx;
+	
+	/* ALGORITMA */
+	starty = Mid_y(11);
+	startx = Mid_x(Game_Width);
+	Message = create_newwin(6, Game_Width, starty + 4, startx);
+	E_Name = create_newwin(3, 19, starty + 2, startx);
+	E_HP = create_newwin(3, 18, starty + 2, startx + 18);
+	E_Command = create_newwin(3, 86, starty + 2, startx + 35);
+	P_Name = create_newwin(3, 19, starty, startx);
+	P_Lvl = create_newwin(3, 18, starty, startx + 18);
+	P_HP = create_newwin(3, 18, starty, startx + 35);
+	P_Str = create_newwin(3, 18, starty, startx + 52);
+	P_Def = create_newwin(3, 18, starty, startx + 69);
+	P_Exp = create_newwin(3, 18, starty, startx + 86);
+	Round = create_newwin(3,18,starty, startx + 103);
+	Inserted_Command = create_newwin(3, Game_Width, starty + 7, startx);
+	P_Command = create_newwin(3, Game_Width, starty + 7, startx);
+	wborder(Message, 0, 0, 0, 0, 0, 0, 0, 0);
+	wborder(E_Name, 0, 0, 0, 0, 0, 0, ACS_LTEE, 0);
+	wborder(E_HP, 0, 0, 0, 0, 0, 0, ACS_BTEE, ACS_BTEE);
+	wborder(E_Command, 0, 0, 0, 0, 0, 0, ACS_BTEE, ACS_RTEE);
+	wborder(P_Name, 0, 0, 0, 0, 0, 0, ACS_LTEE, 0);
+	wborder(P_Lvl, 0, 0, 0, 0, ACS_TTEE, 0, ACS_PLUS, 0);;
+	wborder(P_HP, 0, 0, 0, 0, ACS_TTEE, 0, ACS_PLUS, 0);
+	wborder(P_Str, 0, 0, 0, 0, ACS_TTEE, 0, ACS_BTEE, 0);
+	wborder(P_Def, 0, 0, 0, 0, ACS_TTEE, 0, ACS_BTEE, 0);
+	wborder(P_Exp, 0, 0, 0, 0, ACS_TTEE, ACS_TTEE, ACS_BTEE, ACS_RTEE);
+	wborder(Round, 0, 0, 0, 0, ACS_TTEE, 0, ACS_BTEE, ACS_RTEE);
+	wborder(P_Command, 0, 0, 0, 0, ACS_LTEE, ACS_RTEE, 0, 0);
+	wrefresh(Message);
+	wrefresh(E_Name);
+	wrefresh(E_HP);
+	wrefresh(E_Command);;
+	wrefresh(P_Name);
+	wrefresh(P_Lvl);
+	wrefresh(P_HP);
+	wrefresh(P_Str);
+	wrefresh(P_Def);
+	wrefresh(P_Exp);
+	wrefresh(Round);
+	wrefresh(Inserted_Command);
+	wrefresh(P_Command);
 }

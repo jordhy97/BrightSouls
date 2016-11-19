@@ -136,9 +136,89 @@ void wPrintArea (WINDOW *menu, Area A, POINT P)
 	}
 }
 
+void SetAreaPoint(Area *A)
+{
+	/* KAMUS LOKAL */
+	int i;
+	boolean found;
+
+	/* ALGORITMA */
+	i = GetFirstIdxKol(Info(*A)); //Search North
+	found = false;
+	while((i <= GetLastIdxKol(Info(*A))) && (!found))
+	{
+		if(Elmt(Info(*A),GetFirstIdxBrs(Info(*A)),i) == '.')
+		{
+			found = true;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	if(found)
+	{
+		P_North(*A) = MakePOINT(i, GetFirstIdxBrs(Info(*A)));
+	}
+
+	i = GetFirstIdxBrs(Info(*A));		//Search East
+	found = false;
+	while((i <= GetLastIdxBrs(Info(*A))) && (!found))
+	{
+		if(Elmt(Info(*A),i,GetLastIdxKol(Info(*A))) == '.')
+		{
+			found = true;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	if(found)
+	{
+		P_East(*A) = MakePOINT(GetLastIdxKol(Info(*A)), i);
+	}
+
+	i = GetFirstIdxKol(Info(*A)); //Search South
+	found = false;
+	while((i <= GetLastIdxKol(Info(*A))) && (!found))
+	{
+		if(Elmt(Info(*A),GetLastIdxBrs(Info(*A)),i) == '.')
+		{
+			found = true;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	if(found)
+	{
+		P_South(*A) = MakePOINT(i, GetLastIdxBrs(Info(*A)));
+	}
+
+	i = GetFirstIdxBrs(Info(*A));		//Search West
+	found = false;
+	while((i <= GetLastIdxBrs(Info(*A))) && (!found))
+	{
+		if(Elmt(Info(*A),i,GetFirstIdxKol(Info(*A))) == '.')
+		{
+			found = true;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	if(found)
+	{
+		P_West(*A) = MakePOINT(GetFirstIdxKol(Info(*A)), i);
+	}
+}
+
 /*** TEST Daerah***/
 boolean IsPassable(Area A, int i, int j)
 /* Menghasilkan true jika Elmt(Info(A),i,j) dapat dilewati dan false jika tidak */
 {
-	return (Elmt(Info(A),i,j) != '#');
+	return (Elmt(Info(A),i,j) != ']');
 }

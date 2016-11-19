@@ -13,6 +13,7 @@
 #define IDMax 10
 #define IDMin 1
 #define EnMax 10
+#define IDUndef 999
 
 /* Definisi Type Data */
 typedef int ID; /* type ID */
@@ -50,4 +51,7 @@ void DealokasiPeta(Peta *P);
 /* F.S. Semua address di P dikembalikan ke sistem */
 /* Melakukan dealokasi/pengembalian semua address (Area) di P */
 
+void CreateRandomPeta(Peta *PHasil, char *namafile);
+
+void CloseUnconnectedSubMapPoint(Peta *P);
 #endif
