@@ -4,7 +4,7 @@
 #ifndef __MESIN_KAR_H_
 #define __MESIN_KAR_H_
 
-#include "boolean.h"
+#include "../Shared/boolean.h"
 
 #define MARK '*'
 #define BLANK ' '
@@ -14,8 +14,8 @@
 extern char CC;
 extern boolean EOP;
 
-void START(char *C);
-/* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
+void START(char *filename);
+/* Mesin siap dioperasikan. Pita dengan nama namafile disiapkan untuk dibaca.
    Karakter pertama yang ada pada pita posisinya adalah pada jendela.
    I.S. : namafile adalah namafile file eksternal yang ingin diakses
    F.S. : CC adalah karakter pertama pada pita. Jika CC != MARK maka EOP akan padam (false).

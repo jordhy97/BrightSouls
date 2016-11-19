@@ -35,7 +35,7 @@ void LoadSubPeta(Peta *P, char *namafile)
 	{
 		i++;
 		CreateEmptyArea(&SubPeta(*P,i));
-		SubPeta(*P,i) = Alokasi(CMATRIKS);
+		SubPeta(*P,i) = AlokasiArea(CMATRIKS);
 		ADVMATRIKS();
 	}
 	IDEff(*P) = i;
@@ -102,22 +102,22 @@ void CreateKoneksi(Peta *P)
 				{
 					case 1 :
 					{
-						SetNorth(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						SetNeighbour(&SubPeta(*P,Node), SubPeta(*P,tetangga), 1);
 						break;
 					}
 					case 2 :
 					{
-						SetEast(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						SetNeighbour(&SubPeta(*P,Node), SubPeta(*P,tetangga), 2);
 						break;
 					}
 					case 3 :
 					{
-						SetSouth(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						SetNeighbour(&SubPeta(*P,Node), SubPeta(*P,tetangga), 3);
 						break;
 					}
 					case 4 :
 					{
-						SetWest(&SubPeta(*P,Node), SubPeta(*P,tetangga));
+						SetNeighbour(&SubPeta(*P,Node), SubPeta(*P,tetangga), 4);
 						break;
 					}
 				}
@@ -138,7 +138,7 @@ void DealokasiPeta(Peta *P)
 	/* ALGORITMA */
 	for(i = 1; i <= IDEff(*P); i++)
 	{
-		Dealokasi(SubPeta(*P,i));
+		DealokasiArea(SubPeta(*P,i));
 	}
 }
 
@@ -241,16 +241,16 @@ void CloseUnconnectedSubMapPoint(Peta *P)
 				switch(j)
 				{
 					case 1:
-						Elmt(Info(SubPeta(*P,i)), Ordinat(P_North(SubPeta(*P,i))), Absis(P_North(SubPeta(*P,i)))) = '#';
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_Neighbour(SubPeta(*P,i), 1)), Absis(P_Neighbour(SubPeta(*P,i), 1))) = '#';
 						break;
 					case 2:
-						Elmt(Info(SubPeta(*P,i)), Ordinat(P_East(SubPeta(*P,i))), Absis(P_East(SubPeta(*P,i)))) = '#';
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_Neighbour(SubPeta(*P,i), 2)), Absis(P_Neighbour(SubPeta(*P,i), 2))) = '#';
 						break;
 					case 3:
-						Elmt(Info(SubPeta(*P,i)), Ordinat(P_South(SubPeta(*P,i))), Absis(P_South(SubPeta(*P,i)))) = '#';
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_Neighbour(SubPeta(*P,i), 3)), Absis(P_Neighbour(SubPeta(*P,i), 3))) = '#';
 						break;
 					case 4:
-						Elmt(Info(SubPeta(*P,i)), Ordinat(P_West(SubPeta(*P,i))), Absis(P_West(SubPeta(*P,i)))) = '#';
+						Elmt(Info(SubPeta(*P,i)), Ordinat(P_Neighbour(SubPeta(*P,i), 4)), Absis(P_Neighbour(SubPeta(*P,i), 4))) = '#';
 						break;
 				}
 			}

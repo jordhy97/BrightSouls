@@ -4,8 +4,6 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include "boolean.h"
-
 typedef struct { 
 	int X; /* absis   */
 	int Y; /* ordinat */
@@ -20,31 +18,32 @@ typedef struct {
 POINT MakePOINT (int X, int Y);
 /* Membentuk sebuah POINT dari komponen-komponennya */
 
+void SetPOINT(POINT *P1, POINT P2);
+/* I.S. P1 sembarang, P2 terdefinisi */
+/* F.S. P1 berisi P2 */
+
 /* *** KELOMPOK Interaksi dengan I/O device, BACA/TULIS  *** */                                                 
+void BacaPOINT (POINT * P); 
+/* Membaca nilai absis dan ordinat dari keyboard dan membentuk 
+   POINT P berdasarkan dari nilai absis dan ordinat tersebut */
+/* Komponen X dan Y dibaca dalam 1 baris, dipisahkan 1 buah spasi */
+/* Contoh: 1 2 
+   akan membentuk POINT <1,2> */
+/* I.S. Sembarang */
+/* F.S. P terdefinisi */
+
+void TulisPOINT (POINT P);
+/* Nilai P ditulis ke layar dengan format "(X,Y)" 
+   tanpa spasi, enter, atau karakter lain di depan, belakang, 
+   atau di antaranya */
+/* I.S. P terdefinisi */
+/* F.S. P tertulis di layar dengan format "(X,Y)" */
+
 /* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */                           
 POINT NextX (POINT P);
 /* Mengirim salinan P dengan absis ditambah satu */              
 
 POINT NextY (POINT P);
 /* Mengirim salinan P dengan ordinat ditambah satu */
-
-POINT PlusDelta (POINT P, int deltaX, int deltaY);
-/* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
-
-void Geser (POINT *P, int deltaX, int deltaY);
-/* I.S. P terdefinisi */
-/* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
-
-void GeserKeSbX (POINT *P);
-/* I.S. P terdefinisi */
-/* F.S. P berada pada sumbu X dengan absis sama dengan absis semula. */
-/* Proses : P digeser ke sumbu X. */
-/* Contoh : Jika koordinat semula (9,9), maka menjadi (9,0) */
-
-void GeserKeSbY (POINT *P);
-/* I.S. P terdefinisi*/
-/* F.S. P berada pada sumbu Y dengan ordinat yang sama dengan semula. */
-/* Proses : P digeser ke sumbu Y. */
-/* Contoh : Jika koordinat semula (9,9), maka menjadi (0,9) */
 
 #endif

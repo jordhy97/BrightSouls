@@ -4,7 +4,7 @@
 #ifndef __MESINKATA_H__
 #define __MESINKATA_H__
 
-#include "boolean.h"
+#include "../Shared/boolean.h"
 #include "mesinkar.h"
 #include <ncurses.h>
 
@@ -19,18 +19,28 @@ typedef struct {
 extern boolean EndKata;
 extern Kata CKata;
 
+/* KONSTRUKTOR */
+void CreateKata(Kata *K, char *s);
+/* I.S. : K sembarang */
+/* F.S. : K berisi string s yang diubah menjadi tipe Kata */
+
+/* I/O */
 void BacaKata(Kata *K);
 /* I.S. : K sembarang */
 /* F.S. : K berisi kata yang merupakan input dari user */
 /* Proses : Membaca input dari user sampai diinput ENTER atau BLANK */
 
+/* I/O KHUSUS NCURSES */
 void wBacaKata(WINDOW *win, Kata *K);
 /* I.S. : K sembarang */
 /* F.S. : K berisi kata yang merupakan input dari user */
 /* Proses : Membaca input dari user sampai diinput ENTER atau BLANK */
 
 void wTulisKata(WINDOW *win, Kata K);
+/* I.S. : K terdefinisi */
+/* F.S. : K ditampilkan ke layar win */
 
+/* MESIN KATA */
 void IgnoreBlank();
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : CC sembarang 
@@ -57,6 +67,7 @@ void SalinKata();
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+/* TEST KATA */
 boolean IsKataSama (Kata K1, Kata K2);
 /*  Mengembalikan true jika K1 = K2; dua kata dikatakan sama jika panjangnya sama 
   dan urutan karakter yang menyusun kata juga sama */
@@ -64,6 +75,8 @@ boolean IsKataSama (Kata K1, Kata K2);
 boolean IsKataEmpty(Kata K);
 /* Mengembalikan true jika K kosong (K.Length = 0) dan false jika tidak */
 
+
+/* CONVERT KATA KE TIPE LAIN */
 int KataToInteger (Kata K);
 /* Prekondisi: K tedefinisi*/
 /* Mengembalikan hasil konversi K menjadi bilangan bertipe integer */

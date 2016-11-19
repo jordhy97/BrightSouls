@@ -8,7 +8,7 @@
 #include "../Enemy/enemy.h"
 #include "../Player/player.h"
 #include "../StackQueue/stackqueue.h"
-#include "boolean.h"
+#include "../Shared/boolean.h"
 
 #define Game_Height 29
 #define Game_Width 121
@@ -46,7 +46,7 @@ int main()
 	boolean mulai, quit, created, loaded;
 
 	/* ALGORITMA */
-	initscr()	;
+	initscr();
 	cbreak();
 	noecho();
 	start_color();
@@ -54,8 +54,8 @@ int main()
 	bkgd(COLOR_PAIR(1));
 	curs_set(0);
 	refresh();
-	battle();
-	delay(100);
+								//battle();
+								//delay(100);
 	main_menu(&pilihan, 0.001);
 	nama.Length = 0;
 	mulai = false;
@@ -356,22 +356,22 @@ void explore(Player *P)
 		}
 		if(Absis(Position(*P)) > GetLastIdxKol(Info(START)))
 		{
-			START = East(START);
+			START = Neighbour(START, 2);
 			Absis(Position(*P)) = 1;
 		}
 		if(Ordinat(Position(*P)) > GetLastIdxBrs(Info(START)))
 		{
-			START = South(START);
+			START = Neighbour(START, 3);
 			Ordinat(Position(*P)) = 1;
 		}
 		if(Absis(Position(*P)) == 0)
 		{
-			START = West(START);
+			START = Neighbour(START, 4);
 			Absis(Position(*P)) = GetLastIdxKol(Info(START));
 		}
 		if(Ordinat(Position(*P)) == 0)
 		{
-			START = North(START);
+			START = Neighbour(START, 1);
 			Ordinat(Position(*P)) = GetLastIdxBrs(Info(START));
 		}
 		wPrintArea(Map, START, Position(*P));

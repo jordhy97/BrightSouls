@@ -14,33 +14,34 @@ void CreateEmptyArea (Area *A)
 /* F.S. Terbentuk Area kosong. Lihat definisi di atas. */
 {
 	/* ALGORITMA */
-	*A = Nil;
+	*A = NilArea;
 }
 
 /****************** Manajemen Memori ******************/
-address Alokasi (infotype X)
+addressArea AlokasiArea (infotypeArea X)
 /* Mengirimkan address hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address tidak nil. */
 /* Misalnya: menghasilkan P, maka Info(P)=X, North(P)=Nil, South(P)=Nil, West(P)=Nil, East(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil. */
 {
 	/* KAMUS LOKAL */
-	address P;
+	addressArea P;
+	int i;
 
 	/* ALGORITMA */
-	P = (address) malloc(sizeof(ElmtArea));
-	if(P != Nil)
+	P = (addressArea) malloc(sizeof(ElmtArea));
+	if(P != NilArea)
 	{
 		Info(P) = X;
-		North(P) = Nil;
-		South(P) = Nil;
-		West(P) = Nil;
-		East(P) = Nil;
+		for(i = 1; i <= MaxNeighbour; i++)
+		{
+			Neighbour(P,i) = NilArea;	
+		}
 	}
 	return P;
 }
 
-void Dealokasi (address P)
+void DealokasiArea (addressArea P)
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
 /* Melakukan dealokasi/pengembalian address P */
@@ -50,36 +51,12 @@ void Dealokasi (address P)
 }
 
 /*** PENAMBAHAN ELEMEN ***/
-void SetNorth (Area *A, Area P)
+void SetNeighbour (Area *A, Area P, int i)
 /* I.S. A tidak kosong */
 /* F.S. Area A dan Area P terhubung dengan North(A) = P */
 {
 	/* ALGORITMA */
-	North(*A) = P; 
-}
-
-void SetSouth (Area *A, Area P)
-/* I.S. A tidak kosong */
-/* F.S. Area A dan Area P terhubung dengan South(A) = P */
-{
-	/* ALGORITMA */
-	South(*A) = P;
-}
-
-void SetWest (Area *A, Area P)
-/* I.S. A tidak kosong */
-/* F.S. Area A dan Area P terhubung dengan West(A) = P */
-{
-	/* ALGORITMA */
-	West(*A) = P;
-}
-
-void SetEast (Area *A, Area P)
-/* I.S. A tidak kosong */
-/* F.S. Area A dan Area P terhubung dengan East(A) = P */
-{
-	/* ALGORITMA */
-	East(*A) = P;
+	Neighbour(*A, i) = P; 
 }
 
 /*** Proses Current Area ***/
@@ -158,7 +135,7 @@ void SetAreaPoint(Area *A)
 	}
 	if(found)
 	{
-		P_North(*A) = MakePOINT(i, GetFirstIdxBrs(Info(*A)));
+		P_Neighbour(*A, 1) = MakePOINT(i, GetFirstIdxBrs(Info(*A)));
 	}
 
 	i = GetFirstIdxBrs(Info(*A));		//Search East
@@ -176,7 +153,7 @@ void SetAreaPoint(Area *A)
 	}
 	if(found)
 	{
-		P_East(*A) = MakePOINT(GetLastIdxKol(Info(*A)), i);
+		P_Neighbour(*A, 2) = MakePOINT(GetLastIdxKol(Info(*A)), i);
 	}
 
 	i = GetFirstIdxKol(Info(*A)); //Search South
@@ -194,7 +171,7 @@ void SetAreaPoint(Area *A)
 	}
 	if(found)
 	{
-		P_South(*A) = MakePOINT(i, GetLastIdxBrs(Info(*A)));
+		P_Neighbour(*A, 3) = MakePOINT(i, GetLastIdxBrs(Info(*A)));
 	}
 
 	i = GetFirstIdxBrs(Info(*A));		//Search West
@@ -212,7 +189,7 @@ void SetAreaPoint(Area *A)
 	}
 	if(found)
 	{
-		P_West(*A) = MakePOINT(GetFirstIdxKol(Info(*A)), i);
+		P_Neighbour(*A, 4) = MakePOINT(GetFirstIdxKol(Info(*A)), i);
 	}
 }
 
@@ -220,5 +197,5 @@ void SetAreaPoint(Area *A)
 boolean IsPassable(Area A, int i, int j)
 /* Menghasilkan true jika Elmt(Info(A),i,j) dapat dilewati dan false jika tidak */
 {
-	return (Elmt(Info(A),i,j) != ']');
+	return (Elmt(Info(A),i,j) != Wall);
 }

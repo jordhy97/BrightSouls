@@ -1,7 +1,7 @@
 #ifndef _STACKQUEUE_H
 #define _STACKQUEUE_H
 
-#include "boolean.h"
+#include "../Shared/boolean.h"
 #include <stdlib.h>
 
 /* Konstanta */
@@ -35,7 +35,7 @@ typedef struct {
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
 void CreateEmptyS (Stack *S);
-/* I.S. sembarang; */
+/* I.S. S sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxEl */
 /* jadi indeksnya antara 1.. MaxEl+1 karena 0 tidak dipakai */
 /* Ciri stack kosong : TOP bernilai Nil */
@@ -92,10 +92,9 @@ void PrintStack (Stack S);
 /* I.S. Stack tidak kosong */
 /* F.S. Urutan aksi dari tiap ronde battle pada stack ditampilkan ke layar */
 
-void PrintQueue (ElmtStack Q);
+void PrintQueue (ElmtStack Q, int pos1, int pos2);
 /* Proses: menampilkan urutan aksi dari salah satu ronde battle pada stack*/
 /* I.S. Elemen stack tidak kosong*/
-/* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar*/
-
+/* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar dengan dua aksi ditutupi oleh '#' */
 
 #endif

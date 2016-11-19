@@ -19,7 +19,7 @@
 typedef int ID; /* type ID */
 typedef struct {
 	Area SubPeta[IDMax+1];
-	ID Koneksi[IDMax+1][5];
+	ID Koneksi[IDMax+1][MaxNeighbour+1];
 	int IDEff;
 } Peta;
 
