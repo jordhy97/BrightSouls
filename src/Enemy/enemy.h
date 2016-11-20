@@ -67,4 +67,8 @@ void PrintEnemy (Enemy TEnemy);
 /*I.S. Tipe bentukan enemy terdefinisi*/
 /*F.S. Menampilkan isi tipe bentukan enemy ke layar*/
 
+int Damage (int str, int def,int base);
+/*Prekondisi: Strength, defense, dan base untuk battle terdefinisi*/
+/*Menghitung besarnya damage pada saat battle*/
+
 #endif

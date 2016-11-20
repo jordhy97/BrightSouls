@@ -110,3 +110,17 @@ void PrintEnemy (Enemy TEnemy)
 	printf("%d\n",e_exp(TEnemy));
 	PrintStack(e_attack(TEnemy));
 }
+
+int Damage (int str, int def,int base)
+/*Prekondisi: Strength, defense, dan base untuk battle terdefinisi*/
+/*Menghitung besarnya damage pada saat battle*/
+{
+	if (str>=(def/2))
+	{
+		return (base+(str-(def/2)));
+	}
+	else
+	{
+		return base;
+	}
+}
