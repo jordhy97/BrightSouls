@@ -13,7 +13,7 @@ int main ()
 	/*load dan print file eksternal*/
 	LoadFileEnemy(&T1,"elf.txt",'e');
 	LoadFileEnemy(&T2,"griffin.txt",'e');
-	LoadFileEnemy(&T3,"dementor.txt",'e');
+	LoadFileEnemy(&T3,"bowtruckle.txt",'b');
 	PrintEnemy(T1);
 	printf("\n");
 	PrintEnemy(T2);
