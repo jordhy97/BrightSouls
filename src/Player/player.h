@@ -4,6 +4,7 @@
 #include "boolean.h"
 #include "../Point/point.h"
 #include "../MesinKarKata/mesinkata.h"
+#include "BinTree.h"
 #include <ncurses.h>
 
 typedef struct {
@@ -45,5 +46,6 @@ void LevelUp (Player * P);
 /* Menaikan level player bila sudah mencapai Exp tertentu */
 
 void AddSkill (Player * P);
+/* Daftar skill player pada tiap level */
 
 #endif
