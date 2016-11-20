@@ -40,10 +40,8 @@ void TulisPOINT (POINT P);
 /* F.S. P tertulis di layar dengan format "(X,Y)" */
 
 /* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */                           
-POINT NextX (POINT P);
-/* Mengirim salinan P dengan absis ditambah satu */              
+POINT PlusDelta (POINT P, int deltaX, int deltaY);
+/* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
 
-POINT NextY (POINT P);
-/* Mengirim salinan P dengan ordinat ditambah satu */
 
 #endif

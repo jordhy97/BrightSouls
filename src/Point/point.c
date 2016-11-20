@@ -48,29 +48,10 @@ void TulisPOINT (POINT P)
 	printf("(%d,%d)", Absis(P), Ordinat(P));
 }
                                               
-/* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */                           
-POINT NextX (POINT P)
-/* Mengirim salinan P dengan absis ditambah satu */              
+/* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */  
+POINT PlusDelta (POINT P, int deltaX, int deltaY)
+/* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
 {
-	/* KAMUS LOKAL */
-	POINT Pcopy;
-
 	/* ALGORITMA */
-	Absis(Pcopy) = Absis(P) + 1;
-	Ordinat(Pcopy) = Ordinat(P);
-	return Pcopy;
-
-}
-
-POINT NextY (POINT P)
-/* Mengirim salinan P dengan ordinat ditambah satu */
-{
-	/* KAMUS LOKAL */
-	POINT Pcopy;
-
-	/* ALGORITMA */
-	Absis(Pcopy) = Absis(P);
-	Ordinat(Pcopy) = Ordinat(P) + 1;
-	return Pcopy;
-
+	return MakePOINT(Absis(P) + deltaX, Ordinat(P) + deltaY);;
 }

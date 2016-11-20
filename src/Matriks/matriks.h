@@ -3,7 +3,7 @@
 #ifndef MATRIKS_H
 #define MATRIKS_H
 
-#include "boolean.h"
+#include "../Shared/boolean.h"
 #include "../MesinKarKata/mesinkar.h"
 
 /* Ukuran minimum dan maksimum baris dan kolom */
@@ -51,7 +51,15 @@ indeks GetLastIdxKol (MATRIKS M);
 
 /* ********** Assignment  MATRIKS ********** */
 void AssignMATRIKS (MATRIKS MIn, MATRIKS * MHsl);
-/* Melakukan assignment MHsl  MIn */
+/* Melakukan assignment MHsl dengan MIn */
+
+/* ********* I/O MATRIKS ************** */
+void CetakMATRIKS(MATRIKS M);
+/* I.S. M terdefinisi */
+/* F.S. Nilai M(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris
+   dipisahkan sebuah spasi */
+/* Proses: Menulis nilai setiap elemen M ke layar dengan traversal per baris dan per kolom */
+
 
 /* ********** Load MATRIKS ********** */
 void STARTMATRIKS(char *namafile);

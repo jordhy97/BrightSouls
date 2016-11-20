@@ -40,14 +40,14 @@ indeks GetLastIdxBrs (MATRIKS M)
 /* Mengirimkan indeks baris terbesar M */
 {
 	/* ALGORITMA */
-	return NBrsEff(M);
+	return (NBrsEff(M) + BrsMin - 1);
 }
 
 indeks GetLastIdxKol (MATRIKS M)
 /* Mengirimkan indeks kolom terbesar M */
 {
 	/* ALGORITMA */
-	return NKolEff(M);
+	return (NKolEff(M) + KolMin - 1);
 }
 
 /* ********** Assignment  MATRIKS ********** */
@@ -56,6 +56,32 @@ void AssignMATRIKS (MATRIKS MIn, MATRIKS * MHsl)
 {
 	/* ALGORITMA */
 	*MHsl = MIn;
+}
+
+
+/* ********* I/O MATRIKS ************** */
+void CetakMATRIKS(MATRIKS M)
+/* I.S. M terdefinisi */
+/* F.S. Nilai M(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris
+   dipisahkan sebuah spasi */
+/* Proses: Menulis nilai setiap elemen M ke layar dengan traversal per baris dan per kolom */
+{
+  /* KAMUS */
+  indeks i, j;
+
+  /* ALGORITMA */
+  for(i = GetFirstIdxBrs(M); i <= GetLastIdxBrs(M); i++)
+  {
+    for(j = GetFirstIdxKol(M); j <= GetLastIdxKol(M); j++)
+    {
+      printf("%c", Elmt(M,i,j));
+      if(j != GetLastIdxKol(M))
+      {
+        printf(" ");
+      }
+    }
+    printf("\n");
+  }
 }
 
 /* ********** Load MATRIKS ********** */
@@ -78,6 +104,7 @@ void STARTMATRIKS(char *namafile)
 		}
 		else
 		{
+      EndMATRIKS = false;
 			NB = 0;
 			NK = 0;
 			while(CC != BLANK)
@@ -154,10 +181,14 @@ void SalinMATRIKS()
           Elmt(CMATRIKS,baris,kol) = CC;
         	kol++;
         	ADV();
-        	 if(CC == MARK)
+        	if(CC == MARK)
 	        {
 	            break;
 	        }
         }
+    }
+    while(CC == ENTER)
+    {
+      ADV();
     }
 }

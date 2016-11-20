@@ -1,13 +1,15 @@
-#include<stdio.h>
-#include<time.h>
+#include <stdio.h>
+#include <time.h>
 
 void main()
 {
     time_t t;
     time(&t);
-    printf("\ncurrent time is : %s",ctime(&t));
+    printf("\ncurrent time is : %s\n",ctime(&t));
     int i, j;
-    char s[10];
+    char *s;
+    s = ctime(&t);
+    printf("%c\n", s[14]);
     for(j = 0; j < 5; j++)
     {
     	s[j] = 'a';

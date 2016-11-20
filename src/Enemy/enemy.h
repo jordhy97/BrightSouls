@@ -3,7 +3,7 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 
-#include "boolean.h"
+#include "../Shared/boolean.h"
 #include "../MesinKarKata/mesinkata.h"
 #include "../StackQueue/stackqueue.h"
 

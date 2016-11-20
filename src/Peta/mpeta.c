@@ -1,100 +1,120 @@
-/* NIM/Nama     : 13515004/Jordhy Fernando 			*/
 /* Nama file    : mmpeta.c                 			*/
 /* Tanggal      : 10 November 2016         			*/
 /* Deskripsi    : Driver untuk peta.c dan area.c    */
 
 #include <stdio.h>
 #include "peta.h"
-#include "../MesinKarKata/mesinkata.h"
 
 int main()
 {
+	/* KAMUS */
 	int i, j;
-	Peta MAP, MTemp;
-	Area Start;
+	Peta MAP;
 	POINT P;
-	Kata Masukan, GU, GD, GL, GR, EXIT;
 
-	GU.TabKata[1] = 'G';
-	GU.TabKata[2] = 'U';
-	GU.Length = 2;
-	GD.TabKata[1] = 'G';
-	GD.TabKata[2] = 'D';
-	GD.Length = 2;
-	GL.TabKata[1] = 'G';
-	GL.TabKata[2] = 'L';
-	GL.Length = 2;
-	GR.TabKata[1] = 'G';
-	GR.TabKata[2] = 'R';
-	GR.Length = 2;
-	EXIT.TabKata[1] = 'E';
-	EXIT.TabKata[2] = 'X';
-	EXIT.TabKata[3] = 'I';
-	EXIT.TabKata[4] = 'T';
-	EXIT.Length = 4;
-	P = MakePOINT(3,3);
-	CreateRandomPeta(&MAP,"peta.txt");
-	Start = SubPeta(MAP,1);
-	system("clear");
-	printf("TESTING PETA AND AREA WITH SIMPLE MAP NAVIGATION\n\n");
-	PrintArea(Start,P);
-	printf("INPUT: ");
-	BacaKata(&Masukan);
-	while(!IsKataSama(Masukan,EXIT))
+	/* ALGORITMA */
+	P = MakePOINT(2,3);
+	CreateRandomPeta(&MAP,"testpeta.txt");
+	printf("TESTING PETA AND AREA\n\n");
+	printf("Isi MAP (diacak dari testpeta.txt):\n");
+	for(i = IDMin; i <= GetLastID(MAP); i++)
 	{
-		if(IsKataSama(Masukan,GU))
+		printf("Area %d:\n", i);
+		PrintArea(SubPeta(MAP,i), P);
+		printf("\n");
+	}
+	printf("MAP Connection Data:\n");
+	for(i = IDMin; i <= GetLastID(MAP); i++)
+	{
+		printf("%d ", i);
+		for(j = 1; j <= 4; j++)
 		{
-			if(IsPassable(Start,Ordinat(P) - 1,Absis(P)))
+			printf("%d", Koneksi(MAP,i,j));	
+			if(j != 4)
 			{
-				Ordinat(P)--;
+				printf(" ");
 			}
 		}
-		else if(IsKataSama(Masukan,GD))
+		printf("\n");
+	}
+	printf("\nTESTING CONNECTION Area 1\n\n");
+	printf("Area 1\n");
+	PrintArea(SubPeta(MAP,1), P);
+	printf("\n");
+	for(i = 1; i <= 4; i++)
+	{
+		if(Koneksi(MAP,1,i) != IDUndef)
 		{
-			if(IsPassable(Start,Ordinat(P) + 1,Absis(P)))
+			switch(i)
 			{
-				Ordinat(P)++;
+				case 1:
+					printf("North of Area 1:\n");
+					break;
+				case 2:
+					printf("East of Area 1:\n");
+					break;
+				case 3:
+					printf("South of Area 1:\n");
+					break;
+				case 4:
+					printf("West of Area 1:\n");
+					break;
+			}
+			PrintArea(Neighbour(SubPeta(MAP,1),i), P);
+			printf("\n");
+		}
+	}
+	printf("TESTING SAVE AND LOAD PETA\n\n");
+	SavePeta(MAP, "testsubpeta.txt", "testkoneksi.txt");
+	DealokasiPeta(&MAP);
+	LoadPeta(&MAP, "testsubpeta.txt", "testkoneksi.txt");
+	printf("Isi MAP (dari testsubpeta.txt):\n");
+	for(i = IDMin; i <= GetLastID(MAP); i++)
+	{
+		printf("Area %d:\n", i);
+		PrintArea(SubPeta(MAP,i), P);
+		printf("\n");
+	}
+	printf("MAP Connection Data:\n");
+	for(i = IDMin; i <= GetLastID(MAP); i++)
+	{
+		printf("%d ", i);
+		for(j = 1; j <= 4; j++)
+		{
+			printf("%d", Koneksi(MAP,i,j));
+			if(j != 4)
+			{
+				printf(" ");
 			}
 		}
-		else if(IsKataSama(Masukan,GR))
+		printf("\n");
+	}
+	printf("\nTESTING CONNECTION Area 1\n\n");
+	printf("Area 1\n");
+	PrintArea(SubPeta(MAP,1), P);
+	printf("\n");
+	for(i = 1; i <= 4; i++)
+	{
+		if(Koneksi(MAP,1,i) != IDUndef)
 		{
-			if(IsPassable(Start,Ordinat(P),Absis(P) + 1))
+			switch(i)
 			{
-				Absis(P)++;
+				case 1:
+					printf("North of Area 1:\n");
+					break;
+				case 2:
+					printf("East of Area 1:\n");
+					break;
+				case 3:
+					printf("South of Area 1:\n");
+					break;
+				case 4:
+					printf("West of Area 1:\n");
+					break;
 			}
+			PrintArea(Neighbour(SubPeta(MAP,1),i), P);
+			printf("\n");
 		}
-		else if(IsKataSama(Masukan,GL))
-		{
-			if(IsPassable(Start,Ordinat(P),Absis(P) - 1))
-			{
-				Absis(P)--;
-			}
-		}
-		if(Absis(P) > GetLastIdxKol(Info(Start)))
-		{
-			Start = East(Start);
-			Absis(P) = 1;
-		}
-		if(Ordinat(P) > GetLastIdxBrs(Info(Start)))
-		{
-			Start = South(Start);
-			Ordinat(P) = 1;
-		}
-		if(Absis(P) == 0)
-		{
-			Start = West(Start);
-			Absis(P) = GetLastIdxKol(Info(Start));
-		}
-		if(Ordinat(P) == 0)
-		{
-			Start = North(Start);
-			Ordinat(P) = GetLastIdxBrs(Info(Start));
-		}
-		system("clear");
-		printf("TESTING PETA AND AREA WITH SIMPLE MAP NAVIGATION\n\n");
-		PrintArea(Start,P);
-		printf("INPUT: ");
-		BacaKata(&Masukan);
 	}
 	DealokasiPeta(&MAP);
 	return 0;

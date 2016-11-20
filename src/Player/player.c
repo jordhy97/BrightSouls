@@ -21,21 +21,25 @@ void CreatePlayer (Player * P, Kata nama)
     printf("Choose Player Speciality\n1. Balance\n2. HP\n3. Strength\n4. Defense\nChoice: ");
     scanf("%d",&input);
     if (input == 1) {
+        Max_HP(*P) = 50;
         HP(*P) = 50;
         Strength(*P) = 5;
         Defense(*P) = 5;
     }
     else if (input == 2) {
+        Max_HP(*P) = 70;
         HP(*P) = 70;
         Strength(*P) = 3;
         Defense(*P) = 3;
     }
     else if (input == 3) {
+        Max_HP(*P) = 40;
         HP(*P) = 40;
         Strength(*P) = 7;
         Defense(*P) = 3;
     }
     else if (input == 4) {
+        Max_HP(*P) = 40;
         HP(*P) = 40;
         Strength(*P) = 3;
         Defense(*P) = 7;
@@ -54,17 +58,17 @@ void print_choice(WINDOW *menu_win, int pilihan)
 
     /* ALGORITMA */
     wattron(menu_win, COLOR_PAIR(1));
-    mvwprintw(menu_win,2,1, "Choose Player Speciality:");
+    mvwprintw(menu_win,3,1, " Choose Player Speciality:");
      wrefresh(menu_win);
     for(i = 3; i < 8; i++)
     {   
         if(pilihan == i - 2) 
         {    
-            mvwprintw(menu_win, i, 1, ">%s", choices[i-3]);
+            mvwprintw(menu_win, i+1, 1, ">%s", choices[i-3]);
         }
         else
         {
-            mvwprintw(menu_win, i, 1, " %s", choices[i-3]);
+            mvwprintw(menu_win, i+1, 1, " %s", choices[i-3]);
         }
     }
     wattroff(menu_win, COLOR_PAIR(1));
@@ -72,9 +76,9 @@ void print_choice(WINDOW *menu_win, int pilihan)
 }
 
 
-void wCreatePlayer(WINDOW *menu, Player *P, Kata nama)
-/* I.S. P sembarang, menu dan nama terdefinisi */
-/* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
+void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created)
+/* I.S. P sembarang, menu dan nama terdefinisi, created sembarang */
+/* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user, created true jika player dibuat dan false jika tidak */ 
 {
     /* KAMUS LOKAL */
     boolean chosen;
@@ -119,21 +123,25 @@ void wCreatePlayer(WINDOW *menu, Player *P, Kata nama)
     switch(pilihan)
     {
         case 1:
+            Max_HP(*P) = 50;
             HP(*P) = 50;
             Strength(*P) = 5;
             Defense(*P) = 5;
             break;
         case 2:
+            Max_HP(*P) = 70;
             HP(*P) = 70;
             Strength(*P) = 3;
             Defense(*P) = 3;
             break;
         case 3:
+            Max_HP(*P) = 40;
             HP(*P) = 40;
             Strength(*P) = 7;
             Defense(*P) = 3;
             break;
         case 4 :
+            Max_HP(*P) = 40;
             HP(*P) = 40;
             Strength(*P) = 3;
             Defense(*P) = 7;
@@ -144,6 +152,12 @@ void wCreatePlayer(WINDOW *menu, Player *P, Kata nama)
         Name(*P) = nama;
         Exp(*P) = 0;
         Level(*P) = 1;
+        CArea(*P) = 1;
+        *created = true;
+    }
+    else
+    {
+        *created = false;
     }
 }
 

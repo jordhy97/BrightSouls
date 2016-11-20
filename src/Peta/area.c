@@ -1,8 +1,3 @@
-/* NIM/Nama     : 13515004/Jordhy Fernando */
-/* Nama file    : area.c 	 	           */
-/* Tanggal      : 29 Oktober 2016          */
-/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada area.h */
-
 #include "area.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -86,41 +81,47 @@ void PrintArea (Area A, POINT P)
 	}
 }
 
-void wPrintArea (WINDOW *menu, Area A, POINT P)
+/*** I/O Khusus Ncurses ***/
+void wPrintArea (WINDOW *win, Area A, POINT P)
 /* I.S. A tidak kosong dan P terdefinisi*/
-/* F.S. Isi Info(A) dicetak dengan posisi di P diganti dengan 'P' */
+/* F.S. Isi Info(A) dicetak ke win dengan posisi di P diganti dengan 'P' */
 {
 	int i, j, startx;
-	startx = (86 - ((GetLastIdxKol(Info(A)) - 1) * 3 + 1)) / 2;
+	startx = (84 - ((GetLastIdxKol(Info(A)) - 1) * 3 + 1)) / 2;
 	for(i = GetFirstIdxBrs(Info(A)); i <= GetLastIdxBrs(Info(A)); i++)
 	{
-		wmove(menu, 2 * i - 1, startx);
+		wmove(win, 2 * i , startx);
 		for(j = GetFirstIdxKol(Info(A)); j <= GetLastIdxKol(Info(A)); j++)
 		{
 			if(Absis(P) == j && Ordinat(P) == i)
 			{
-				wprintw(menu, "P", startx);
+				wprintw(win, "P", startx);
 			}
 			else
 			{
-				wprintw(menu, "%c", Elmt(Info(A),i,j));
+				wprintw(win, "%c", Elmt(Info(A),i,j));
 			}
 			if(j != GetLastIdxKol(Info(A)))
 			{
-				wprintw(menu, "  ");
+				wprintw(win, "  ");
 			}
 		}
 	}
 }
 
+/*** Operasi Lain pada Area ***/
 void SetAreaPoint(Area *A)
+/* I.S. Area A tidak kosong dan di keempat sisi A (atas, kanan, bawah, kiri) terdapat maksimal satu karakter '.' */
+/* F.S. P_Neighbour(A, i) diisi dengan titik yang sesuai pada posisi i[1..4] yang sesuai */
+/* Note : Prosedur khusus untuk area dengan jumlah tetangga maksimal 4 dengan lokasi tetangga di atas, kanan, bawah, kiri */
 {
 	/* KAMUS LOKAL */
 	int i;
 	boolean found;
 
 	/* ALGORITMA */
-	i = GetFirstIdxKol(Info(*A)); //Search North
+	//Search North
+	i = GetFirstIdxKol(Info(*A)); 	
 	found = false;
 	while((i <= GetLastIdxKol(Info(*A))) && (!found))
 	{
@@ -138,7 +139,8 @@ void SetAreaPoint(Area *A)
 		P_Neighbour(*A, 1) = MakePOINT(i, GetFirstIdxBrs(Info(*A)));
 	}
 
-	i = GetFirstIdxBrs(Info(*A));		//Search East
+	//Search East
+	i = GetFirstIdxBrs(Info(*A));		
 	found = false;
 	while((i <= GetLastIdxBrs(Info(*A))) && (!found))
 	{
@@ -156,7 +158,8 @@ void SetAreaPoint(Area *A)
 		P_Neighbour(*A, 2) = MakePOINT(GetLastIdxKol(Info(*A)), i);
 	}
 
-	i = GetFirstIdxKol(Info(*A)); //Search South
+	//Search South
+	i = GetFirstIdxKol(Info(*A)); 
 	found = false;
 	while((i <= GetLastIdxKol(Info(*A))) && (!found))
 	{
@@ -174,7 +177,8 @@ void SetAreaPoint(Area *A)
 		P_Neighbour(*A, 3) = MakePOINT(i, GetLastIdxBrs(Info(*A)));
 	}
 
-	i = GetFirstIdxBrs(Info(*A));		//Search West
+	//Search West
+	i = GetFirstIdxBrs(Info(*A));		
 	found = false;
 	while((i <= GetLastIdxBrs(Info(*A))) && (!found))
 	{
@@ -194,8 +198,38 @@ void SetAreaPoint(Area *A)
 }
 
 /*** TEST Daerah***/
-boolean IsPassable(Area A, int i, int j)
-/* Menghasilkan true jika Elmt(Info(A),i,j) dapat dilewati dan false jika tidak */
+boolean IsPassable(Area A, POINT P)
+/* Menghasilkan true jika koordinat P pada Area A dapat dilewati dan false jika tidak */
 {
-	return (Elmt(Info(A),i,j) != Wall);
+	/* ALGORITMA */
+	return (Elmt(Info(A), Ordinat(P), Absis(P)) != Wall);
+}
+
+boolean IsEnemy(Area A, POINT P)
+/* Menghasilkan true jika koordinat P pada Area A adalah enemy dan false jika tidak */
+{
+	/* ALGORITMA */
+	return (Elmt(Info(A), Ordinat(P), Absis(P)) == Musuh);
+}
+
+boolean IsMedicine(Area A, POINT P)
+/* Menghasilkan true jika koordinat P pada Area A adalah medicine dan false jika tidak */
+{
+	/* ALGORITMA */
+	return (Elmt(Info(A), Ordinat(P), Absis(P)) == Medicine);
+}
+
+boolean IsBoss(Area A, POINT P)
+/* Menghasilkan true jika koordinat P pada Area A adalah boss dan false jika tidak */
+{
+	/* ALGORITMA */
+	return (Elmt(Info(A), Ordinat(P), Absis(P)) == Boss);
+}
+
+void ClearPOINT(Area *A, POINT P)
+/* I.S. A dan P terdefinisi */
+/* F.S. koordinat P pada Area A diganti menjadi path */
+{
+	/* ALGORITMA */
+	Elmt(Info(*A), Ordinat(P), Absis(P)) = Path;	
 }

@@ -12,12 +12,8 @@ int main(){
 	printf("P: ");
 	TulisPOINT(P);
 	printf("\n");
-	SetPOINT(&P, NextX(P));
-	printf("P setelah digeser sejauh 1 ke kanan: ");
-	TulisPOINT(P);
-	printf("\n");
-	SetPOINT(&P, NextY(P));
-	printf("P setelah digeser lagi sejauh 1 ke atas: ");
+	SetPOINT(&P, PlusDelta(P, 1, 1));
+	printf("P setelah digeser (1,1): ");
 	TulisPOINT(P);
 	printf("\n");
 	return 0;

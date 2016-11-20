@@ -95,6 +95,6 @@ void PrintStack (Stack S);
 void PrintQueue (ElmtStack Q, int pos1, int pos2);
 /* Proses: menampilkan urutan aksi dari salah satu ronde battle pada stack*/
 /* I.S. Elemen stack tidak kosong*/
-/* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar dengan dua aksi ditutupi oleh '#' */
+/* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar dengan dua aksi di pos1 dan pos 2 ditutupi oleh '#' */
 
 #endif
