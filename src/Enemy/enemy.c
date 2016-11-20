@@ -34,7 +34,7 @@ void LoadNamaEnemy (TabInt *NEnemy)
 {
 	int i;
 	i = 0;
-	STARTKATA("namaenemy.txt");
+	STARTKATA("enemy.txt");
 	if (!EndKata)
 	{
 		do

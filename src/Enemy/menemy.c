@@ -7,53 +7,47 @@ int main ()
 {
 	ElmtStack Q;
 	int i;
-	Enemy TDementor, TCentaur, TDobby, TGoblin, TThrestral;
+	Enemy T1,T2,T3;
 	TabInt NEnemy;
 	
 	/*load dan print file eksternal*/
-	LoadFileEnemy(&TDementor,"enemy_dementor.txt",'e');
-	LoadFileEnemy(&TCentaur,"enemy_centaur.txt",'e');
-	LoadFileEnemy(&TDobby,"enemy_dobby.txt",'e');
-	LoadFileEnemy(&TGoblin,"enemy_goblin.txt",'e');
-	LoadFileEnemy(&TThrestral,"enemy_threstral.txt",'e');
-	PrintEnemy(TDementor);
+	LoadFileEnemy(&T1,"elf.txt",'e');
+	LoadFileEnemy(&T2,"griffin.txt",'e');
+	LoadFileEnemy(&T3,"dementor.txt",'e');
+	PrintEnemy(T1);
 	printf("\n");
-	PrintEnemy(TCentaur);
+	PrintEnemy(T2);
 	printf("\n");
-	PrintEnemy(TDobby);
-	printf("\n");
-	PrintEnemy(TGoblin);
-	printf("\n");
-	PrintEnemy(TThrestral);
+	PrintEnemy(T3);
 	printf("\n");
 	
 	/*mengeluarkan 1 buah queue elemen stack secara random dan di-print, mencetak stack sebelum dan sesudahnya*/
-	printf("Stack Dementor : \n");
-	PrintStack(e_attack(TDementor));
-	AttackEnemy(&TDementor,&Q);
-	printf("Pop dementor : "); 
+	printf("Stack Elf : \n");
+	PrintStack(e_attack(T1));
+	AttackEnemy(&T1,&Q);
+	printf("Pop Elf 1 : "); 
 	PrintQueue(Q,1,2);
 	printf("\n");
-	PrintStack(e_attack(TDementor));
+	PrintStack(e_attack(T1));
 	
 	/*mengeluarkan 1 buah queue elemen stack secara random dan di-print, mencetak stack sesudahnya*/
-	AttackEnemy(&TDementor,&Q);
-	printf("Pop dementor : "); 
+	AttackEnemy(&T1,&Q);
+	printf("Pop Elf 2 : "); 
 	PrintQueue(Q,1,3);
 	printf("\n");
-	PrintStack(e_attack(TDementor));
+	PrintStack(e_attack(T1));
 	printf("\n");
 	
 	/*mengeluarkan 1 buah queue elemen stack secara random dan di-print, mencetak stack sebelum dan sesudahnya*/
-	printf("Stack Centaur : \n");
-	PrintStack(e_attack(TCentaur));
-	AttackEnemy(&TCentaur,&Q);
-	printf("Pop centaur : "); 
+	printf("Stack Griffin : \n");
+	PrintStack(e_attack(T2));
+	AttackEnemy(&T2,&Q);
+	printf("Pop Griffin : "); 
 	PrintQueue(Q,2,4);
 	printf("\n");
-	PrintStack(e_attack(TCentaur));
+	PrintStack(e_attack(T2));
 	printf("\n");
-	
+
 	/*load dan print file eksternal yang berisi nama-nama enemy*/
 	LoadNamaEnemy(&NEnemy);
 	for (i=1;i<=Neff(NEnemy);i++)
