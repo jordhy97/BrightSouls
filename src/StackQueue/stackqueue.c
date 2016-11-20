@@ -237,7 +237,7 @@ void PrintQueueBattleE (ElmtStack Q,int i, int y, int z)
 				}
 				else
 				{
-					printf("# ",X);
+					printf("# ");
 				}
 			}
 			else
@@ -255,7 +255,7 @@ void PrintQueueBattleE (ElmtStack Q,int i, int y, int z)
 				}
 				else
 				{
-					printf("#",X);
+					printf("#");
 				}
 			}
 			else
