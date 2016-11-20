@@ -1,0 +1,25 @@
+Bowtruckle
+120
+10
+12
+150
+A B F A
+B A B F
+A A A A
+F F F F
+B B A F
+A A F B
+A B A B
+F A F A
+B F A A
+A B F B
+A A B F
+A B A B
+B B B B
+F A F F
+B A B F
+A B F F
+B F A B
+A A A A
+F A F A
+A B F A
