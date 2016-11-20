@@ -3,24 +3,77 @@
 #include "enemy.h"
 #include <stdio.h>
 
-void LoadFileEnemy (Enemy *TEnemy,char *filename)
-/*I.S. File eksternal berisi informasi dan pola serang musuh*/
+int WordToInteger (Kata CKata)
+/*Prekondisi: kata tedefinisi*/
+/*Konversi kata menjadi bilangan bertipe integer*/
+{
+	int bil, X, i;
+	bil = 0;
+	for (i = 1; i <= CKata.Length; i++)
+	{
+		X = (CKata.TabKata[i] - '0');
+		bil = (bil * 10) + X;
+	}
+	return bil;
+}
+
+void PrintWord (Kata CKata)
+/*I.S. Kata terdefinisi*/
+/*F.S. Kata ditampilkan ke layar*/
+{
+	int i;
+	for (i = 1; i <= CKata.Length; i++)
+	{
+		printf("%c",CKata.TabKata[i]);
+	}
+}
+
+void LoadNamaEnemy (TabInt *NEnemy)
+/*I.S. File eksternal nama-nama enemy terdefinisi*/
+/*F.S. Tabel yang berisi nama-nama enemy terdefinisi*/
+{
+	int i;
+	i = 0;
+	STARTKATA("enemy.txt");
+	if (!EndKata)
+	{
+		do
+		{
+			i++;
+			Elmt(*NEnemy,i) = CKata;
+			ADVKATA();
+		}
+		while (!EndKata);
+	}
+	Neff(*NEnemy) = i;
+}
+
+void LoadFileEnemy (Enemy *TEnemy,char *filename, char in)
+/*I.S. File eksternal berisi informasi dan pola serang musuh, serta char in yang memuat inisial untuk bos atau enemy, 'b' untuk bos dan 'e' untuk enemy*/
 /*F.S. Tipe bentukan Enemy sudah terisi oleh informasi dan pola serang musuh dari file eksternal*/
 {
 	ElmtStack Q;
-	int i, j,k;
+	int i,j,k,nb;
+	if (in == 'b')
+	{
+		nb = 20;
+	}
+	else if (in == 'e')
+	{
+		nb = 10;
+	}
 	CreateEmptyS(&e_attack(*TEnemy));
 	STARTKATA(filename);
 	e_name(*TEnemy) = CKata;
 	ADVKATA();
-	e_hp(*TEnemy) = KataToInteger(CKata);
+	e_hp(*TEnemy) = WordToInteger(CKata);
 	ADVKATA();
-	e_str(*TEnemy) = KataToInteger(CKata);
+	e_str(*TEnemy) = WordToInteger(CKata);
 	ADVKATA();
-	e_def(*TEnemy) = KataToInteger(CKata);
+	e_def(*TEnemy) = WordToInteger(CKata);
 	ADVKATA();
-	e_exp(*TEnemy) = KataToInteger(CKata);
-	for (j = 1; j <= 10; j++)
+	e_exp(*TEnemy) = WordToInteger(CKata);
+	for (j = 1; j <= nb; j++)
 	{
 		CreateEmptyQ(&Q);
 		for (i = 1; i <= 4; i++)
@@ -30,6 +83,7 @@ void LoadFileEnemy (Enemy *TEnemy,char *filename)
 		}
 		Push(&e_attack(*TEnemy),Q);
 	}
+	RandomStack(&e_attack(*TEnemy));
 }
 
 void AttackEnemy (Enemy *TEnemy, ElmtStack *Q)
@@ -37,19 +91,7 @@ void AttackEnemy (Enemy *TEnemy, ElmtStack *Q)
 /*F.S. Tipe bentukan enemy telah diupdate dan mengeluarkan char pola serang musuh yang pertama*/
 {
 	CreateEmptyQ(Q);
-	/*prosedur untuk random stack*/
 	Pop(&e_attack(*TEnemy),Q);
-}
-
-void LoadEnemy (Enemy *TDementor, Enemy *TCentaur, Enemy *TDobby, Enemy *TGoblin, Enemy *TThrestral)
-/*I.S. File eksternal untuk masing-masing enemy terdefinisi*/
-/*F.S. Load masing-masing file eksternal ke tipe bentukan untuk masing-masing enemy*/
-{
-	LoadFileEnemy(TDementor,"enemy_dementor.txt");
-	LoadFileEnemy(TCentaur,"enemy_centaur.txt");
-	LoadFileEnemy(TDobby,"enemy_dobby.txt");
-	LoadFileEnemy(TGoblin,"enemy_goblin.txt");
-	LoadFileEnemy(TThrestral,"enemy_threstral.txt");
 }
 
 void PrintEnemy (Enemy TEnemy)
@@ -67,4 +109,18 @@ void PrintEnemy (Enemy TEnemy)
 	printf("%d\n",e_def(TEnemy));
 	printf("%d\n",e_exp(TEnemy));
 	PrintStack(e_attack(TEnemy));
+}
+
+int Damage (int str, int def,int base)
+/*Prekondisi: Strength, defense, dan base untuk battle terdefinisi*/
+/*Menghitung besarnya damage pada saat battle*/
+{
+	if (str>=(def/2))
+	{
+		return (base+(str-(def/2)));
+	}
+	else
+	{
+		return base;
+	}
 }

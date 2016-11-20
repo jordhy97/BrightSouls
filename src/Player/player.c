@@ -172,6 +172,47 @@ void LevelUp (Player * P) {
     //Exp(*P) -= 100;
 }
 
+void AddSkill (Player * P) {
+/* Daftar skill player pada tiap level */
+    // Asumsi level tertinggi player adalah level 20
+    switch (Level(*P)) {
+        case 2: // Extra HP -> HP +5 (3 rounds per battle)
+            MakeTree(2,Nil,Nil,&Skill(*P));
+			   break;
+        case 4: // Extra Strength -> Str +1 (3 rounds per battle)
+            AddDaun(&Skill(*P),2,4,1);
+            break;
+        case 6: // Extra Defense -> Def +1 (3 rounds per battle)
+            AddDaun(&Skill(*P),2,6,0);
+            break;
+        case 8: // Swordsman -> Damage given +3 (3 rounds per battle)
+            AddDaun(&Skill(*P),4,8,1);
+            break;
+        case 10: // Agile -> Damage taken -3 (3 rounds per battle)
+            AddDaun(&Skill(*P),6,10,1);
+            break;
+        case 12: // Sharp Eye -> Know all enemy movements (3 rounds per battle)
+            AddDaun(&Skill(*P),4,12,0);
+            break;
+        case 14: // Vampire -> Absorb 25% of enemy HP and add it to your own
+            AddDaun(&Skill(*P),6,14,0);
+            break;
+        case 16: // Paralyzed Enemy -> Battle only have 5 rounds (1 time per map)
+            AddDaun(&Skill(*P),8,16,1);
+            break;
+        case 17: // Veteran -> Exp x2 per battle (permanent)
+            AddDaun(&Skill(*P),10,17,1);
+            break;
+        case 18: // Stealth -> Avoid Enemy (1 time per map)
+            AddDaun(&Skill(*P),12,18,1);
+            break;
+        case 19: // Super Healer -> Heal yourself 100% (1 time per battle)
+            AddDaun(&Skill(*P),14,19,1);
+            break;
+
+	}
+}
+
 /*int main() {
     int i;
     Player P;

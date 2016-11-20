@@ -1,0 +1,15 @@
+Odysseus
+90
+7
+6
+100
+B F A F
+B F F A
+A F F B
+B F A A
+F F A A
+A A B B
+A B B A
+F F F F
+F F F B
+A B A B

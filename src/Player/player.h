@@ -4,6 +4,7 @@
 #include "../Shared/boolean.h"
 #include "../Point/point.h"
 #include "../MesinKarKata/mesinkata.h"
+#include "BinTree.h"
 #include <ncurses.h>
 
 typedef struct {
@@ -16,6 +17,7 @@ typedef struct {
 	int level;
 	POINT position;
 	int CArea;
+	BinTree skill;
 } Player;
 
 #define Name(P) (P).name
@@ -27,6 +29,7 @@ typedef struct {
 #define Level(P) (P).level
 #define Position(P) (P).position
 #define CArea(P) (P).CArea
+#define Skill(P) (P).skill
 
 void GetPlayerData ();
 /*Mengambil data player dari file eksternal*/
@@ -45,5 +48,8 @@ void print_choice(WINDOW *menu_win, int pilihan);
 
 void LevelUp (Player * P);
 /* Menaikan level player bila sudah mencapai Exp tertentu */
+
+void AddSkill (Player * P);
+/* Daftar skill player pada tiap level */
 
 #endif

@@ -1,0 +1,15 @@
+Gigant
+60
+5
+5
+80
+A A B F
+A B A F
+F F A B
+F F F F
+B B B B
+A B F B
+B F A B
+A B F A
+F B A A
+A A A F

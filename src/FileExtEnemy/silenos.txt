@@ -1,0 +1,15 @@
+Silenos
+85
+6
+6
+100
+A B A B
+F F F A
+F A F B
+A A A A
+B B B A 
+F A B A
+B B F A
+F A B B
+F A F A
+A A A B

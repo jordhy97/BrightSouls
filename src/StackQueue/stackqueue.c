@@ -191,3 +191,101 @@ void PrintQueue (ElmtStack Q, int pos1, int pos2) {
 		}
 	}
 }
+
+void PrintQueueNR (ElmtStack Q)
+/* Proses: menampilkan urutan aksi dari salah satu ronde battle*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi dari salah satu ronde battle pada stack ditampilkan ke layar*/
+{
+	infotype X;
+	while (!IsEmptyQ(Q))
+	{
+		Del(&Q,&X);
+		if (!IsEmptyQ(Q))
+		{
+			printf("%c ",X);
+		}
+		else
+		{
+			printf("%c",X);	
+		}
+	}
+}
+
+void PrintQueueBattleE (ElmtStack Q,int i, int y, int z)
+/* Proses: menampilkan urutan aksi enemy dari salah satu ronde battle pada stack pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi enemy dari salah satu ronde battle pada stack ditampilkan ke layar pada saat kalkulasi damage*/
+{
+	infotype X;
+	int j;
+	while (!IsEmptyQ(Q))
+	{
+		j++;
+		if (NBElmtQ(Q) == (4-(i-1)))
+		{
+			printf(">");
+		}
+		Del(&Q,&X);
+		if (!IsEmptyQ(Q))
+		{
+			if (j==y || j==z)
+			{
+				if (j <= i)
+				{
+					printf("%c ",X);
+				}
+				else
+				{
+					printf("# ");
+				}
+			}
+			else
+			{
+				printf("%c ",X);
+			}
+		}
+		else
+		{
+			if (j==y || j==z)
+			{
+				if (j <= i)
+				{
+					printf("%c",X);
+				}
+				else
+				{
+					printf("#");
+				}
+			}
+			else
+			{
+				printf("%c",X);
+			}
+		}
+	}
+}
+
+void PrintQueueBattleP (ElmtStack Q,int i)
+/* Proses: menampilkan urutan aksi dari salah satu ronde battle pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi player dari salah satu ronde battle ditampilkan ke layar pada saat kalkulasi damage*/
+{
+	infotype X;
+	while (!IsEmptyQ(Q))
+	{
+		if (NBElmtQ(Q) == (4-(i-1)))
+		{
+			printf(">");
+		}
+		Del(&Q,&X);
+		if (!IsEmptyQ(Q))
+		{
+			printf("%c ",X);
+		}
+		else
+		{
+			printf("%c",X);
+		}
+	}
+}
