@@ -6,26 +6,53 @@ void saveplayer(Player P){
 
 		if( access( "player1.txt", F_OK ) != -1 ) 
 	    // file exists
-			printf("1. File 1\n", );
+			printf("1. ");
+			STARTKATA("player1.txt");
+			while (!ENTER){
+				i=1;
+				while(i<=CKata.Length){
+					printf("%c", CKata.TabKata[i]);
+					i++;
+				}
+			}
+			printf("\n\n");
 	    else 
 	    // file doesn't exist
 	    	printf("1. Slot Kosong\n\n");
 
 	    if( access( "player2.txt", F_OK ) != -1 )
 	    // file exists
-			printf("2. File 2\n", );
+			printf("2. ");
+			STARTKATA("player2.txt");
+			while (!ENTER){
+				i=1;
+				while(i<=CKata.Length){
+					printf("%c", CKata.TabKata[i]);
+					i++;
+				}
+			}
+			printf("\n\n");
 	    else
 	    // file doesn't exist
 	    	printf("2. Slot Kosong\n\n");
 
 	    if( access( "player3.txt", F_OK ) != -1 ) 
 	    // file exists
-			printf("3. File 3\n", );
+			printf("3. ");
+			STARTKATA("player3.txt");
+			while (!ENTER){
+				i=1;
+				while(i<=CKata.Length){
+					printf("%c", CKata.TabKata[i]);
+					i++;
+				}
+			}
+			printf("\n\n");
 	    else 
 	    // file doesn't exist
 	    	printf("3. Slot Kosong\n\n");
 
-	    int x;
+	    char x;
 	    scanf("%c", &x);
 
 	    if ((x!='1') && (x!='2') && (x!='3'))
@@ -34,11 +61,11 @@ void saveplayer(Player P){
     
     FILE *fileplayer;
 	
-	if (x==1)
+	if (x=='1')
    		fileplayer=fopen("player1.txt", "w");
-    else if (x==2)
+    else if (x=='2')
    		fileplayer=fopen("player2.txt", "w");
-   	else if (x==3)
+   	else if (x=='3')
    		fileplayer=fopen("player3.txt", "w");
     
     int i;
@@ -52,13 +79,25 @@ void saveplayer(Player P){
 
 void loadplayer(Player *P){
 	char x='0';
+	boolean kosong1=false;
+	boolean kosong2=false;
+	boolean kosong3=false;
 
 	while ((x!='1') && (x!='2') && (x!='3')){
 		printf("Pilih Slot:\n\n");
 
 		if( access( "player1.txt", F_OK ) != -1 ) 
 	    // file exists
-			printf("1. File 1\n", );
+			printf("1. ");
+			STARTKATA("player1.txt");
+			while (!ENTER){
+				i=1;
+				while(i<=CKata.Length){
+					printf("%c", CKata.TabKata[i]);
+					i++;
+				}
+			}
+			printf("\n\n");
 	    else 
 	    // file doesn't exist
 	    {
@@ -68,7 +107,16 @@ void loadplayer(Player *P){
 
 	    if( access( "player2.txt", F_OK ) != -1 )
 	    // file exists
-			printf("2. File 2\n", );
+			printf("2. ");
+			STARTKATA("player2.txt");
+			while (!ENTER){
+				i=1;
+				while(i<=CKata.Length){
+					printf("%c", CKata.TabKata[i]);
+					i++;
+				}
+			}
+			printf("\n\n");
 	    else
 	    // file doesn't exist
 	    {
@@ -78,7 +126,16 @@ void loadplayer(Player *P){
 
 	    if( access( "player3.txt", F_OK ) != -1 ) 
 	    // file exists
-			printf("3. File 3\n", );
+			printf("3. ");
+			STARTKATA("player3.txt");
+			while (!ENTER){
+				i=1;
+				while(i<=CKata.Length){
+					printf("%c", CKata.TabKata[i]);
+					i++;
+				}
+			}
+			printf("\n\n");
 	    else 
 	    // file doesn't exist
 	    {
@@ -86,7 +143,7 @@ void loadplayer(Player *P){
 	    	kosong3=true;
 	    }
 
-	    int x;
+	    char x;
 	    scanf("%c", &x);
 
 	    if (x=='1' && kosong1){
@@ -111,15 +168,15 @@ void loadplayer(Player *P){
     
     FILE *fileplayer;
 	
-	if (x==1){
+	if (x=='1'){
    		fileplayer=fopen("player1.txt", "r");
    		STARTKATA("player1.txt");
 	}
-    else if (x==2){
+    else if (x=='2'){
    		fileplayer=fopen("player2.txt", "r");
    		STARTKATA("player2.txt");
     }
-   	else if (x==3){
+   	else if (x=='3'){
    		fileplayer=fopen("player3.txt", "r");
    		STARTKATA("player3.txt");
    	}
