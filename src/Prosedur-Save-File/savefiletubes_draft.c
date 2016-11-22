@@ -45,7 +45,7 @@ void saveplayer(Player P){
     for(i = 1; i <= Name(P).Length; i++)
 	    fprintf(fileplayer, "%c", Name(P).TabKata[i]);
 
-    fprintf(fileplayer, "\n%d\n%d\n%d\n%d\n%d", Name(P), HP(P), Strength(P), Defense(P), Exp(P), Level(P));
+    fprintf(fileplayer, "\n%d\n%d\n%d\n%d\n%d\n%d", HP(P), Max_HP(P), Strength(P), Defense(P), Exp(P), Level(P));
 
     fclose(fileplayer);
 }
@@ -127,7 +127,7 @@ void loadplayer(Player *P){
    	while (!ENTER)
    		Name(*P)=CKata;
 
-   	fscanf(fileplayer, "%d\n%d\n%d\n%d\n%d", HP(*P), Strength(*P), Defense(*P), Exp(*P), Level(*P));
+   	fscanf(fileplayer, "%d\n%d\n%d\n%d\n%d\n%d", HP(*P), Max_HP(*P), Strength(*P), Defense(*P), Exp(*P), Level(*P));
 
     fclose(fileplayer);
 }
