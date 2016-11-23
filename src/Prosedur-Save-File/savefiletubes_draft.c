@@ -1,32 +1,3 @@
-#include <stdio.h>
-#include "boolean.h"
-#include "player.h"
-#include "mesinkata.h"
-#include "mesinkar.h"
-#include <unistd.h>
-void saveplayer(Player P);
-void loadplayer(Player *P);
-
-int main(){
-	Player P;
-	BacaKata(&Name(P));
-	HP(P)=1;
-	Max_HP(P)=2;
-	Strength(P)=3;
-	Defense(P)=4;
-	Exp(P)=5;
-	Level(P)=6;
-	saveplayer(P);
-	loadplayer(&P);
-	int i=1;
-	while(i<=Name(P).Length){
-		printf("%c", Name(P).TabKata[i]);
-		i++;
-	}
-	printf("\n%d%d%d%d%d%d\n", HP(P), Max_HP(P), Strength(P), Defense(P), Exp(P), Level(P));
-	return 0;
-}
-
 void saveplayer(Player P){
 	char x;
 	boolean ulang=true;
