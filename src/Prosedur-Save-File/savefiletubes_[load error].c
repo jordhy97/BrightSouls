@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 void saveplayer(Player P){
 	char x;
 	boolean ulang=true;
