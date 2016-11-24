@@ -47,11 +47,11 @@ int main ()
 	Level(P) = 1;
 	
 	/*BATTLE STARTS*/
-	LoadFileEnemy(&T1,"bowtruckle.txt",'b'); /*parameter terakhir jika 'b' maka bos, jika 'e' maka enemy*/ 
+	LoadFileEnemy(&T1,"../Database/Enemy/bowtruckle.txt",'b'); /*parameter terakhir jika 'b' maka bos, jika 'e' maka enemy*/ 
 	j = 0;
 	if ((Level(P)>=1) && (Level(P)<=10))
-	{
-		base = 1;
+		{
+			base = 1;
 	}
 	else
 	{
@@ -148,8 +148,8 @@ int main ()
 					e_hp(T1) = 0;
 				}
 				printf("Balanced!\n");
-				PrintWord(e_name(T1)); printf("'s HP -%d! ",((Damage(Strength(P),e_def(T1),base))/2));
-				PrintWord(Name(P)); printf("'s HP -%d!\n",((Damage(e_str(T1),Defense(P),base))/2));
+				TulisKata(e_name(T1)); printf("'s HP -%d! ",((Damage(Strength(P),e_def(T1),base))/2));
+				TulisKata(Name(P)); printf("'s HP -%d!\n",((Damage(e_str(T1),Defense(P),base))/2));
 				printf("\n");
 			}
 			else if ((player == 'B') && (player == enemy))
@@ -159,21 +159,21 @@ int main ()
 			}
 			else if ((player == 'B') && (enemy == 'A'))
 			{
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf(" Attacks!\n");
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf(" attacks ");
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf(", but it's blocked!\n");
 					printf("\n");
 			}
 			else if ((player == 'A') && (enemy == 'B'))
 			{
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf(" Attacks!\n");
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf(" attacks ");
-					PrintWord(e_name(T1)); 
+					TulisKata(e_name(T1)); 
 					printf(", but it's blocked!\n");
 					printf("\n");
 			} 
@@ -184,11 +184,11 @@ int main ()
 					{
 						e_hp(T1) = 0;
 					}
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf(" flanks ");
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf("! ");
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf("'s HP -%d!\n",Damage(Strength(P),e_def(T1),base));
 					printf("\n");
 			}
@@ -199,11 +199,11 @@ int main ()
 					{
 						HP(P) = 0;
 					}
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf(" flanks ");
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf("! ");
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf("'s HP -%d!\n",Damage(e_str(T1),Defense(P),base));
 					printf("\n");
 			}
@@ -214,11 +214,11 @@ int main ()
 					{
 						e_hp(T1) = 0;
 					}
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf(" attacks ");
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf("! ");
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf("'s HP -%d!\n",Damage(Strength(P),e_def(T1),base));
 					printf("\n");
 			}
@@ -229,11 +229,11 @@ int main ()
 					{
 						HP(P) = 0;
 					}
-					PrintWord(e_name(T1));
+					TulisKata(e_name(T1));
 					printf(" attacks ");
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf("! ");
-					PrintWord(Name(P)); //harusnya nama pemain
+					TulisKata(Name(P)); //harusnya nama pemain
 					printf("'s HP -%d!\n",Damage(e_str(T1),Defense(P),base));
 					printf("\n");
 			}
@@ -255,7 +255,7 @@ int main ()
 		}
 		else
 		{
-			PrintWord(e_name(T1)); printf(" escaped!\n");
+			TulisKata(e_name(T1)); printf(" escaped!\n");
 		}
 		Exp(P) = Exp(P) + (((enemyhp - e_hp(T1))*e_exp(T1)) / enemyhp);
 		printf("You earned %d experience points!\n",(((enemyhp - e_hp(T1))*e_exp(T1)) / enemyhp)); 

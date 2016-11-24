@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "boolean.h"
 #include "bintree.h"
 
 #define max(a,b) ((a) > (b) ? (a) : (b))

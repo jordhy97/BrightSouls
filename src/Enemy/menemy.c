@@ -8,7 +8,7 @@ int main ()
 	ElmtStack Q;
 	int i;
 	Enemy T1,T2,T3;
-	TabInt NEnemy;
+	TabEn NEnemy;
 	
 	/*load dan print file eksternal*/
 	LoadFileEnemy(&T1,"elf.txt",'e');
@@ -47,13 +47,6 @@ int main ()
 	printf("\n");
 	PrintStack(e_attack(T2));
 	printf("\n");
-
-	/*load dan print file eksternal yang berisi nama-nama enemy*/
-	LoadNamaEnemy(&NEnemy);
-	for (i=1;i<=Neff(NEnemy);i++)
-	{
-		PrintWord(Elmt(NEnemy,i));
-		printf("\n");
-	}
+	
 	return 0;
 }

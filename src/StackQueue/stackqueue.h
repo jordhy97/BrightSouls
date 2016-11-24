@@ -1,8 +1,9 @@
 #ifndef _STACKQUEUE_H
 #define _STACKQUEUE_H
 
-#include "boolean.h"
+#include "../Shared/boolean.h"
 #include <stdlib.h>
+#include <ncurses.h>
 
 /* Konstanta */
 #define Nil 0
@@ -87,6 +88,7 @@ void RandomStack (Stack *S);
 /* I.S. Stack tidak mungkin kosong */
 /* F.S. Elemen-elemen stack ditukar secara random */
 
+/******* I/O ******/
 void PrintStack (Stack S);
 /* Proses: menampilkan urutan aksi dari tiap ronde battle pada stack*/
 /* I.S. Stack tidak kosong */
@@ -111,4 +113,16 @@ void PrintQueueBattleP (ElmtStack Q, int i);
 /* Proses: menampilkan urutan aksi dari salah satu ronde battle pada saat kalkulasi damage*/
 /* I.S. Stack tidak kosong */
 /* F.S. Urutan aksi player dari salah satu ronde battle ditampilkan ke layar pada saat kalkulasi damage*/
+
+/******* I/O (Khusus Ncurses) ******/
+void wPrintQueueBattleE (WINDOW *win, ElmtStack Q,int i, int y, int z);
+/* Proses: menampilkan urutan aksi enemy dari salah satu ronde battle pada stack pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi enemy dari salah satu ronde battle pada stack ditampilkan ke layar pada saat kalkulasi damage*/
+
+void wPrintQueueBattleP (WINDOW *win, ElmtStack Q, int i);
+/* Proses: menampilkan urutan aksi dari salah satu ronde battle pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi player dari salah satu ronde battle ditampilkan ke layar pada saat kalkulasi damage*/
+
 #endif

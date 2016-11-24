@@ -3,44 +3,22 @@
 #include "enemy.h"
 #include <stdio.h>
 
-int WordToInteger (Kata CKata)
-/*Prekondisi: kata tedefinisi*/
-/*Konversi kata menjadi bilangan bertipe integer*/
-{
-	int bil, X, i;
-	bil = 0;
-	for (i = 1; i <= CKata.Length; i++)
-	{
-		X = (CKata.TabKata[i] - '0');
-		bil = (bil * 10) + X;
-	}
-	return bil;
-}
-
-void PrintWord (Kata CKata)
-/*I.S. Kata terdefinisi*/
-/*F.S. Kata ditampilkan ke layar*/
-{
-	int i;
-	for (i = 1; i <= CKata.Length; i++)
-	{
-		printf("%c",CKata.TabKata[i]);
-	}
-}
-
-void LoadNamaEnemy (TabInt *NEnemy)
+void LoadNamaEnemy (TabEn *NEnemy, char *namafile)
 /*I.S. File eksternal nama-nama enemy terdefinisi*/
 /*F.S. Tabel yang berisi nama-nama enemy terdefinisi*/
 {
+	/* KAMUS LOKAL */
 	int i;
+
+	/* ALGORITMA */
 	i = 0;
-	STARTKATA("enemy.txt");
-	if (!EndKata)
+	STARTKATA(namafile);
+	if(!EndKata)
 	{
 		do
 		{
 			i++;
-			Elmt(*NEnemy,i) = CKata;
+			ElmtTabEn(*NEnemy,i) = CKata;
 			ADVKATA();
 		}
 		while (!EndKata);
@@ -48,12 +26,12 @@ void LoadNamaEnemy (TabInt *NEnemy)
 	Neff(*NEnemy) = i;
 }
 
-void LoadFileEnemy (Enemy *TEnemy,char *filename, char in)
+void LoadFileEnemy (Enemy *TEnemy, char *filename, char in)
 /*I.S. File eksternal berisi informasi dan pola serang musuh, serta char in yang memuat inisial untuk bos atau enemy, 'b' untuk bos dan 'e' untuk enemy*/
 /*F.S. Tipe bentukan Enemy sudah terisi oleh informasi dan pola serang musuh dari file eksternal*/
 {
 	ElmtStack Q;
-	int i,j,k,nb;
+	int i,j,nb;
 	if (in == 'b')
 	{
 		nb = 20;
@@ -66,13 +44,13 @@ void LoadFileEnemy (Enemy *TEnemy,char *filename, char in)
 	STARTKATA(filename);
 	e_name(*TEnemy) = CKata;
 	ADVKATA();
-	e_hp(*TEnemy) = WordToInteger(CKata);
+	e_hp(*TEnemy) = KataToInteger(CKata);
 	ADVKATA();
-	e_str(*TEnemy) = WordToInteger(CKata);
+	e_str(*TEnemy) = KataToInteger(CKata);
 	ADVKATA();
-	e_def(*TEnemy) = WordToInteger(CKata);
+	e_def(*TEnemy) = KataToInteger(CKata);
 	ADVKATA();
-	e_exp(*TEnemy) = WordToInteger(CKata);
+	e_exp(*TEnemy) = KataToInteger(CKata);
 	for (j = 1; j <= nb; j++)
 	{
 		CreateEmptyQ(&Q);
@@ -109,18 +87,4 @@ void PrintEnemy (Enemy TEnemy)
 	printf("%d\n",e_def(TEnemy));
 	printf("%d\n",e_exp(TEnemy));
 	PrintStack(e_attack(TEnemy));
-}
-
-int Damage (int str, int def,int base)
-/*Prekondisi: Strength, defense, dan base untuk battle terdefinisi*/
-/*Menghitung besarnya damage pada saat battle*/
-{
-	if (str>=(def/2))
-	{
-		return (base+(str-(def/2)));
-	}
-	else
-	{
-		return base;
-	}
 }

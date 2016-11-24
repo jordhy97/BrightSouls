@@ -86,24 +86,62 @@ void wPrintArea (WINDOW *win, Area A, POINT P)
 /* I.S. A tidak kosong dan P terdefinisi*/
 /* F.S. Isi Info(A) dicetak ke win dengan posisi di P diganti dengan 'P' */
 {
-	int i, j, startx;
-	startx = (84 - ((GetLastIdxKol(Info(A)) - 1) * 3 + 1)) / 2;
+	/* KAMUS LOKAL */
+	int i, j, k;
+
+	/* ALGORITMA */
+	init_pair(2, COLOR_GREEN, COLOR_YELLOW);
+	init_pair(3, COLOR_RED, COLOR_GREEN);
+	wattron(win, COLOR_PAIR(3));
 	for(i = GetFirstIdxBrs(Info(A)); i <= GetLastIdxBrs(Info(A)); i++)
 	{
-		wmove(win, 2 * i , startx);
-		for(j = GetFirstIdxKol(Info(A)); j <= GetLastIdxKol(Info(A)); j++)
+		for(k = 1; k <= 3; k++)
 		{
-			if(Absis(P) == j && Ordinat(P) == i)
+			for(j = GetFirstIdxKol(Info(A)); j <= GetLastIdxKol(Info(A)); j++)
 			{
-				wprintw(win, "P", startx);
-			}
-			else
-			{
-				wprintw(win, "%c", Elmt(Info(A),i,j));
-			}
-			if(j != GetLastIdxKol(Info(A)))
-			{
-				wprintw(win, "  ");
+				if(k == 2)
+				{
+					if(Elmt(Info(A),i,j) == '#')
+					{
+						wattron(win, COLOR_PAIR(2));
+						wprintw(win, "       ");
+						wattroff(win, COLOR_PAIR(2));
+					}
+					else if(Absis(P) == j && Ordinat(P) == i)
+					{
+						wattron(win, COLOR_PAIR(3));
+						wprintw(win, "   P   ");
+						wattroff(win, COLOR_PAIR(3));
+					}
+					else
+					{
+						wattron(win, COLOR_PAIR(3));
+						if(Elmt(Info(A),i,j) == '.')
+						{
+							wprintw(win, "       ");
+						}
+						else
+						{
+							wprintw(win, "   %c   ", Elmt(Info(A),i,j));
+						}
+						wattroff(win, COLOR_PAIR(3));
+					}
+				}
+				else
+				{
+					if(Elmt(Info(A),i,j) == '#')
+					{
+						wattron(win, COLOR_PAIR(2));
+						wprintw(win, "       ");
+						wattroff(win, COLOR_PAIR(2));
+					}
+					else
+					{
+						wattron(win, COLOR_PAIR(3));
+						wprintw(win, "       ");
+						wattroff(win, COLOR_PAIR(3));
+					}
+				}
 			}
 		}
 	}

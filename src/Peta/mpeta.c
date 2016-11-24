@@ -64,6 +64,7 @@ int main()
 			printf("\n");
 		}
 	}
+	
 	printf("TESTING SAVE AND LOAD PETA\n\n");
 	SavePeta(MAP, "testsubpeta.txt", "testkoneksi.txt");
 	DealokasiPeta(&MAP);

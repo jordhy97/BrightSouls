@@ -30,6 +30,10 @@ void BacaKata(Kata *K);
 /* F.S. : K berisi kata yang merupakan input dari user */
 /* Proses : Membaca input dari user sampai diinput ENTER atau BLANK */
 
+void TulisKata (Kata K);
+/*I.S. Kata terdefinisi*/
+/*F.S. Kata ditampilkan ke layar*/
+
 /* I/O KHUSUS NCURSES */
 void wBacaKata(WINDOW *win, Kata *K);
 /* I.S. : K sembarang */

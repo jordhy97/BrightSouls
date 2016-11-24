@@ -289,3 +289,83 @@ void PrintQueueBattleP (ElmtStack Q,int i)
 		}
 	}
 }
+
+/******** I/O (Khusus Ncurses) ************/
+void wPrintQueueBattleE (WINDOW *win, ElmtStack Q,int i, int y, int z)
+/* Proses: menampilkan urutan aksi enemy dari salah satu ronde battle pada stack pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi enemy dari salah satu ronde battle pada stack ditampilkan ke layar pada saat kalkulasi damage*/
+{
+	infotype X;
+	int j;
+	j = 0;
+	while (!IsEmptyQ(Q))
+	{
+		j++;
+		if (NBElmtQ(Q) == (4-(i-1)))
+		{
+			wprintw(win, ">");
+		}
+		Del(&Q,&X);
+		if (!IsEmptyQ(Q))
+		{
+			if (j==y || j==z)
+			{
+				if (j <= i)
+				{
+					wprintw(win, "%c ",X);
+				}
+				else
+				{
+					wprintw(win, "# ");
+				}
+			}
+			else
+			{
+				wprintw(win, "%c ",X);
+			}
+		}
+		else
+		{
+			if (j==y || j==z)
+			{
+				if (j <= i)
+				{
+					wprintw(win, "%c",X);
+				}
+				else
+				{
+					wprintw(win, "#");
+				}
+			}
+			else
+			{
+				wprintw(win, "%c",X);
+			}
+		}
+	}
+}
+
+void wPrintQueueBattleP (WINDOW *win, ElmtStack Q, int i)
+/* Proses: menampilkan urutan aksi dari salah satu ronde battle pada saat kalkulasi damage*/
+/* I.S. Stack tidak kosong */
+/* F.S. Urutan aksi player dari salah satu ronde battle ditampilkan ke layar pada saat kalkulasi damage*/
+{
+	infotype X;
+	while (!IsEmptyQ(Q))
+	{
+		if (NBElmtQ(Q) == (4-(i-1)))
+		{
+			wprintw(win, ">");
+		}
+		Del(&Q,&X);
+		if (!IsEmptyQ(Q))
+		{
+			wprintw(win, "%c ",X);
+		}
+		else
+		{
+			wprintw(win, "%c",X);
+		}
+	}
+}

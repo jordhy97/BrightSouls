@@ -35,13 +35,27 @@ void BacaKata(Kata *K)
   /* ALGORTIMA */
   i=0;
   scanf("%c", &C);
-  while ((C != ENTER) && (C != BLANK))
+  while ((C != ENTER) && (C != BLANK) && (i < NMax))
   {
       i++;
       (*K).TabKata[i]=C;
       scanf("%c", &C);
   }
   (*K).Length = i;
+}
+
+void TulisKata (Kata K)
+/*I.S. Kata terdefinisi*/
+/*F.S. Kata ditampilkan ke layar*/
+{
+  /* KAMUS LOKAL */
+  int i;
+
+  /* ALGORITMA */
+  for (i = 1; i <= K.Length; i++)
+  {
+    printf("%c",K.TabKata[i]);
+  }
 }
 
 /* I/O KHUSUS NCURSES */
@@ -57,7 +71,7 @@ void wBacaKata(WINDOW *win, Kata *K)
   i = 0;
   keypad(win,TRUE);
   C = wgetch(win);
-  while ((C != ENTER) && (C != BLANK))
+  while ((C != ENTER) && (C != BLANK) && (i < NMax))
   {
     if(C == KEY_BACKSPACE)
     {
@@ -98,7 +112,7 @@ void wTulisKata(WINDOW *win, Kata K)
   {
     wprintw(win, "%c", K.TabKata[i]);
   }
-}
+} 
 
 /* MESIN KATA */
 void IgnoreBlank()
@@ -107,8 +121,10 @@ void IgnoreBlank()
    F.S. : CC ≠ BLANK atau CC = MARK */
 {
   /* ALGORITMA */
-  while ((CC == BLANK) && (CC != MARK))
-  ADV();
+  while (((CC == BLANK) || (CC == ENTER)) && (CC != MARK))
+  {
+    ADV();
+  }
 }
 
 void STARTKATA(char *namafile)
@@ -164,7 +180,7 @@ void SalinKata()
   {
     CKata.TabKata[i] = CC;
     ADV();
-    if ((CC == MARK) || (CC == BLANK) || (i>NMax))
+    if ((CC == MARK) || (CC == BLANK) || (CC == ENTER) || (i>NMax))
       break;
     else
       i++;

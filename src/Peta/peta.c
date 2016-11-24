@@ -12,8 +12,8 @@ ID GetLastID (Peta P)
 }	
 
 /****************** KONSTRUKTOR (VIA FILE EKSTERNAL) ******************/
-void CreateRandomPeta(Peta *PHasil, char *namafile)
-/* I.S. PHasil sembarang, file dengan nama namafile terdefinisi dan siap dibaca */
+void CreateRandomPeta(Peta *PHasil, char *namafileAreas)
+/* I.S. PHasil sembarang, file dengan nama namafileAreas terdefinisi dan siap dibaca */
 /* F.S. PHasil berisi Peta yang dikonstruksi dari file Area dengan nama namafile yang dibentuk secara acak */
 {
 	/* KAMUS LOKAL */
@@ -23,7 +23,7 @@ void CreateRandomPeta(Peta *PHasil, char *namafile)
 	boolean used[IDMax+1];
 
 	/* ALGORITMA */
-	LoadSubPeta(&P, namafile);
+	LoadSubPeta(&P, namafileAreas);
 	for(i = IDMin; i <= GetLastID(P); i++)
 	{
 		used[i] = false;
@@ -172,7 +172,7 @@ void SetBoss(Peta *P)
 {
 	/* KAMUS LOKAL */
 	ID IDMaks;
-	int maks, i, j, x, y;
+	int maks, i, x, y;
 	boolean visited[IDMax+1];
 
 	/* ALGORITMA */
@@ -186,20 +186,10 @@ void SetBoss(Peta *P)
 	y = (GetFirstIdxBrs(Info(SubPeta(*P, IDMaks))) + GetLastIdxBrs(Info(SubPeta(*P, IDMaks)))) / 2;
 	x = (GetFirstIdxKol(Info(SubPeta(*P, IDMaks))) + GetLastIdxKol(Info(SubPeta(*P, IDMaks)))) / 2;
 	Elmt(Info(SubPeta(*P, IDMaks)), y, x) = Boss;
-	//for(i = GetFirstIdxBrs(Info(SubPeta(*P, IDMaks))); i <= GetLastIdxBrs(Info(SubPeta(*P, IDMaks))); i++)
-	//{
-	//	for(j = GetFirstIdxKol(Info(SubPeta(*P, IDMaks))); j <= GetLastIdxKol(Info(SubPeta(*P, IDMaks))); j++)
-	//	{
-	//		if((Elmt(Info(SubPeta(*P, IDMaks)), i, j) == Medicine) || (Elmt(Info(SubPeta(*P, IDMaks)), i, j) == Musuh))
-	//		{
-	//			Elmt(Info(SubPeta(*P, IDMaks)), i, j) == Path;
-	//		}
-	//	}
-	//}
 }
 
 void LoadPeta(Peta *P, char *namafileSubPeta, char *namafileKoneksi)
-/* I.S. P sembarang, namafileSubPeta dan namafileKoneksi terdefinisi */
+/* I.S. P sembarang, namafileSubPeta, dan namafileKoneksi terdefinisi */
 /* F.S. Terbentuk Peta P sesuai dengan data yang ada di dalam file eksternal */
 {
 	/* KAMUS LOKAL */

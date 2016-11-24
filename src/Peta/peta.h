@@ -14,7 +14,6 @@
 /* Kamus Umum */
 #define IDMax 10
 #define IDMin 1
-#define EnMax 100
 #define IDUndef 999
 
 /* Definisi Type Data */
@@ -22,7 +21,6 @@ typedef int ID; /* type ID */
 typedef struct {
 	Area SubPeta[IDMax+1];
 	ID Koneksi[IDMax+1][MaxNeighbour+1];
-	Kata Enemy[EnMax+1];
 	int IDEff;
 } Peta;
 
@@ -30,14 +28,13 @@ typedef struct {
 #define SubPeta(P,i) (P).SubPeta[(i)]
 #define Koneksi(P,i,j) (P).Koneksi[(i)][(j)]
 #define IDEff(P) (P).IDEff
-#define Enemy(P,i) (P).Enemy[(i)]
 
 ID GetLastID (Peta P);
 /* Mengirimkan ID terbesar P */
 
 /****************** KONSTRUKTOR dan I/O (VIA FILE EKSTERNAL) (KHUSUS AREA DENGAN EMPAT TETANGGA) ******************/
-void CreateRandomPeta(Peta *PHasil, char *namafile);
-/* I.S. PHasil sembarang, file dengan nama namafile terdefinisi dan siap dibaca */
+void CreateRandomPeta(Peta *PHasil, char *namafileAreas);
+/* I.S. PHasil sembarang, file dengan nama namafileAreas dan namafileEnemy terdefinisi dan siap dibaca */
 /* F.S. PHasil berisi Peta yang dikonstruksi dari file Area dengan nama namafile yang dibentuk secara acak */
 
 void CloseUnconnectedSubMapPoint(Peta *P);
@@ -53,7 +50,7 @@ void SetBoss(Peta *P);
 /* F.S. SubPeta terjauh dari SubPeta(*P,1) diubah menjadi Area Boss dan semua enemy dan medicine dihapus */
 
 void LoadPeta(Peta *P, char *namafileSubPeta, char *namafileKoneksi);
-/* I.S. P sembarang, namafileSubPeta dan namafileKoneksi terdefinisi */
+/* I.S. P sembarang, namafileSubPeta, namafileEnemy dan namafileKoneksi terdefinisi */
 /* F.S. Terbentuk Peta P sesuai dengan data yang ada di dalam file eksternal */
 
 void LoadSubPeta(Peta *P, char *namafile);
