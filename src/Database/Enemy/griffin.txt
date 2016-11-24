@@ -1,0 +1,15 @@
+Griffin
+75
+13
+9
+134
+F B A A
+B A B B
+A A A A
+A A A F
+F A F B
+B B A F
+A F B A
+B B B F
+A B F A
+F B A F*

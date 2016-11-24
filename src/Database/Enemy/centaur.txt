@@ -1,0 +1,15 @@
+Centaur
+83
+13
+11
+194
+A B F B
+B B B A
+F B A B
+A A F A
+B A F B
+F F A A
+A B F A
+B F F A
+A F A B
+B B B A*

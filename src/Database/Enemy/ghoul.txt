@@ -1,0 +1,15 @@
+Ghoul
+34
+7
+7
+30
+B B A F
+A B A B
+B B B B
+F A F F
+B A B F
+A B F F
+F F A B
+A A A A
+F A F A
+B A B F*

@@ -1,0 +1,15 @@
+Muffin
+16
+3
+3
+6
+A A B F
+A B A B
+B B B B
+F A F F
+B A B F
+A B F F
+B F A B
+A A A A
+F A F A
+A B F A*

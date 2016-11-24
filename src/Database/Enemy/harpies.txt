@@ -1,0 +1,15 @@
+Harpies
+63
+14
+10
+151
+B B B F
+A F A F
+B A B F
+B B B A
+A A F F
+A B F A
+B F A A
+A B F A
+B B F A
+A A A B*

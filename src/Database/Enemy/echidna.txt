@@ -1,0 +1,15 @@
+Echidna
+40
+8
+11
+73
+A F F B
+A B F F
+B B B B
+F F A B
+A F A F
+B F B F
+A B F A
+F B A B
+F A A A
+B A B B*

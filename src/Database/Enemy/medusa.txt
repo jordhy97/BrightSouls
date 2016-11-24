@@ -1,0 +1,15 @@
+Medusa
+80
+6
+5
+90
+B B A F
+B F A A
+A A A F
+B A B F
+B B B B
+F A B A
+A A F F
+F B A F
+B A B A
+F A F A*

@@ -1,0 +1,15 @@
+Shades
+27
+6
+10
+40
+A A A A
+B B B F
+A B F F
+F A B A
+F F B B
+B B F A
+A B B F
+F A F A
+F A B B
+A B B A*

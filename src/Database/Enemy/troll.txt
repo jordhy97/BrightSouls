@@ -1,0 +1,15 @@
+Troll
+92
+12
+6
+115
+B A B A
+F A F A
+B B B B
+A A A F
+A B B A
+F B B A
+B A A F
+F A A B
+A B F A
+B F A A*

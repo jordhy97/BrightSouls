@@ -1,0 +1,15 @@
+Abraxas
+24
+6
+8
+24
+B B A F
+A B F F
+A B A B
+B B B B
+F A F A
+F B B B
+A A A A
+B F B B
+F F A A
+B F A F*

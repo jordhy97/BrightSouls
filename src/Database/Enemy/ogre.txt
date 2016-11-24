@@ -1,0 +1,15 @@
+Ogre
+36
+7
+4
+21
+A B F B
+B B B A
+A B A B
+F A F B
+B F B F
+A B F F
+B B B A
+A B F F
+B B B B
+F F A B*

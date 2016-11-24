@@ -9,6 +9,7 @@ COBJS = $(addprefix $(ObjectDir),$(OBJS))
 BrightSouls : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -lncurses -o bin/BrightSouls
 	make clean1
+	make run
 
 BrightSouls.o : src/MesinKarKata/mesinkar.h src/MesinKarKata/mesinkar.c src/MesinKarKata/mesinkata.h src/MesinKarKata/mesinkata.c src/Matriks/matriks.h src/Matriks/matriks.c src/Peta/area.h src/Peta/area.c src/Peta/peta.h src/Peta/peta.c src/Enemy/enemy.h src/Enemy/enemy.c src/Player/player.h src/Player/player.c src/StackQueue/stackqueue.h src/StackQueue/stackqueue.c src/Point/point.h src/Point/point.c
 	$(CC) $(CFLAGS) src/Main/BrightSouls.c 
