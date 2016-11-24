@@ -35,8 +35,8 @@ void SelectEnemy(TabEn TEnemy, Enemy *En, int LvlP);
 /* I.S. TEnemy terdefinisi, LvlP terdefinisi, En sembarang */
 /* F.S. En berisi data enemy yang dirandom berdasarkan LvlP dari file eksternal */
 
-void explore(Player *P, Peta *MAP);
-/* I.S. P dan MAP terdefinisi */
+void explore(Player *P, Peta *MAP, JAM *PlayTime);
+/* I.S. P, MAP, dan PlayTime terdefinisi */
 /* F.S. Melakukan mode eksplorasi */
 
 void Create_battle_border();
@@ -51,8 +51,8 @@ int Damage (int str, int def,int base);
 /*Prekondisi: Strength, defense, dan base untuk battle terdefinisi*/
 /*Menghitung besarnya damage pada saat battle*/
 
-void Load(Player *P, Peta *MAP);
-/* I.S. P dan MAP Sembarang */ 
+void Load(Player *P, Peta *MAP, JAM *PlayTime);
+/* I.S. P, MAP, dan PlayTime Sembarang */ 
 /* F.S. me-load pilihan user */
 
 void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime);
@@ -110,6 +110,7 @@ int main()
 	Player P;
 	Peta MAP;
 	boolean new;
+	JAM PlayTime;
 	/* ALGORITMA */
 	
 	/* Inisialisasi Variable */
@@ -196,6 +197,7 @@ int main()
 				clear();
 				refresh();
 				New_Game(&P);
+				SetJAM(&PlayTime, MakeJAM(0, 0, 0));
 				new = true;
 				break;
 			case 2:
@@ -207,7 +209,7 @@ int main()
 						CreateRandomPeta(&MAP, "src/Database/Areas/Areas.txt");
 					}
 					Loading_Screen();
-					explore(&P, &MAP);
+					explore(&P, &MAP, &PlayTime);
 				}
 				else
 				{
@@ -218,7 +220,8 @@ int main()
 				/* Load Game */
 				clear();
 				refresh();
-				Load(&P, &MAP);
+				Load(&P, &MAP, &PlayTime);
+				new = false;
 				break;
 			case 4:
 				/* Exit */
@@ -400,8 +403,8 @@ void SelectEnemy(TabEn TEnemy, Enemy *En, int LvlP)
 	LoadFileEnemy(En, filename, 'e');
 }
 
-void explore(Player *P, Peta *MAP)
-/* I.S. P dan MAP terdefinisi */
+void explore(Player *P, Peta *MAP, JAM *PlayTime)
+/* I.S. P, MAP, dan PlayTime terdefinisi */
 /* F.S. Melakukan mode eksplorasi */
 {
 	/* KAMUS LOKAL */
@@ -413,7 +416,7 @@ void explore(Player *P, Peta *MAP)
 	TabEn TEnemy;
 	Enemy En;
 	Area START, CurrArea;
-	JAM StartPlay, PlayTime;
+	JAM StartPlay;
 	/* ALGORITMA */
 
 	/* Inisialasi */
@@ -421,7 +424,6 @@ void explore(Player *P, Peta *MAP)
 	START = AlokasiArea(Info(CurrArea));
 	LoadNamaEnemy(&TEnemy, "src/Database/Enemy/enemy.txt");
 	GetCurrentJAM(&StartPlay);
-	SetJAM(&PlayTime, MakeJAM(0, 0, 0));
 	/* Create All Possible Command */
 	CreateKata(&GU, "GU");
 	CreateKata(&GR, "GR");
@@ -522,7 +524,7 @@ void explore(Player *P, Peta *MAP)
 			clear();
 			refresh();
 			curs_set(0);
-			Save(*P, *MAP, StartPlay, PlayTime);
+			Save(*P, *MAP, StartPlay, *PlayTime);
 			move = false;
 			Create_explore_border();
 			wclear(P_Lvl);
@@ -548,7 +550,8 @@ void explore(Player *P, Peta *MAP)
 			clear();
 			refresh();
 			curs_set(0);
-			Load(P, MAP);
+			Load(P, MAP, PlayTime);
+			GetCurrentJAM(&StartPlay);
 			CurrArea = SubPeta(*MAP,CArea(*P));
 			START = AlokasiArea(Info(CurrArea));
 			move = false;
@@ -648,6 +651,7 @@ void explore(Player *P, Peta *MAP)
 			{	
 				if(Ordinat(Position(*P)) < GetFirstIdxBrs(Info(START)))
 				{
+					CArea(*P) = Koneksi(*MAP, CArea(*P), 1);
 					CurrArea = Neighbour(CurrArea, 1);
 					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 3));
 					DealokasiArea(START);
@@ -656,6 +660,7 @@ void explore(Player *P, Peta *MAP)
 				}
 				else if(Absis(Position(*P)) > GetLastIdxKol(Info(START)))
 				{
+					CArea(*P) = Koneksi(*MAP, CArea(*P), 2);
 					CurrArea = Neighbour(CurrArea, 2);
 					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 4));
 					DealokasiArea(START);
@@ -663,6 +668,7 @@ void explore(Player *P, Peta *MAP)
 				}
 				else if(Ordinat(Position(*P)) > GetLastIdxBrs(Info(START)))
 				{
+					CArea(*P) = Koneksi(*MAP, CArea(*P), 3);
 					CurrArea = Neighbour(CurrArea, 3);
 					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 1));
 					DealokasiArea(START);
@@ -670,6 +676,7 @@ void explore(Player *P, Peta *MAP)
 				}
 				else if(Absis(Position(*P)) < GetFirstIdxKol(Info(START)))
 				{
+					CArea(*P) = Koneksi(*MAP, CArea(*P), 4);
 					CurrArea = Neighbour(CurrArea, 4);
 					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 2));
 					DealokasiArea(START);
@@ -1165,8 +1172,8 @@ int Damage (int str, int def,int base)
 	}
 }
 
-void Load(Player *P, Peta *MAP)
-/* I.S. P dan MAP Sembarang */ 
+void Load(Player *P, Peta *MAP, JAM *PlayTime)
+/* I.S. P, MAP, dan PlayTime Sembarang */ 
 /* F.S. me-load pilihan user */
 {
 	/* KAMUS LOKAL */
@@ -1270,6 +1277,7 @@ void Load(Player *P, Peta *MAP)
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
 			LoadPeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
+			GetOldPlayTime("src/Database/State/savedata1.txt", PlayTime);
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 		case 2:
@@ -1277,6 +1285,7 @@ void Load(Player *P, Peta *MAP)
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
 			LoadPeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
+			GetOldPlayTime("src/Database/State/savedata2.txt", PlayTime);
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 	}
