@@ -31,8 +31,13 @@ typedef struct {
 #define CArea(P) (P).CArea
 // #define Skill(P) (P).skill
 
-void GetPlayerData ();
-/*Mengambil data player dari file eksternal*/
+void SavePlayer(Player P, char *namafile);
+/* I.S. P terdefinisi, namafile terdefinisi */
+/* F.S. data P tersimpan file eksternal*/
+
+void LoadPlayer (Player *P, char *namafile);
+/* I.S. P sembarang, namafile terdefinisi */
+/* F.S. P berisi data player dari file eksternal*/
 
 void CreatePlayer (Player *P, Kata nama);
 /* I.S. P sembarang, nama terdefinisi */

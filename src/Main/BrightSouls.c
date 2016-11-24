@@ -88,6 +88,14 @@ void Pop_Up_Message(char *message, float t);
 /* I.S. Sembarang */
 /* F.S. menampilkan Pop_up message selama t second */
 
+void Loading_Screen();
+/* I.S. Sembarang */
+/* F.S. Menampilkan loading Screen */
+
+void Game_Over();
+/* I.S. Sembarang */
+/* F.S. Menampilkan game over screen */
+
 /*** Not Yet impemented ***/
 //void Tutorial_explore();
 //void Tutorial_battle();
@@ -98,7 +106,7 @@ int main()
 	/* KAMUS */
 	WINDOW *title, *menu;
 	int pilihan, ch;
-	boolean chosen, mulai, quit;
+	boolean chosen, quit;
 	Player P;
 	Peta MAP;
 	boolean new;
@@ -111,12 +119,10 @@ int main()
 	/* SET COLOR */
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	curs_set(0);
 	refresh();
-
+	curs_set(0);
 	Name(P).Length = 0;
 	IDEff(MAP) = 0;
-	mulai = false;
 	quit = false;
 	new = false;
 
@@ -136,6 +142,7 @@ int main()
 	keypad(menu, TRUE);
 	do
 	{
+		curs_set(0);
 		/* Refresh title screen */
 		wmove(title,0,0);
 		START("src/Database/title.txt");
@@ -194,8 +201,13 @@ int main()
 			case 2:
 				/* Start Game */
 				if(!IsKataEmpty(Name(P)))
-				{
-					mulai = true;
+				{	
+					if(new)
+					{
+						CreateRandomPeta(&MAP, "src/Database/Areas.txt");
+					}
+					Loading_Screen();
+					explore(&P, &MAP);
 				}
 				else
 				{
@@ -213,23 +225,13 @@ int main()
 				quit = true;
 				break;
 		}
-	}while((!mulai) && (!quit));
+	}while(!quit);
 
 	/* Delete dan Dealokasi */
 	clear();
 	refresh();
 	delwin(title);
 	delwin(menu);
-
-	/* Start Game */
-	if(mulai)
-	{
-		if(new)
-		{
-			CreateRandomPeta(&MAP, "src/Database/Areas.txt");
-		}
-		explore(&P, &MAP);
-	}
 	endwin();
 	system("clear");
 	return 0;
@@ -516,6 +518,7 @@ void explore(Player *P, Peta *MAP)
 		}
 		else if(IsKataSama(Masukan, SAVE))
 		{
+			/* SAVE */
 			clear();
 			refresh();
 			curs_set(0);
@@ -541,10 +544,13 @@ void explore(Player *P, Peta *MAP)
 		}
 		else if(IsKataSama(Masukan, LOAD))
 		{
+			/* LOAD */
 			clear();
 			refresh();
 			curs_set(0);
 			Load(P, MAP);
+			CurrArea = SubPeta(*MAP,CArea(*P));
+			START = AlokasiArea(Info(CurrArea));
 			move = false;
 			Create_explore_border();
 			wclear(P_Lvl);
@@ -583,9 +589,11 @@ void explore(Player *P, Peta *MAP)
 				win = false;
 				clear();
 				refresh();
+				Loading_Screen();
 				battle(P, En, &game_over, &win);
 				if(win)
 				{
+					Loading_Screen();
 					Create_explore_border();
 					SetPOINT(&Position(*P), NextPOINT);
 					ClearPOINT(&START, Position(*P));
@@ -618,6 +626,7 @@ void explore(Player *P, Peta *MAP)
 				win = false;
 				clear();
 				refresh();
+				Loading_Screen();
 				battle(P, En, &game_over, &win);
 				if(win)
 				{
@@ -627,44 +636,72 @@ void explore(Player *P, Peta *MAP)
 			if(IsMedicine(START, Position(*P)))
 			{
 				ClearPOINT(&START, Position(*P));
+				ClearPOINT(&CurrArea, Position(*P));
 				wprintw(Message, "Got a medicine! HP +%d", Max_HP(*P) - HP(*P));
 				HP(*P) = Max_HP(*P);
 				wclear(P_HP);
-				wprintw(P_HP, "HP: %d", HP(*P)); 
+				wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P)); 
 				wrefresh(P_HP);
 			}
 			/* Changing Area */
-			if(Ordinat(Position(*P)) < GetFirstIdxBrs(Info(START)))
-			{
-				CurrArea = Neighbour(CurrArea, 1);
-				SetPOINT(&Position(*P), P_Neighbour(CurrArea, 3));
-				DealokasiArea(START);
-				START = AlokasiArea(Info(CurrArea));
+			if((Ordinat(Position(*P)) < GetFirstIdxBrs(Info(START))) || (Absis(Position(*P)) > GetLastIdxKol(Info(START))) || (Ordinat(Position(*P)) > GetLastIdxBrs(Info(START))) || (Absis(Position(*P)) < GetFirstIdxKol(Info(START))))
+			{	
+				if(Ordinat(Position(*P)) < GetFirstIdxBrs(Info(START)))
+				{
+					CurrArea = Neighbour(CurrArea, 1);
+					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 3));
+					DealokasiArea(START);
+					START = AlokasiArea(Info(CurrArea));
 
-			}
-			else if(Absis(Position(*P)) > GetLastIdxKol(Info(START)))
-			{
-				CurrArea = Neighbour(CurrArea, 2);
-				SetPOINT(&Position(*P), P_Neighbour(CurrArea, 4));
-				DealokasiArea(START);
-				START = AlokasiArea(Info(CurrArea));
-			}
-			else if(Ordinat(Position(*P)) > GetLastIdxBrs(Info(START)))
-			{
-				CurrArea = Neighbour(CurrArea, 3);
-				SetPOINT(&Position(*P), P_Neighbour(CurrArea, 1));
-				DealokasiArea(START);
-				START = AlokasiArea(Info(CurrArea));
-			}
-			else if(Absis(Position(*P)) < GetFirstIdxKol(Info(START)))
-			{
-				CurrArea = Neighbour(CurrArea, 4);
-				SetPOINT(&Position(*P), P_Neighbour(CurrArea, 2));
-				DealokasiArea(START);
-				START = AlokasiArea(Info(CurrArea));
+				}
+				else if(Absis(Position(*P)) > GetLastIdxKol(Info(START)))
+				{
+					CurrArea = Neighbour(CurrArea, 2);
+					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 4));
+					DealokasiArea(START);
+					START = AlokasiArea(Info(CurrArea));
+				}
+				else if(Ordinat(Position(*P)) > GetLastIdxBrs(Info(START)))
+				{
+					CurrArea = Neighbour(CurrArea, 3);
+					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 1));
+					DealokasiArea(START);
+					START = AlokasiArea(Info(CurrArea));
+				}
+				else if(Absis(Position(*P)) < GetFirstIdxKol(Info(START)))
+				{
+					CurrArea = Neighbour(CurrArea, 4);
+					SetPOINT(&Position(*P), P_Neighbour(CurrArea, 2));
+					DealokasiArea(START);
+					START = AlokasiArea(Info(CurrArea));
+				}
+				clear();
+				refresh();
+				Loading_Screen();
+				Create_explore_border();
+				wclear(P_Lvl);
+				wclear(P_HP);
+				wclear(P_Str);
+				wclear(P_Def);
+				wclear(P_Exp);
+				wprintw(P_Lvl, "LVL: %d", Level(*P)); 
+				wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P)); 
+				wprintw(P_Str, "STR: %d", Strength(*P)); 
+				wprintw(P_Def, "DEF: %d", Defense(*P));
+				wprintw(P_Exp, "EXP: %d", Exp(*P));;
+				wrefresh(P_Lvl);
+				wrefresh(P_HP);
+				wrefresh(P_Str);
+				wrefresh(P_Def);
+				wrefresh(P_Exp);
+				curs_set(1);
 			}
 		}
 	}while(!quit && !game_over && !end);
+	if(game_over)
+	{
+		Game_Over();
+	}
 	delwin(Command);
 	delwin(Message);
 	delwin(Map);
@@ -1228,17 +1265,17 @@ void Load(Player *P, Peta *MAP)
 	switch(pilihan)
 	{
 		case 1:
-			//LoadPlayer(&P, "player1.txt");
+			LoadPlayer(P, "src/Database/player1.txt");
 			/* Dealokasi current peta */
-			//DealokasiPeta(&MAP);
-			//LoadPeta(&MAP,"subpeta1.txt", "koneksi1.txt");
+			DealokasiPeta(MAP);
+			LoadPeta(MAP,"src/Database/subpeta1.txt", "src/Database/koneksi1.txt");
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 		case 2:
-			//LoadPlayer(&P, "player2.txt");
+			LoadPlayer(P, "src/Database/player2.txt");
 			/* Dealokasi current peta */
-			//DealokasiPeta(&MAP);
-			//LoadPeta(&MAP,"subpeta2.txt", "koneksi2.txt");
+			DealokasiPeta(MAP);
+			LoadPeta(MAP,"src/Database/subpeta2.txt", "src/Database/koneksi2.txt");
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 	}
@@ -1426,18 +1463,14 @@ void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime)
 		switch(pilihan)
 		{
 			case 1:
-				//LoadPlayer(&P, "player1.txt");
-				/* Dealokasi current peta */
-				//DealokasiPeta(&MAP);
-				//LoadPeta(&MAP,"subpeta1.txt", "koneksi1.txt");
+				SavePlayer(P, "src/Database/player1.txt");
+				SavePeta(MAP,"src/Database/subpeta1.txt", "src/Database/koneksi1.txt");
 				SaveFile("src/Database/savedata1.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
 			case 2:
-				//LoadPlayer(&P, "player2.txt");
-				/* Dealokasi current peta */
-				//DealokasiPeta(&MAP);
-				//LoadPeta(&MAP,"subpeta2.txt", "koneksi2.txt");
+				SavePlayer(P, "src/Database/player2.txt");
+				SavePeta(MAP,"src/Database/subpeta2.txt", "src/Database/koneksi2.txt");
 				SaveFile("src/Database/savedata2.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
@@ -1603,4 +1636,68 @@ void Pop_Up_Message(char *message, float t)
 	wclear(Pop_Up);
 	wrefresh(Pop_Up);
 	delwin(Pop_Up);
+}
+
+void Loading_Screen()
+/* I.S. Sembarang */
+/* F.S. Menampilkan loading Screen */
+{
+	/* KAMUS LOKAL */
+	char *loading = "Now Loading...";
+	WINDOW *win;
+	int i, j, ulang;
+
+	/* ALGORITMA */
+	curs_set(0);
+
+	win = create_newwin(Game_Height, Game_Width, Mid_y(Game_Height), Mid_x(Game_Width));
+	srand(time(NULL));
+	ulang = rand() % 2 + 1;
+	for(j = 1; j <= ulang; j++)
+	{
+		i = 0;
+		START("src/Database/title.txt");
+		while(!EOP)
+		{
+			wprintw(win, "%c", CC);
+			ADV();
+		}
+		wrefresh(win);
+		wmove(win, Game_Height - 1, Game_Width - 15);
+		while (loading[i] != '\0')
+		{
+			wprintw(win, "%c", loading[i]);
+			wrefresh(win);
+			delay(0.25);
+			i++;
+		}
+		wclear(win);
+	}
+	clear();
+	refresh();
+	delwin(win);
+}
+
+void Game_Over()
+/* I.S. Sembarang */
+/* F.S. Menampilkan game over screen */
+{
+	/* KAMUS LOKAL */
+	WINDOW *win;
+
+	/* ALGORITMA */
+	curs_set(0);
+
+	win = create_newwin(18, 76, Mid_y(18), Mid_x(76));
+	START("src/Database/GameOver.txt");
+	while(!EOP)
+	{
+		wprintw(win, "%c", CC);
+		ADV();
+	}
+	wrefresh(win);
+	delay(5);
+	clear();
+	refresh();
+	delwin(win);
 }

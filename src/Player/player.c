@@ -3,6 +3,52 @@
 #include <time.h>
 #include <stdlib.h>
 
+void SavePlayer(Player P, char *namafile)
+/* I.S. P terdefinisi, namafile terdefinisi */
+/* F.S. data P tersimpan file eksternal*/
+{
+    /* KAMUS LOKAL */
+    FILE *fout;
+    int i;
+
+    /* ALGORITMA */
+    fout = fopen(namafile, "w");
+    for(i = 1; i <= Name(P).Length; i++)
+    {
+        fprintf(fout, "%c", Name(P).TabKata[i]);    
+    }
+    fprintf(fout, "\n%d\n%d\n%d\n%d\n%d\n%d\n%d %d\n%d", Max_HP(P), HP(P), Strength(P), Defense(P), Exp(P), Level(P), Absis(Position(P)), Ordinat(Position(P)), CArea(P));
+    fprintf(fout, "%c", MARK);
+    fclose(fout);
+}
+
+void LoadPlayer (Player *P, char *namafile)
+/* I.S. P sembarang, namafile terdefinisi */
+/* F.S. P berisi data player dari file eksternal*/
+{
+    /* ALGORITMA */
+    STARTKATA(namafile);
+    Name(*P) = CKata;
+    ADVKATA();
+    Max_HP(*P) = KataToInteger(CKata);
+    ADVKATA();
+    HP(*P) = KataToInteger(CKata);
+    ADVKATA();
+    Strength(*P) = KataToInteger(CKata);
+    ADVKATA();
+    Defense(*P) = KataToInteger(CKata);
+    ADVKATA();
+    Exp(*P) = KataToInteger(CKata);
+    ADVKATA();
+    Level(*P) = KataToInteger(CKata);
+    ADVKATA();
+    Absis(Position(*P)) = KataToInteger(CKata);
+    ADVKATA();
+    Ordinat(Position(*P)) = KataToInteger(CKata);
+    ADVKATA();
+    CArea(*P) = KataToInteger(CKata);
+}
+
 void CreatePlayer (Player * P, Kata nama)
 /* I.S. P sembarang, nama terdefinisi */
 /* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
