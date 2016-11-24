@@ -370,4 +370,5 @@ void DealokasiPeta(Peta *P)
 	{
 		DealokasiArea(SubPeta(*P,i));
 	}
+	IDEff(*P) = 0;
 }

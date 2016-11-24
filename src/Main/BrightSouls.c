@@ -130,7 +130,7 @@ int main()
 	title = create_newwin(Game_Height, Game_Width, Mid_y(Game_Height), Mid_x(Game_Width));
 	menu = create_newwin(4, 11,  Mid_y(Game_Height) + 22, Mid_x(Game_Width) + 95);
 	/* Load title screen */
-	START("src/Database/title.txt");
+	START("src/Database/Text/title.txt");
 	while(!EOP)
 	{
 		wprintw(title, "%c", CC);
@@ -145,7 +145,7 @@ int main()
 		curs_set(0);
 		/* Refresh title screen */
 		wmove(title,0,0);
-		START("src/Database/title.txt");
+		START("src/Database/Text/title.txt");
 		while(!EOP)
 		{
 			wprintw(title, "%c", CC);
@@ -204,7 +204,7 @@ int main()
 				{	
 					if(new)
 					{
-						CreateRandomPeta(&MAP, "src/Database/Areas.txt");
+						CreateRandomPeta(&MAP, "src/Database/Areas/Areas.txt");
 					}
 					Loading_Screen();
 					explore(&P, &MAP);
@@ -712,6 +712,7 @@ void explore(Player *P, Peta *MAP)
 	delwin(P_Def);
 	delwin(P_Exp);
 	DealokasiPeta(MAP);
+	Name(*P).Length = 0; 
 }
 
 void Create_battle_border()
@@ -1197,8 +1198,8 @@ void Load(Player *P, Peta *MAP)
 	wrefresh(Exit_Border);	
 
 	/* Reading from external files */
-	Display_saveFile(slot1, "src/Database/savedata1.txt", &empty1);
-	Display_saveFile(slot2, "src/Database/savedata2.txt", &empty2);	
+	Display_saveFile(slot1, "src/Database/State/savedata1.txt", &empty1);
+	Display_saveFile(slot2, "src/Database/State/savedata2.txt", &empty2);	
 
 	/* Choosing Save File */
 	keypad(Exit, TRUE);
@@ -1265,17 +1266,17 @@ void Load(Player *P, Peta *MAP)
 	switch(pilihan)
 	{
 		case 1:
-			LoadPlayer(P, "src/Database/player1.txt");
+			LoadPlayer(P, "src/Database/State/player1.txt");
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
-			LoadPeta(MAP,"src/Database/subpeta1.txt", "src/Database/koneksi1.txt");
+			LoadPeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 		case 2:
-			LoadPlayer(P, "src/Database/player2.txt");
+			LoadPlayer(P, "src/Database/State/player2.txt");
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
-			LoadPeta(MAP,"src/Database/subpeta2.txt", "src/Database/koneksi2.txt");
+			LoadPeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 	}
@@ -1403,8 +1404,8 @@ void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime)
 	{
 		/* Reading from external files */
 		chosen = false;
-		Display_saveFile(slot1, "src/Database/savedata1.txt", &empty1);
-		Display_saveFile(slot2, "src/Database/savedata2.txt", &empty2);	
+		Display_saveFile(slot1, "src/Database/State/savedata1.txt", &empty1);
+		Display_saveFile(slot2, "src/Database/State/savedata2.txt", &empty2);	
 		do
 		{	wmove(slot1, 0, 0);
 			wmove(slot2, 0, 0);
@@ -1463,15 +1464,15 @@ void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime)
 		switch(pilihan)
 		{
 			case 1:
-				SavePlayer(P, "src/Database/player1.txt");
-				SavePeta(MAP,"src/Database/subpeta1.txt", "src/Database/koneksi1.txt");
-				SaveFile("src/Database/savedata1.txt", P, StartPlay, PlayTime);
+				SavePlayer(P, "src/Database/State/player1.txt");
+				SavePeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
+				SaveFile("src/Database/State/savedata1.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
 			case 2:
-				SavePlayer(P, "src/Database/player2.txt");
-				SavePeta(MAP,"src/Database/subpeta2.txt", "src/Database/koneksi2.txt");
-				SaveFile("src/Database/savedata2.txt", P, StartPlay, PlayTime);
+				SavePlayer(P, "src/Database/State/player2.txt");
+				SavePeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
+				SaveFile("src/Database/State/savedata2.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
 		}
@@ -1656,7 +1657,7 @@ void Loading_Screen()
 	for(j = 1; j <= ulang; j++)
 	{
 		i = 0;
-		START("src/Database/title.txt");
+		START("src/Database/Text/title.txt");
 		while(!EOP)
 		{
 			wprintw(win, "%c", CC);
@@ -1689,7 +1690,7 @@ void Game_Over()
 	curs_set(0);
 
 	win = create_newwin(18, 76, Mid_y(18), Mid_x(76));
-	START("src/Database/GameOver.txt");
+	START("src/Database/Text/GameOver.txt");
 	while(!EOP)
 	{
 		wprintw(win, "%c", CC);
