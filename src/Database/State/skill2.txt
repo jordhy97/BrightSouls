@@ -1,0 +1,45 @@
+1 0
+0 0
+Extra HP
+Permanently increase your Max HP by 5.
+2 0
+1 1
+Extra Strength
+Permanently increase your strength by 2.
+4 0
+2 1
+Swordsman
+Increase damage given for 3 rounds in battle.
+8 0
+4 1
+Paralyzed
+Paralyzed enemy for 1 round.
+5 0
+2 0
+Sharpeye
+Reveal enemy's command for 3 rounds in battle.
+9 0
+5 1
+Veteran
+Get 20% chance to get double exp in battle.
+3 0
+1 0
+Extra Defense
+Permanently increase your defense by 2.
+6 0
+3 1
+Agile
+Decrease damage taken for 3 rounds in battle.
+10 0
+6 1
+Stealth
+Avoid battling enemy.
+7 0
+3 0
+Vampire
+Absorb 25% of the damage given to your HP (once per battle).
+11 0
+7 1
+Super Healer
+Fully heal yourself.
+*

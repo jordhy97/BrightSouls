@@ -1,4 +1,4 @@
-OBJS = BrightSouls.o mesinkar.o mesinkata.o area.o peta.o enemy.o player.o stackqueue.o matriks.o point.o jam.o
+OBJS = BrightSouls.o mesinkar.o mesinkata.o area.o peta.o enemy.o player.o stackqueue.o matriks.o point.o jam.o bintree.o
 ObjectDir = obj/
 CC = gcc
 DEBUG = -g
@@ -43,6 +43,9 @@ point.o : src/Point/point.h src/Point/point.c
 
 jam.o : src/Jam/jam.h src/Jam/jam.c
 	$(CC) $(CFLAGS) src/Jam/jam.c
+
+bintree.o : src/BinTree/bintree.h src/BinTree/bintree.c
+	$(CC) $(CFLAGS) src/BinTree/bintree.c 
 
 clean1:
 	\rm *.o 

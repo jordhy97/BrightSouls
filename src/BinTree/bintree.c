@@ -1,276 +1,367 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "bintree.h"
+#include <stdlib.h>
+#include "../MesinKarKata/mesinkar.h"
 
-#define max(a,b) ((a) > (b) ? (a) : (b))
+void copystring (char *dest, char *source)
+/* I.S. dest sembarang, source teredefinisi */
+/* F.S. dest berisi source */
+{
+    /* KAMUS LOKAL */
+    int i;
 
-BinTree Tree (infotype Akar, BinTree L, BinTree R) {
-    BinTree P;
-    P = AlokNode(Akar);
-    if (P != Nil) {
-        Left(P) = L;
-        Right(P) = R;
+    /* ALGORITMA */
+    i = 0;
+    while(source[i] != '\0')
+    {
+        dest[i] = source[i];
+        i++;
     }
-    return P;
+    dest[i] = '\0';
 }
 
-void MakeTree (infotype Akar, BinTree L, BinTree R, BinTree *P) {
+/* *** Konstruktor *** */
+BinTree Tree (infoTree Akar, BinTree L, BinTree R)
+/* Menghasilkan sebuah pohon biner dari A, L, dan R, jika alokasi berhasil */
+/* Menghasilkan pohon kosong (NilTree) jika alokasi gagal */
+{
+    /* KAMUS LOKAL */
+    BinTree B;
+
+    /* ALGORITMA */
+    B = AlokNode(Akar);
+    if(B != NilTree)
+    {
+        Left(B) = L;
+        Right(B) = R;
+    }
+    return B;
+}
+
+void MakeTree (infoTree Akar, BinTree L, BinTree R, BinTree *P)
+/* I.S. Akar, L, R terdefinisi. P Sembarang */
+/* F.S. Membentuk pohon P dengan Akar(P)=Akar, Left(P)=L, dan Right(P)=R 
+        jika alokasi berhasil. P = NilTree jika alokasi gagal. */
+{
+    /* ALGORITMA */
     *P = Tree(Akar,L,R);
 }
-
-addrNode AlokNode (infotype X) {
+        
+/* Manajemen Memory */
+addrNode AlokNode (infoTree X)
+/* Mengirimkan addrNode hasil alokasi sebuah elemen */
+/* Jika alokasi berhasil, maka addrNode tidak NilTree, dan misalnya menghasilkan P, 
+  maka Akar(P) = X, Left(P) = NilTree, Right(P)=NilTree */
+/* Jika alokasi gagal, mengirimkan NilTree */
+{
+    /* KAMUS LOKAL */
     addrNode P;
-    P = (Node*)malloc(sizeof(Node));
-    if (P != Nil) {
-        Akar(P) = X;
-        Left(P) = Nil;
-        Right(P) = Nil;
+
+    /* ALGORITMA */
+    P = (addrNode) malloc (sizeof(Node));
+    if(P != NilTree)
+    {
+       copystring(SkillName(Akar(P)), SkillName(X));
+       copystring(Description(Akar(P)), Description(X));
+       Unlocked(Akar(P)) = Unlocked(X);
+       SkillID(Akar(P)) = SkillID(X);
+       Left(P) = NilTree;
+       Right(P) = NilTree;
     }
     return P;
 }
 
-void DealokNode (addrNode P) {
+void DealokNode (addrNode P)
+/* I.S. P terdefinisi */
+/* F.S. P dikembalikan ke sistem */
+/* Melakukan dealokasi/pengembalian addrNode P */
+{
+    /* ALGORITMA */
     free(P);
 }
 
-boolean IsTreeEmpty (BinTree P) {
-    return P == Nil;
-}
-
-boolean IsTreeOneElmt (BinTree P) {
-    return !IsTreeEmpty(P) && Left(P) == Nil && Right(P) == Nil;
-}
-
-boolean IsUnerLeft (BinTree P) {
-    return !IsTreeEmpty(P) && Left(P) != Nil && Right(P) == Nil;
-}
-
-boolean IsUnerRight (BinTree P) {
-    return !IsTreeEmpty(P) && Left(P) == Nil && Right(P) != Nil;
-}
-
-boolean IsBiner (BinTree P) {
-    return !IsTreeEmpty(P) && Left(P) != Nil && Right(P) != Nil;
-}
-
-void PrintPreorder (BinTree P) {
-    if (IsTreeEmpty(P)) {
-        printf("()");
-    }
-    else {
-        printf("(");
-        printf("%d",Akar(P));
-        PrintPreorder(Left(P));
-        PrintPreorder(Right(P));
-        printf(")");
+void DealokTree(BinTree *P)
+/* I.S. P terdefinisi */
+/* F.S. P dikembalikan ke sistem */
+{
+    /* ALGORITMA */
+    if(!IsTreeEmpty(*P))
+    {
+        DealokTree(&Left(*P));
+        DealokTree(&Right(*P));
+        DealokNode(*P);
+        *P = NilTree;
     }
 }
 
-void PrintInorder (BinTree P) {
-    if (IsTreeEmpty(P)) {
-        printf("()");
-    }
-    else {
-        printf("(");
-        PrintInorder(Left(P));
-        printf("%d",Akar(P));
-        PrintInorder(Right(P));
-        printf(")");
-    }
+/* *** Predikat-Predikat Penting *** */
+boolean IsTreeEmpty (BinTree P)
+/* Mengirimkan true jika P adalah pohon biner kosong */
+{
+    /* ALGORITMA */
+    return (P == NilTree);
 }
 
-void PrintPostorder (BinTree P) {
-    if (IsTreeEmpty(P)) {
-        printf("()");
-    }
-    else {
-        printf("(");
-        PrintPostorder(Left(P));
-        PrintPostorder(Right(P));
-        printf("%d",Akar(P));
-        printf(")");
-    }
-}
 
-void PrintTree1 (BinTree P, int h, int bil) {
-    if (IsTreeOneElmt(P)) {
-        printf("%d\n",Akar(P));
-    }
-    else {
-        int i;
-        printf("%d\n",Akar(P));
-        if (Left(P) != Nil) {
-            for (i = 1; i <= bil; ++i) {
-                printf(" ");
-            }
-            PrintTree1(Left(P),h,bil+h);
+/* Output */
+void PrintTree (BinTree P, int level, int h)
+/* I.S. P terdefinisi, level adalah kedalaman dari node dengan level Akar(P) = 0, h adalah jarak indentasi (spasi) */
+/* F.S. Semua simpul P sudah ditulis dengan indentasi (spasi) */
+/* Penulisan akar selalu pada baris baru (diakhiri newline) */
+{
+    /* KAMUS LOKAL */
+    int i;
+
+    /* ALGORITMA */
+    if(!IsTreeEmpty(P) && Unlocked(Akar(P)))
+    {
+        for(i = 1; i <= level * h; i++)
+        {
+              printf("-");
         }
-        if (Right(P) != Nil) {
-            for (i = 1; i <= bil; ++i) {
-                printf(" ");
-            }
-            PrintTree1(Right(P),h,bil+h);
+        printf(">%s\n", SkillName(Akar(P)));
+        for(i = 1; i <= level * h; i++)
+        {
+              printf("-");
+        }
+        printf(">%s\n", Description(Akar(P)));
+        if(!IsTreeEmpty(Left(P)))
+        {
+           
+            PrintTree(Left(P), level + 1, h);
+        }
+        if(!IsTreeEmpty(Right(P)))
+        {
+            PrintTree(Right(P), level + 1, h);
         }
     }
 }
 
-void PrintTree (BinTree P, int h) {
-    PrintTree1(P,h,h);
+void wPrintTree (WINDOW *win, BinTree P, int level, int h)
+/* I.S. win, P terdefinisi, level adalah kedalaman dari node dengan level Akar(P) = 0, h adalah jarak indentasi (spasi)  (Khusus Ncurses) */
+/* F.S. Semua simpul P sudah ditulis dengan indentasi (spasi) */
+/* Penulisan akar selalu pada baris baru (diakhiri newline) */
+{
+    /* KAMUS LOKAL */
+    int i;
+
+    /* ALGORITMA */
+    if(!IsTreeEmpty(P) && Unlocked(Akar(P)))
+    {
+        for(i = 1; i <= level * h; i++)
+        {
+              wprintw(win, "-");
+        }
+        wprintw(win, ">%s\n", SkillName(Akar(P)));
+        for(i = 1; i <= level * h; i++)
+        {
+              wprintw(win, " ");
+        }
+        wprintw(win, " %s", Description(Akar(P)));
+        if(!IsTreeEmpty(Left(P)) && Unlocked(Akar(Left(P))))
+        {
+            wprintw(win, "\n");
+            wPrintTree(win, Left(P), level + 1, h);
+        }
+        if(!IsTreeEmpty(Right(P)) && Unlocked(Akar(Right(P))))
+        {
+            wprintw(win, "\n");
+            wPrintTree(win, Right(P), level + 1, h);
+        }
+    }
 }
 
-boolean SearchTree (BinTree P, infotype X) {
-    if (IsTreeEmpty(P)) {
+/* *** Searching *** */
+boolean SearchTree (BinTree P, int ID)
+/* Mengirimkan true jika ada node dari P yang ber-ID ID */
+{
+    /* ALGORITMA */
+    if(IsTreeEmpty(P))
+    {
         return false;
     }
-    else {
-        if (Akar(P) == X) {
-            return true;
-        }
-        else {
-            return SearchTree(Left(P),X) || SearchTree(Right(P),X);
-        }
-    }
-}
-
-int NbElmt (BinTree P) {
-    if (IsTreeEmpty(P)) {
-        return 0;
-    }
-    else {
-        return 1 + NbElmt(Left(P)) + NbElmt(Right(P));
-    }
-}
-
-int NbDaun (BinTree P) {
-    if (IsTreeOneElmt(P)) {
-        return 1;
-    }
-    else {
-        if (IsUnerLeft(P)) {
-            return NbDaun(Left(P));
-        }
-        else if (IsUnerRight(P)) {
-            return NbDaun(Right(P));
-        }
-        else {
-            return NbDaun(Left(P)) + NbDaun(Right(P));
-        }
-    }
-}
-
-boolean IsSkewLeft (BinTree P) {
-    if (IsTreeEmpty(P)) {
+    else if(SkillID(Akar(P)) == ID)
+    {
         return true;
     }
-    else {
-        if (IsUnerRight(P) || IsBiner(P)) {
-            return false;
+    else
+    {
+        return ((SearchTree(Left(P), ID)) || SearchTree(Right(P), ID));
+    }
+
+}
+/* FILE EKSTERNAL */
+void LoadTree(char *namafile, BinTree *P)
+/* namafile terdefiinsi, P P kosong */
+/* P berisi data dari file eksternal dengan nama namafile */
+{
+    /* KAMUS LOKAL */
+    int i, Parent;
+    infoTree X;
+    boolean Kiri;
+
+    /* ALGORTIMA */
+    START(namafile);
+    SkillID(X) = 0;
+    while(CC != BLANK)
+    {
+        SkillID(X) = SkillID(X) * 10 + (CC - '0');
+        ADV();
+    }
+    ADV();
+    Unlocked(X) = CC - '0';
+    ADV();
+    ADV();
+    Parent = 0;
+    while(CC != BLANK)
+    {
+        Parent = Parent * 10 + (CC - '0');
+        ADV();
+    }
+    ADV();
+    Kiri = CC - '0';
+    ADV();
+    ADV();
+    i = 0;
+    while(CC != ENTER)
+    {
+        SkillNamechar(X,i) = CC;
+        i++;
+        ADV();
+    }
+    SkillNamechar(X,i) = '\0';
+    ADV();
+    i = 0;
+    while(CC != ENTER)
+    {
+        Descriptionchar(X,i) = CC;
+        i++;
+        ADV();
+    }
+    Descriptionchar(X,i) = '\0';
+    MakeTree(X, NilTree, NilTree, P);
+    ADV();
+    while(CC != MARK)
+    {
+        SkillID(X) = 0;
+        while(CC != BLANK)
+        {
+            SkillID(X) = SkillID(X) * 10 + (CC - '0');
+            ADV();
         }
-        else {
-            return IsSkewLeft(Left(P));
+        ADV();
+        Unlocked(X) = CC - '0';
+        ADV();
+        ADV();
+        Parent = 0;
+        while(CC != BLANK)
+        {
+            Parent = Parent * 10 + (CC - '0');
+            ADV();
+        }
+        ADV();
+        Kiri = CC - '0';
+        ADV();
+        ADV();
+        i = 0;
+        while(CC != ENTER)
+        {
+            SkillNamechar(X,i) = CC;
+            i++;
+            ADV();
+        }
+        SkillNamechar(X,i) = '\0';
+        ADV();
+        i = 0;
+        while(CC != ENTER && CC != MARK)
+        {
+            Descriptionchar(X,i) = CC;
+            i++;
+            ADV();
+        }
+        Descriptionchar(X,i) = '\0';
+        AddDaun(P, Parent, X, Kiri);
+        if(CC == ENTER)
+        {
+            ADV();
         }
     }
 }
 
-boolean IsSkewRight (BinTree P) {
-    if (IsTreeEmpty(P)) {
-        return true;
+void SaveTree(char *namafile, BinTree P)
+/* I.S. namafile dan P terdefinisi */
+/* F.S. file eksternal dengan nama namafile berisi data P */
+{
+    /* KAMUS LOKAL */
+    FILE *fout;
+
+    /* ALGORITMA */
+    fout = fopen(namafile, "w");
+    SaveTree2(fout, P, 0, 0);
+    fprintf(fout, "%c", MARK);
+    fclose(fout);
+}
+
+void SaveTree2(FILE *fout, BinTree P, int Parent, boolean Kiri)
+/* I.S. fout, P, Parent, dan Kiri terdefinisi */
+/* F.S. FILE fout berisi data P sesuai format yang ada */
+{
+    if(!IsTreeEmpty(P))
+    {
+        fprintf(fout, "%d %d\n%d %d\n%s\n%s\n", SkillID(Akar(P)), Unlocked(Akar(P)), Parent, Kiri, SkillName(Akar(P)), Description(Akar(P)));
+        SaveTree2(fout, Left(P), SkillID(Akar(P)), 1);
+        SaveTree2(fout, Right(P), SkillID(Akar(P)), 0);
     }
-    else {
-        if (IsUnerLeft(P) || IsBiner(P)) {
-            return false;
+}
+
+/* *** Operasi lain *** */
+void AddDaun (BinTree *P, int ID, infoTree Y, boolean Kiri)
+/* I.S. P tidak kosong, ID adalah salah satu ID daun Pohon Biner P */
+/* F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika Kiri = true), atau 
+        sebagai anak Kanan X (jika Kiri = false) */
+{
+    /* ALGORITMA */
+    if(SkillID(Akar(*P)) == ID)
+    {
+        if(Kiri)
+        {
+            Left(*P) = AlokNode(Y);
         }
-        else {
-            return IsSkewRight(Right(P));
+        else
+        {
+            Right(*P) = AlokNode(Y);
+        }
+    }
+    else
+    {
+        if(SearchTree(Left(*P), ID))
+        {
+            AddDaun(&Left(*P), ID, Y, Kiri);
+        }
+        else
+        {
+            AddDaun(&Right(*P), ID, Y, Kiri);
         }
     }
 }
 
-int TreeLevel (BinTree P, infotype X) {
-    if (Akar(P) == X) {
-        return 1;
+void UnlockSkill(BinTree *P, int ID)
+/* I.S. P dan ID terdefinisi, infoTree dengan SkillID ID pasti ada di P */
+/* F.S. Skill dengan SkillID ID di unlock */
+{
+    /* ALGORITMA */
+    if(SkillID(Akar(*P)) == ID)
+    {
+        Unlocked(Akar(*P)) = true;
     }
-    else {
-        if (SearchTree(Left(P),X)) {
-            return 1 + TreeLevel(Left(P),X);
+    else
+    {
+        if(SearchTree(Left(*P), ID))
+        {
+            UnlockSkill(&Left(*P), ID);
         }
-        else {
-            return 1 + TreeLevel(Right(P),X);
-        }
-    }
-}
-
-int Tinggi (BinTree P) {
-    if (IsTreeEmpty(P)) {
-        return 0;
-    }
-    else {
-        return 1 + max(Tinggi(Left(P)),Tinggi(Right(P)));
-    }
-}
-
-void AddDaunTerkiri (BinTree *P, infotype X) {
-    if (IsTreeEmpty(*P)) {
-        *P = AlokNode(X);
-    }
-    else {
-        AddDaunTerkiri(&Left(*P),X);
-    }
-}
-
-void AddDaun (BinTree *P, infotype X, infotype Y, boolean Kiri) {
-    if (IsTreeOneElmt(*P)) {
-        addrNode Pt;
-        Pt = AlokNode(Y);
-        if (Kiri) {
-            Left(*P) = Pt;
-        }
-        else {
-            Right(*P) = Pt;
-        }
-    }
-    else {
-        if (SearchTree(Left(*P),X)) {
-            AddDaun(&Left(*P),X,Y,Kiri);
-        }
-        else {
-            AddDaun(&Right(*P),X,Y,Kiri);
+        else
+        {
+            UnlockSkill(&Right(*P), ID);
         }
     }
 }
-
-void DelDaunTerkiri (BinTree *P, infotype *X) {
-    if (IsTreeOneElmt(*P)) {
-        addrNode N;
-        *X = Akar(*P);
-        N = *P;
-        *P = Nil;
-        DealokNode(N);
-    }
-    else {
-        if (IsUnerRight(*P)) {
-            DelDaunTerkiri(&Right(*P),X);
-        }
-        else {
-            DelDaunTerkiri(&Left(*P),X);
-        }
-    }
-}
-
-void DelDaun (BinTree *P, infotype X) {
-    if (IsTreeOneElmt(*P)) {
-        addrNode N;
-        N = *P;
-        *P = Nil;
-        DealokNode(N);
-    }
-    else {
-        if (SearchTree(Left(*P),X)) {
-            DelDaun(&Left(*P),X);
-        }
-        if (SearchTree(Right(*P),X)) {
-            DelDaun(&Right(*P),X);
-        }
-    }
-}
-

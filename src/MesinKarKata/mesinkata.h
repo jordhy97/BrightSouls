@@ -8,7 +8,7 @@
 #include "mesinkar.h"
 #include <ncurses.h>
 
-#define NMax 50
+#define NMax 100
 
 typedef struct {
 	char TabKata[NMax+1]; /* container penyimpan kata, indeks yang dipakai [1..NMax] */

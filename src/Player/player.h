@@ -4,7 +4,7 @@
 #include "../Shared/boolean.h"
 #include "../Point/point.h"
 #include "../MesinKarKata/mesinkata.h"
-//#include "../BinTree/bintree.h"
+#include "../BinTree/bintree.h"
 #include <ncurses.h>
 
 typedef struct {
@@ -17,7 +17,7 @@ typedef struct {
 	int level;
 	POINT position;
 	int CArea;
-//	BinTree skill;
+	BinTree skill;
 } Player;
 
 #define Name(P) (P).name
@@ -29,22 +29,22 @@ typedef struct {
 #define Level(P) (P).level
 #define Position(P) (P).position
 #define CArea(P) (P).CArea
-// #define Skill(P) (P).skill
+#define Skill(P) (P).skill
 
-void SavePlayer(Player P, char *namafile);
-/* I.S. P terdefinisi, namafile terdefinisi */
+void SavePlayer(Player P, char *namafilePlayer, char *namafileSkill);
+/* I.S. P terdefinisi, namafilePlayer dan namafileSkill terdefinisi */
 /* F.S. data P tersimpan file eksternal*/
 
-void LoadPlayer (Player *P, char *namafile);
-/* I.S. P sembarang, namafile terdefinisi */
+void LoadPlayer (Player *P, char *namafilePlayer, char *namafileSkill);
+/* I.S. P sembarang, namafilePlayer dan namafileSkill terdefinisi */
 /* F.S. P berisi data player dari file eksternal*/
 
-void CreatePlayer (Player *P, Kata nama);
-/* I.S. P sembarang, nama terdefinisi */
-/* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
+void CreatePlayer (Player *P);
+/* I.S. P sembarang */
+/* F.S. Membentuk player baru dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
 
-void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created);
-/* I.S. P sembarang, menu dan nama terdefinisi, created sembarang */
+void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created, char *namafile);
+/* I.S. P sembarang, menu, nama dan namafile terdefinisi, created sembarang */
 /* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user, created true jika player dibuat dan false jika tidak */ 
 
 void print_choice(WINDOW *menu_win, int pilihan);

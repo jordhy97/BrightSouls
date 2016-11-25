@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-void SavePlayer(Player P, char *namafile)
+void SavePlayer(Player P, char *namafilePlayer, char *namafileSkill)
 /* I.S. P terdefinisi, namafile terdefinisi */
 /* F.S. data P tersimpan file eksternal*/
 {
@@ -12,7 +12,7 @@ void SavePlayer(Player P, char *namafile)
     int i;
 
     /* ALGORITMA */
-    fout = fopen(namafile, "w");
+    fout = fopen(namafilePlayer, "w");
     for(i = 1; i <= Name(P).Length; i++)
     {
         fprintf(fout, "%c", Name(P).TabKata[i]);    
@@ -20,14 +20,15 @@ void SavePlayer(Player P, char *namafile)
     fprintf(fout, "\n%d\n%d\n%d\n%d\n%d\n%d\n%d %d\n%d", Max_HP(P), HP(P), Strength(P), Defense(P), Exp(P), Level(P), Absis(Position(P)), Ordinat(Position(P)), CArea(P));
     fprintf(fout, "%c", MARK);
     fclose(fout);
+    SaveTree(namafileSkill, Skill(P));
 }
 
-void LoadPlayer (Player *P, char *namafile)
-/* I.S. P sembarang, namafile terdefinisi */
+void LoadPlayer (Player *P, char *namafilePlayer, char *namafileSkill)
+/* I.S. P sembarang, namafilePlayer dan namafileSkill terdefinisi */
 /* F.S. P berisi data player dari file eksternal*/
 {
     /* ALGORITMA */
-    STARTKATA(namafile);
+    STARTKATA(namafilePlayer);
     Name(*P) = CKata;
     ADVKATA();
     Max_HP(*P) = KataToInteger(CKata);
@@ -47,25 +48,17 @@ void LoadPlayer (Player *P, char *namafile)
     Ordinat(Position(*P)) = KataToInteger(CKata);
     ADVKATA();
     CArea(*P) = KataToInteger(CKata);
+    LoadTree(namafileSkill, &Skill(*P));
 }
 
-void CreatePlayer (Player * P, Kata nama)
-/* I.S. P sembarang, nama terdefinisi */
-/* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
+void CreatePlayer (Player * P)
+/* I.S. P sembarang */
+/* F.S. Membentuk player baru dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
 {
-   /* char c;
     int input, i = 0;
     printf("Enter Player Name: ");
-    do {
-        scanf("%c",&c);
-        if (c != '\n') {
-            Name(*P).word[i] = c;
-            ++i;
-        }
-    } while (c != '\n' && i < 20);
-    Name(*P).length = i; */
-    int input;
-    Name(*P) = nama;
+    BacaKata(&Name(*P));
+    Name(*P).Length = i; 
     printf("Choose Player Speciality\n1. Balance\n2. HP\n3. Strength\n4. Defense\nChoice: ");
     scanf("%d",&input);
     if (input == 1) {
@@ -128,8 +121,8 @@ void print_choice(WINDOW *menu_win, int pilihan)
 }
 
 
-void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created)
-/* I.S. P sembarang, menu dan nama terdefinisi, created sembarang */
+void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created, char *namafile)
+/* I.S. P sembarang, menu, nama, dan namafile terdefinisi, created sembarang */
 /* F.S. Membentuk player baru dengan (P).name = nama dengan status yang sudah ditentukan berdasarkan pilihan user, created true jika player dibuat dan false jika tidak */ 
 {
     /* KAMUS LOKAL */
@@ -200,6 +193,7 @@ void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created)
         Level(*P) = 1;
         CArea(*P) = 1;
         Position(*P) = MakePOINT(6,4);
+        LoadTree(namafile, &Skill(*P));
         *created = true;
     }
     else
@@ -236,10 +230,10 @@ void LevelUp (Player * P)
     bstr = rand() % 2 + 1;
     bdef = rand() % 2 + 1;
     bHP = rand() % 5 + 1;
-    Strength(*P) += (bstr + (Strength(*P)/5));
-    Defense(*P) += (bdef + (Defense(*P)/5));
-    HP(*P) += bHP + (Max_HP(*P)/10);
-    Max_HP(*P) += (bHP + (Max_HP(*P)/10));
+    Strength(*P) += (bstr + (Strength(*P)/10));
+    Defense(*P) += (bdef + (Defense(*P)/10));
+    HP(*P) += bHP + (Max_HP(*P)/20);
+    Max_HP(*P) += (bHP + (Max_HP(*P)/20));
 }
 
 // void AddSkill (Player * P) {

@@ -51,6 +51,10 @@ int Damage (int str, int def,int base);
 /*Prekondisi: Strength, defense, dan base untuk battle terdefinisi*/
 /*Menghitung besarnya damage pada saat battle*/
 
+void DisplaySkill(Player P);
+/* I.S. P terdefinisi */
+/* F.S. Menampilkan Skill yang sudah ter-unlock ke layar */
+
 void Load(Player *P, Peta *MAP, JAM *PlayTime);
 /* I.S. P, MAP, dan PlayTime Sembarang */ 
 /* F.S. me-load pilihan user */
@@ -95,6 +99,10 @@ void Loading_Screen();
 void Game_Over();
 /* I.S. Sembarang */
 /* F.S. Menampilkan game over screen */
+
+void Credits();
+/* I.S. Sembarang */
+/* F.S. Menampilkan credits screen */
 
 /*** Not Yet impemented ***/
 //void Tutorial_explore();
@@ -144,6 +152,7 @@ int main()
 	do
 	{
 		curs_set(0);
+		noecho();
 		/* Refresh title screen */
 		wmove(title,0,0);
 		START("src/Database/Text/title.txt");
@@ -293,7 +302,7 @@ void New_Game(Player *P)
 	}
 	curs_set(0);
 	noecho();
-	wCreatePlayer(menu, P, nama, &created);
+	wCreatePlayer(menu, P, nama, &created, "src/Database/skill.txt");
 	if(created)
 	{
 		Pop_Up_Message("Player successfully created", 3);
@@ -516,7 +525,28 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 		else if(IsKataSama(Masukan, SKILL))
 		{
 			//DisplaySkill
+			clear();
+			refresh();
+			curs_set(0);
+			DisplaySkill(*P);
 			move = false;
+			Create_explore_border();
+			wclear(P_Lvl);
+			wclear(P_HP);
+			wclear(P_Str);
+			wclear(P_Def);
+			wclear(P_Exp);
+			wprintw(P_Lvl, "LVL: %d", Level(*P)); 
+			wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P)); 
+			wprintw(P_Str, "STR: %d", Strength(*P)); 
+			wprintw(P_Def, "DEF: %d", Defense(*P));
+			wprintw(P_Exp, "EXP: %d", Exp(*P));;
+			wrefresh(P_Lvl);
+			wrefresh(P_HP);
+			wrefresh(P_Str);
+			wrefresh(P_Def);
+			wrefresh(P_Exp);
+			curs_set(1);
 		}
 		else if(IsKataSama(Masukan, SAVE))
 		{
@@ -594,11 +624,10 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 				refresh();
 				Loading_Screen();
 				battle(P, En, &game_over, &win);
-				if(win)
+				if(!game_over)
 				{
 					Loading_Screen();
 					Create_explore_border();
-					SetPOINT(&Position(*P), NextPOINT);
 					ClearPOINT(&START, Position(*P));
 					wclear(P_Lvl);
 					wclear(P_HP);
@@ -615,6 +644,10 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 					wrefresh(P_Str);
 					wrefresh(P_Def);
 					wrefresh(P_Exp);
+					if(win)
+					{
+						SetPOINT(&Position(*P), NextPOINT);
+					}
 				}
 				curs_set(1);
 			}
@@ -708,6 +741,11 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 	if(game_over)
 	{
 		Game_Over();
+		Credits();
+	}
+	if(end)
+	{
+		Credits();
 	}
 	delwin(Command);
 	delwin(Message);
@@ -719,7 +757,8 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 	delwin(P_Def);
 	delwin(P_Exp);
 	DealokasiPeta(MAP);
-	Name(*P).Length = 0; 
+	Name(*P).Length = 0;
+	DealokTree(&Skill(*P)); 
 }
 
 void Create_battle_border()
@@ -1071,20 +1110,19 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 	}while((!IsEmptyS(e_attack(En))) && (aliveE) && (aliveP));
 	if ((aliveP) && (aliveE))
 	{
-		*win = false;
 		*game_over = false;
 		if (e_hp(En) >= (enemyhp/2))
-		{
+		{	
+			*win = false;
 			wprintw(Message, "\nYou got away!");
 		}
 		else
 		{
+			*win = true;
 			wprintw(Message, "\n");
 			wTulisKata(Message, e_name(En)); 
 			wprintw(Message, " escaped!");
 		}
-		Exp(*P) = Exp(*P) + (((enemyhp - e_hp(En))*e_exp(En)) / enemyhp);
-		wprintw(Message, "\nYou earned %d experience points!",(((enemyhp - e_hp(En))*e_exp(En)) / enemyhp)); 
 	}
 	else if ((aliveP) && (!aliveE))
 	{
@@ -1128,8 +1166,6 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 			wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P));
 			wrefresh(P_HP);
 			wprintw(Message, "\nMAX HP +%d", Max_HP(*P) - oldmax_hp);
-			wrefresh(Message);
-			delay(3); 
 			curs_set(0);
 		}
 	}
@@ -1140,7 +1176,7 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 		wprintw(Message, "\nYou lose!");
 	}
 	wrefresh(Message);
-	delay(3);
+	delay(4);
 	clear();
 	refresh();
 	delwin(Message);
@@ -1170,6 +1206,29 @@ int Damage (int str, int def,int base)
 	{
 		return base;
 	}
+}
+
+void DisplaySkill(Player P)
+/* I.S. P terdefinisi */
+/* F.S. Menampilkan Skill yang sudah ter-unlock ke layar */
+{
+	/* KAMUS LOKAL */
+	WINDOW *win, *border;
+
+	/* ALGORITMA */
+	border = create_newwin(Game_Height, Game_Width, Mid_y(Game_Height), Mid_x(Game_Width));
+	win = create_newwin(Game_Height - 2, Game_Width - 2, Mid_y(Game_Height) + 1, Mid_x(Game_Width) + 1);
+	wborder(border, 0, 0, 0, 0, 0, 0, 0, 0);
+	wprintw(win, "Skill List\n\n");
+	wPrintTree(win, Skill(P), 0, 3);
+	mvwprintw(win, 26, 0, "Press Any KEY to EXIT");
+	wrefresh(border);
+	wrefresh(win);
+	wgetch(win);
+	clear();
+	refresh();
+	delwin(border);
+	delwin(win);
 }
 
 void Load(Player *P, Peta *MAP, JAM *PlayTime)
@@ -1273,7 +1332,7 @@ void Load(Player *P, Peta *MAP, JAM *PlayTime)
 	switch(pilihan)
 	{
 		case 1:
-			LoadPlayer(P, "src/Database/State/player1.txt");
+			LoadPlayer(P, "src/Database/State/player1.txt", "src/Database/State/skill1.txt");
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
 			LoadPeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
@@ -1281,7 +1340,7 @@ void Load(Player *P, Peta *MAP, JAM *PlayTime)
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 		case 2:
-			LoadPlayer(P, "src/Database/State/player2.txt");
+			LoadPlayer(P, "src/Database/State/player2.txt", "src/Database/State/skill2.txt");
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
 			LoadPeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
@@ -1473,13 +1532,13 @@ void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime)
 		switch(pilihan)
 		{
 			case 1:
-				SavePlayer(P, "src/Database/State/player1.txt");
+				SavePlayer(P, "src/Database/State/player1.txt", "src/Database/State/skill1.txt");
 				SavePeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
 				SaveFile("src/Database/State/savedata1.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
 			case 2:
-				SavePlayer(P, "src/Database/State/player2.txt");
+				SavePlayer(P, "src/Database/State/player2.txt", "src/Database/State/skill2.txt");
 				SavePeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
 				SaveFile("src/Database/State/savedata2.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
@@ -1703,6 +1762,8 @@ void Game_Over()
 	while(!EOP)
 	{
 		wprintw(win, "%c", CC);
+		delay(0.001);
+		wrefresh(win);
 		ADV();
 	}
 	wrefresh(win);
@@ -1710,4 +1771,11 @@ void Game_Over()
 	clear();
 	refresh();
 	delwin(win);
+}
+
+void Credits()
+/* I.S. Sembarang */
+/* F.S. Menampilkan credits screen */
+{
+
 }
