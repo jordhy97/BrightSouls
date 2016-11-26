@@ -500,12 +500,20 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			{
 				SetPOINT(&NextPOINT, PlusDelta(Position(*P), 0, -1));
 			}
+			else
+			{
+				move = false;
+			}
 		}
 		else if(IsKataSama(Masukan, GR))
 		{
 			if(IsPassable(START, PlusDelta(Position(*P), 1, 0)))
 			{
 				SetPOINT(&NextPOINT, PlusDelta(Position(*P), 1, 0));
+			}
+			else
+			{
+				move = false;
 			}
 		}
 		else if(IsKataSama(Masukan, GD))
@@ -514,12 +522,20 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			{
 				SetPOINT(&NextPOINT, PlusDelta(Position(*P), 0, 1));
 			}
+			else
+			{
+				move = false;
+			}
 		}
 		else if(IsKataSama(Masukan, GL))
 		{
 			if(IsPassable(START, PlusDelta(Position(*P), -1, 0)))
 			{
 				SetPOINT(&NextPOINT, PlusDelta(Position(*P), -1, 0));
+			}
+			else
+			{
+				move = false;
 			}
 		}
 		else if(IsKataSama(Masukan, SKILL))
@@ -547,6 +563,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			wrefresh(P_Def);
 			wrefresh(P_Exp);
 			curs_set(1);
+			move = false;
 		}
 		else if(IsKataSama(Masukan, SAVE))
 		{
@@ -573,6 +590,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			wrefresh(P_Def);
 			wrefresh(P_Exp);
 			curs_set(1);
+			move = false;
 		}
 		else if(IsKataSama(Masukan, LOAD))
 		{
@@ -602,6 +620,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			wrefresh(P_Def);
 			wrefresh(P_Exp);
 			curs_set(1);
+			move = false;
 		}
 		else if(IsKataSama(Masukan, EXIT))
 		{
@@ -647,6 +666,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 					if(win)
 					{
 						SetPOINT(&Position(*P), NextPOINT);
+						ClearPOINT(&START, Position(*P));
 					}
 				}
 				curs_set(1);
@@ -843,11 +863,15 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 {
 	/* KAMUS LOKAL */
 	WINDOW *P_Name, *P_Lvl, *P_HP, *P_Str, *P_Def, *P_Exp, *Round, *E_Name, *E_HP, *E_Command, *Message, *P_Command, *Inserted_Command;
-	int starty, startx, RoundNow, close1, close2, action, base, i, enemyhp, oldstr, olddef, oldmax_hp;
+	int starty, startx, RoundNow, close1, close2, action, base, i, enemyhp, oldstr, olddef, oldmax_hp, oldhp;
+	int swordsman, agile, damageP, damageE, VeteranChance, SwordsmanChance, AgileChance, ParalyzeChance;
 	ElmtStack QMusuh, QPemain, CurrQMusuh, CurrQPemain;
-	Kata input, E, F, A, B;
-	boolean aliveP, aliveE;
+	Kata input, E, F, A, B, V, H, S;
+	boolean aliveP, aliveE; 
+	boolean locked, UnlockedSwordsman, UnlockedAgile, UnlockedSharpeye, UnlockedVampire, UnlockedParalyze, UnlockedVeteran, UnlockedMegaHeal;
+	boolean SkillUsed, paralyzed;
 	char temp,player,enemy;
+	infoTree unlockedskill;
 
 	/* ALGORITMA */
 	/* Create border */
@@ -896,50 +920,89 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 	wTulisKata(Message, e_name(En));
 	wprintw(Message," Attacked!");
 	wrefresh(Message);
-	if ((Level(*P)>=1) && (Level(*P)<=10))
-		{
-			base = 1;
+
+	/* INISIALISASI */
+	if(Level(*P) >= 1 && Level(*P) <= 10)
+	{
+		base = 1;
 	}
 	else
 	{
 		base = 2;
 	}
+
 	CreateKata(&E, "E");
 	CreateKata(&F, "F");
 	CreateKata(&A, "A");
 	CreateKata(&B, "B");
+	CreateKata(&V, "V");
+	CreateKata(&H, "H");
+	CreateKata(&S, "P");
+
 	aliveE = true;
 	aliveP = true;
 	RoundNow = 0;
 	enemyhp = e_hp(En);
-
+	UnlockedSwordsman = IsUnlocked(Skill(*P), 4);
+	UnlockedSharpeye = IsUnlocked(Skill(*P), 5);
+	UnlockedAgile = IsUnlocked(Skill(*P), 6);
+	UnlockedVampire = IsUnlocked(Skill(*P), 7);
+	UnlockedParalyze = IsUnlocked(Skill(*P), 8);
+	UnlockedVeteran = IsUnlocked(Skill(*P), 9);
+	UnlockedMegaHeal = IsUnlocked(Skill(*P), 11);
+	SkillUsed = false;
+	paralyzed = false;
 	echo();
+
 	/* BATTLE STARTS */
 	srand(time(NULL));
 	do
 	{	
-		curs_set(1);
 		RoundNow++;
 		wclear(Round);
 		wprintw(Round, "Round %d", RoundNow);
 		wrefresh(Round);
 		AttackEnemy(&En, &QMusuh);
-		close1 = rand() % 4 + 1;
-		close2 = rand() % 4 + 1;
-		while (close1 == close2) 
+		if(	RoundNow <= 2 && UnlockedSharpeye)
+		{
+			/* Skill Sharpeye */
+			close1 = 0;
+			close2 = 0;
+		}
+		else
 		{
 			close1 = rand() % 4 + 1;
 			close2 = rand() % 4 + 1;
-		} 
-		wclear(Inserted_Command);
-		wprintw(Inserted_Command, "Inserted Commands:  _ _ _ _");
-		wrefresh(Inserted_Command);
+			while (close1 == close2) 
+			{
+				close1 = rand() % 4 + 1;
+				close2 = rand() % 4 + 1;
+			}
+		}
 		wclear(E_Command);
 		wprintw(E_Command, "Command: ");
 		wPrintQueueBattleE(E_Command, QMusuh , 0, close1, close2);
-		wrefresh(E_Command);
+		wrefresh(E_Command); 
+		wclear(Inserted_Command);
+		wprintw(Inserted_Command, "Inserted Commands:  _ _ _ _");
+		wrefresh(Inserted_Command);
 		echo();
 		CreateEmptyQ(&QPemain);
+		wclear(P_Command);
+		wprintw(P_Command, "Commands:           ");
+		wrefresh(P_Command);
+		delay(3);
+		if(RoundNow == 1)
+		{
+			/* ACTIVATE SKILLS */
+			if(UnlockedSharpeye)
+			{
+				wprintw(Message,"\nSharpeye activates!");
+				wrefresh(Message);
+				delay(3);
+			}
+		}
+		curs_set(1);
 		wprintw(Message,"\nPlease input your command!");
 		wrefresh(Message);
 		do
@@ -948,19 +1011,12 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 			wprintw(P_Command, "Commands:           ");
 			wrefresh(P_Command);
 			wBacaKata(P_Command, &input);
-			if ((!IsKataSama(input, E)) && (!IsKataSama(input, A)) && (!IsKataSama(input, B))&& (!IsKataSama(input, F)))
+			if ((!IsKataSama(input, E)) && (!IsKataSama(input, A)) && (!IsKataSama(input, B))&& (!IsKataSama(input, F)) && (!IsKataSama(input, V)) && (!IsKataSama(input, S)) && (!IsKataSama(input, H)))
 			{
-				do
-				{
-					wprintw(Message, "\nInvalid Command");
-					wrefresh(Message);
-					wclear(P_Command);
-					wprintw(P_Command, "Commands:           ");
-					wrefresh(P_Command);
-					wBacaKata(P_Command, &input);
-				}while((!IsKataSama(input, E)) && (!IsKataSama(input, A)) && (!IsKataSama(input, B))&& (!IsKataSama(input, F)));
+				wprintw(Message, "\nInvalid Command");
+				wrefresh(Message);
 			}
-			if (IsKataSama(input, E))
+			else if (IsKataSama(input, E))
 			{
 				if (!IsEmptyQ(QPemain))
 				{
@@ -970,6 +1026,72 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 						Add(&QPemain,temp);
 					}
 					Del(&QPemain,&temp);
+					if((temp == 'V') || (temp == 'P') || (temp == 'H'))
+					{
+						SkillUsed = false;
+					}
+				}
+			}
+			else if (IsKataSama(input, V))
+			{
+				if(!UnlockedVampire)
+				{
+					wprintw(Message, "\nInvalid Command");
+					wrefresh(Message);
+				}
+				else if (SkillUsed)
+				{
+					wprintw(Message, "\nYou can only use active skill once in battle");
+					wrefresh(Message);
+				}
+				else
+				{
+					SkillUsed = true;
+					Add(&QPemain,input.TabKata[1]);
+				}
+			}
+			else if (IsKataSama(input, S))
+			{
+				if(!UnlockedParalyze)
+				{
+					wprintw(Message, "\nInvalid Command");
+					wrefresh(Message);
+				}
+				else if (SkillUsed)
+				{
+					wprintw(Message, "\nYou can only use active skill once in battle");
+					wrefresh(Message);
+				}
+				else
+				{
+					SkillUsed = true;
+					Add(&QPemain,input.TabKata[1]);
+				}
+			}
+			else if (IsKataSama(input, H))
+			{
+				if(!UnlockedMegaHeal)
+				{
+					wprintw(Message, "\nInvalid Command");
+					wrefresh(Message);
+				}
+				else if (SkillUsed)
+				{
+					wprintw(Message, "\nYou can only use active skill once in battle");
+					wrefresh(Message);
+				}
+				else if (!IsEmptyQ(QPemain))
+				{
+					wprintw(Message, "\nYou cannot combine this command with other command");
+					wrefresh(Message);
+				}
+				else
+				{
+					SkillUsed = true;
+					Add(&QPemain,input.TabKata[1]);
+					Add(&QPemain,input.TabKata[1]);
+					Add(&QPemain,input.TabKata[1]);
+					Add(&QPemain,input.TabKata[1]);
 				}
 			}
 			else
@@ -1006,15 +1128,246 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 			wmove(Inserted_Command, 0, 20);
 			wPrintQueueBattleP(Inserted_Command, QPemain, action);
 			wrefresh(Inserted_Command);
-			if (((player == 'A') || (player == 'F')) && (player == enemy)) 
+			
+			/* DAMAGE CALCULATION */
+			if(((player == 'A') || (player == 'F')) && (UnlockedSwordsman))
 			{
-				e_hp(En) = e_hp(En) - ((Damage(Strength(*P),e_def(En),base))/2);
-				HP(*P) = HP(*P) - ((Damage(e_str(En),Defense(*P),base))/2);
+				/* Skill Swordsman (Damage given + 3) */
+				SwordsmanChance = rand() % 10 + 1;
+				if(SwordsmanChance <= 1)
+				{
+					swordsman = 3;
+					wprintw(Message,"\nSwordsman activates!");
+					wrefresh(Message);
+					delay(3);
+				}
+				else
+				{
+					swordsman = 0;
+				}
+			}
+			if(((enemy == 'A') || (enemy == 'F')) && (UnlockedAgile))
+			{
+				/* Skill Agile (Damage taken - 3) */
+				AgileChance = rand() % 10 + 1;
+				if(AgileChance <= 1)
+				{
+					agile = 3;
+					wprintw(Message,"\nAgile activates!");
+					wrefresh(Message);
+					delay(3);
+				}
+				else
+				{
+					agile = 0;
+				}
+			}
+			damageP = Damage(e_str(En),Defense(*P),base) - agile;
+			if(damageP < 0)
+			{
+				damageP = 0;
+			}
+			damageE = Damage(Strength(*P),e_def(En),base) + swordsman;
+
+			if(player == 'H')
+			{
+				if(enemy == 'A')
+				{
+					HP(*P) = HP(*P) - damageP;
+					wprintw(Message, "\n");
+					wTulisKata(Message, e_name(En));
+					wprintw(Message, " attacks ");
+					wTulisKata(Message, Name(*P)); 
+					wprintw(Message, "! ");
+					wTulisKata(Message, Name(*P));
+					wprintw(Message, "'s HP -%d!",damageP);
+				}
+				else if (enemy == 'F')
+				{
+					HP(*P) = HP(*P) - damageP;
+					wprintw(Message, "\n");
+					wTulisKata(Message, e_name(En));
+					wprintw(Message, " flanks ");
+					wTulisKata(Message, Name(*P)); 
+					wprintw(Message, "! ");
+					wTulisKata(Message, Name(*P));
+					wprintw(Message, "'s HP -%d!",damageP);
+				}
+				else if (enemy == 'B')
+				{
+					wprintw(Message, "\n");
+					wTulisKata(Message, e_name(En));
+					wprintw(Message, " blocks!");
+				}
+				if(action < 4)
+				{
+					wrefresh(Message);
+					delay(3);
+					wprintw(Message, "\n");
+					wTulisKata(Message, Name(*P));
+					wprintw(Message, " is charging!");
+				}
+				else
+				{
+					wrefresh(Message);
+					delay(3);
+					wprintw(Message, "\n");
+					wTulisKata(Message, Name(*P));
+					wprintw(Message, " uses Mega Heal! ");
+					wTulisKata(Message, Name(*P));
+					oldhp = HP(*P);
+					HP(*P) += Max_HP(*P)/2;
+					if(HP(*P) > Max_HP(*P))
+					{
+						HP(*P) = Max_HP(*P);
+					}
+					wTulisKata(Message, Name(*P)); 
+					wprintw(Message, "'s HP +%d!", HP(*P) - oldhp);
+				}
+			}
+			else if (player == 'P')
+			{
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message," uses Paralyze! ");
+				/* Skill Paralyze */
+				ParalyzeChance = rand() % 10 + 1;
+				
+				if(ParalyzeChance <= 3)
+				{
+					wTulisKata(Message, e_name(En));
+					wprintw(Message, "becomes paralyzed!");
+					paralyzed = true;
+				}
+				else
+				{
+					wTulisKata(Message, e_name(En));
+					wprintw(Message, " avoids it!");
+					wrefresh(Message);
+					delay(3);
+					if(enemy == 'F')
+					{
+						HP(*P) = HP(*P) - damageP;
+						wprintw(Message, "\n");
+						wTulisKata(Message, e_name(En));
+						wprintw(Message, " flanks ");
+						wTulisKata(Message, Name(*P)); 
+						wprintw(Message, "! ");
+						wTulisKata(Message, Name(*P));
+						wprintw(Message, "'s HP -%d!",damageP);
+					}
+					else if (enemy == 'A')
+					{
+						HP(*P) = HP(*P) - damageP;
+						wprintw(Message, "\n");
+						wTulisKata(Message, e_name(En));
+						wprintw(Message, " attacks ");
+						wTulisKata(Message, Name(*P)); 
+						wprintw(Message, "! ");
+						wTulisKata(Message, Name(*P));
+						wprintw(Message, "'s HP -%d!",damageP);
+					}
+				}
+			}
+			else if ((player == 'A') && (paralyzed))
+			{
+				e_hp(En) = e_hp(En) - damageE;
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message, " attacks ");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message, "! ");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message, "'s HP -%d!",damageE);
+			} 
+			else if ((player == 'F') && (paralyzed))
+			{
+				e_hp(En) = e_hp(En) - damageE;
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message, " flanks ");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message, "! ");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message, "'s HP -%d!",damageE);
+			} 
+			else if ((player == 'B') && (paralyzed))
+			{
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message, " blocks!");
+			} 
+			else if ((player == 'V') && (enemy == 'F')) 
+			{
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message," uses Vampire! ");
+				e_hp(En) = e_hp(En) - damageE;
+				wTulisKata(Message, e_name(En)); 
+				wprintw(Message, "'s HP -%d! ",damageE);
+				oldhp = HP(*P);
+				HP(*P) += damageE/2;
+				if(HP(*P) > Max_HP(*P))
+				{
+					HP(*P) = Max_HP(*P);
+				}
+				wTulisKata(Message, Name(*P)); 
+				wprintw(Message, "'s HP +%d!", HP(*P) - oldhp);
+				wrefresh(Message);
+				delay(3);
+				HP(*P) = HP(*P) - damageP;
+				wprintw(Message, "\n");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message, " flanks ");
+				wTulisKata(Message, Name(*P)); 
+				wprintw(Message, "! ");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message, "'s HP -%d!",damageP);
+			}
+			else if ((player == 'V') && (enemy == 'A')) 
+			{
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message," uses Vampire! ");
+				e_hp(En) = e_hp(En) - damageE;
+				wTulisKata(Message, e_name(En)); 
+				wprintw(Message, "'s HP -%d! ",damageE);
+				oldhp = HP(*P);
+				HP(*P) += damageE/2;
+				if(HP(*P) > Max_HP(*P))
+				{
+					HP(*P) = Max_HP(*P);
+				}
+				wTulisKata(Message, Name(*P)); 
+				wprintw(Message, "'s HP +%d!", HP(*P) - oldhp);
+				wrefresh(Message);
+				delay(3);
+				HP(*P) = HP(*P) - damageP;
+				wprintw(Message, "\n");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message, " attacks ");
+				wTulisKata(Message, Name(*P)); 
+				wprintw(Message, "! ");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message, "'s HP -%d!",damageP);
+			}
+			else if ((player == 'V') && (enemy == 'B')) 
+			{
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message," uses Vampire! ");
+				wTulisKata(Message, e_name(En));
+				wprintw(Message," blocks it!");
+			}
+			else if (((player == 'A') || (player == 'F')) && (player == enemy)) 
+			{
+				e_hp(En) = e_hp(En) - (damageE/2);
+				HP(*P) = HP(*P) - (damageP/2);
 				wprintw(Message, "\nBalanced! ");
 				wTulisKata(Message, e_name(En)); 
-				wprintw(Message, "'s HP -%d! ",((Damage(Strength(*P),e_def(En),base))/2));
+				wprintw(Message, "'s HP -%d! ",damageE);
 				wTulisKata(Message, Name(*P)); 
-				wprintw(Message, "'s HP -%d!",((Damage(e_str(En),Defense(*P),base))/2));
+				wprintw(Message, "'s HP -%d!",damageP);
 			}
 			else if ((player == 'B') && (player == enemy))
 			{
@@ -1038,66 +1391,59 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 			} 
 			else if ((player == 'F') && (enemy == 'B'))
 			{
-					e_hp(En) = e_hp(En) - Damage(Strength(*P),e_def(En),base);
+					e_hp(En) = e_hp(En) - damageE;
 					wprintw(Message, "\n");
 					wTulisKata(Message, Name(*P));
 					wprintw(Message, " flanks ");
 					wTulisKata(Message, e_name(En));
 					wprintw(Message, "! ");
 					wTulisKata(Message, e_name(En));
-					wprintw(Message, "'s HP -%d!",Damage(Strength(*P),e_def(En),base));
+					wprintw(Message, "'s HP -%d!",damageE);
 			}
 			else if ((player == 'B') && (enemy == 'F'))
 			{
-					HP(*P) = HP(*P) - Damage(e_str(En),Defense(*P),base);
+					HP(*P) = HP(*P) - damageP;
 					wprintw(Message, "\n");
 					wTulisKata(Message, e_name(En));
 					wprintw(Message, " flanks ");
 					wTulisKata(Message, Name(*P)); 
 					wprintw(Message, "! ");
 					wTulisKata(Message, Name(*P));
-					wprintw(Message, "'s HP -%d!",Damage(e_str(En),Defense(*P),base));
+					wprintw(Message, "'s HP -%d!",damageP);
 			}
 			else if ((player == 'A') && (enemy == 'F'))
 			{
-					e_hp(En) = e_hp(En) - Damage(Strength(*P),e_def(En),base);
-					if (e_hp(En) < 0)
-					{
-						e_hp(En) = 0;
-					}
+					e_hp(En) = e_hp(En) - damageE;
 					wprintw(Message, "\n");
 					wTulisKata(Message, Name(*P));
 					wprintw(Message, " attacks ");
 					wTulisKata(Message, e_name(En));
 					wprintw(Message, "! ");
 					wTulisKata(Message, e_name(En));
-					wprintw(Message, "'s HP -%d!",Damage(Strength(*P),e_def(En),base));
+					wprintw(Message, "'s HP -%d!",damageE);
 			}
 			else if ((player == 'F') && (enemy == 'A'))
 			{
-					HP(*P) = HP(*P) - Damage(e_str(En),Defense(*P),base);
+					HP(*P) = HP(*P) - damageP;
 					wprintw(Message, "\n");
 					wTulisKata(Message, e_name(En));
 					wprintw(Message, " attacks ");
 					wTulisKata(Message, Name(*P));
 					wprintw(Message, "! ");
 					wTulisKata(Message, Name(*P));
-					wprintw(Message, "'s HP -%d!",Damage(e_str(En),Defense(*P),base));
+					wprintw(Message, "'s HP -%d!",damageP);
 			}
 			if (e_hp(En) <= 0)
 			{
 				e_hp(En) = 0;
 				aliveE = false;
 			}
-			else if (HP(*P) <= 0)
+			if (HP(*P) <= 0)
 			{
 				HP(*P) = 0;
 				aliveP = false;
 			}
-			else
-			{
-				action++;
-			}
+			action++;
 			wclear(P_HP);
 			wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P));
 			wrefresh(P_HP);
@@ -1107,6 +1453,10 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 			wrefresh(Message);
 			delay(3);
 		}while((action <= 4) && (aliveE) && (aliveP));
+		if(paralyzed)
+		{
+			paralyzed = false;
+		}
 	}while((!IsEmptyS(e_attack(En))) && (aliveE) && (aliveP));
 	if ((aliveP) && (aliveE))
 	{
@@ -1131,15 +1481,29 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 		wprintw(Message, "\nYou win!");
 		wrefresh(Message);
 		delay(3);
+
+		if(UnlockedVeteran)
+		{
+			/* Skill Veteran (2x Exp) */
+			VeteranChance = rand() % 10 + 1;
+			if(VeteranChance <= 2)
+			{
+				wprintw(Message, "\nVeteran activates!");
+				wrefresh(Message);
+				delay(3);
+				e_exp(En) *= 2;
+			}
+		}
+
 		Exp(*P) = Exp(*P) + e_exp(En);
 		wprintw(Message, "\nYou earned %d experience points!",(((enemyhp - e_hp(En))*e_exp(En)) / enemyhp));
 		wrefresh(Message);
 		wclear(P_Exp);
 		wprintw(P_Exp, "EXP: %d", Exp(*P));
 		wrefresh(P_Exp);
-		delay(3);
-		if(IsLevelUp(*P))
+		while(IsLevelUp(*P))
 		{
+			delay(3);
 			wprintw(Message, "\nLevel Up!");
 			wrefresh(Message);
 			oldstr = Strength(*P);
@@ -1166,6 +1530,51 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 			wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P));
 			wrefresh(P_HP);
 			wprintw(Message, "\nMAX HP +%d", Max_HP(*P) - oldmax_hp);
+			if(Level(*P) == 2)
+			{
+				wrefresh(Message);
+				delay(3);
+				UnlockSkill(&Skill(*P), 1, &unlockedskill);
+				wprintw(Message, "\n");
+				wTulisKata(Message, Name(*P));
+				wprintw(Message, " learns %s.", SkillName(unlockedskill)); 
+				/* Extra HP */
+				Max_HP(*P) += 5;
+				HP(*P) += 5;
+				wclear(P_HP);
+				wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P));
+				wrefresh(P_HP);
+			}
+			else
+			{
+				if((Level(*P) % 2) == 0)
+				{
+					wrefresh(Message);
+					delay(3);
+					locked = false;
+					UnlockSkillRandom(&Skill(*P), Strength(*P), Defense(*P), &unlockedskill, &locked);
+					wprintw(Message, "\n");
+					wTulisKata(Message, Name(*P));
+					wprintw(Message, " learns %s.", SkillName(unlockedskill)); 
+					if(SkillID(unlockedskill) == 2)
+					{
+						/* Extra Strength */
+						Strength(*P) += 2;
+						wclear(P_Str);
+						wprintw(P_Str, "STR: %d", Strength(*P));
+						wrefresh(P_Str);
+					}
+					if(SkillID(unlockedskill) == 3)
+					{
+						/* Extra Defense */
+						Defense(*P) += 2;
+						wclear(P_Def);
+						wprintw(P_Def, "DEF: %d", Defense(*P));
+						wrefresh(P_Def);
+					}
+				}
+			}
+			wrefresh(Message);
 			curs_set(0);
 		}
 	}
@@ -1176,7 +1585,7 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 		wprintw(Message, "\nYou lose!");
 	}
 	wrefresh(Message);
-	delay(4);
+	delay(5);
 	clear();
 	refresh();
 	delwin(Message);
@@ -1777,5 +2186,24 @@ void Credits()
 /* I.S. Sembarang */
 /* F.S. Menampilkan credits screen */
 {
+	/* KAMUS LOKAL */
+	WINDOW *win;
 
+	/* ALGORITMA */
+	curs_set(0);
+
+	win = create_newwin(14, 52, Mid_y(14), Mid_x(52));
+	START("src/Database/Text/credit.txt");
+	while(!EOP)
+	{
+		wprintw(win, "%c", CC);
+		delay(0.3);
+		wrefresh(win);
+		ADV();
+	}
+	wrefresh(win);
+	delay(10);
+	clear();
+	refresh();
+	delwin(win);
 }

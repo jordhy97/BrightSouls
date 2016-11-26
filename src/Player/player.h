@@ -7,6 +7,8 @@
 #include "../BinTree/bintree.h"
 #include <ncurses.h>
 
+#define MaxLvl 20
+
 typedef struct {
 	Kata name;
 	int max_hp;

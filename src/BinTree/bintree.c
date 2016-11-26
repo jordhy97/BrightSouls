@@ -1,6 +1,7 @@
 #include "bintree.h"
 #include <stdlib.h>
 #include "../MesinKarKata/mesinkar.h"
+#include <time.h>
 
 void copystring (char *dest, char *source)
 /* I.S. dest sembarang, source teredefinisi */
@@ -101,6 +102,26 @@ boolean IsTreeEmpty (BinTree P)
     return (P == NilTree);
 }
 
+boolean IsUnerLeft (BinTree P)
+/* Mengirimkan true jika pohon biner tidak kosong P adalah pohon unerleft: hanya mempunyai subpohon kiri */
+{
+    /* ALGORITMA */
+    return((Left(P) != NilTree) && (Right(P) == NilTree));
+}
+
+boolean IsUnerRight (BinTree P)
+/* Mengirimkan true jika pohon biner tidak kosong P adalah pohon unerright: hanya mempunyai subpohon kanan*/
+{
+    /* ALGORITMA */
+    return((Left(P) == NilTree) && (Right(P) != NilTree));
+}
+
+boolean IsBiner (BinTree P)
+/* Mengirimkan true jika pohon biner tidak kosong P adalah pohon biner: mempunyai subpohon kiri dan subpohon kanan*/
+{
+    /* ALGORITMA */
+    return((Left(P) != NilTree) && (Right(P) != NilTree));
+}
 
 /* Output */
 void PrintTree (BinTree P, int level, int h)
@@ -344,24 +365,111 @@ void AddDaun (BinTree *P, int ID, infoTree Y, boolean Kiri)
     }
 }
 
-void UnlockSkill(BinTree *P, int ID)
-/* I.S. P dan ID terdefinisi, infoTree dengan SkillID ID pasti ada di P */
-/* F.S. Skill dengan SkillID ID di unlock */
+boolean IsUnlocked(BinTree P, int ID)
+/* Mengembalikan true jika Node dengan ID ID sudah di-unlocked */
+{
+    /* ALGORITMA */
+    if(SkillID(Akar(P)) == ID)
+    {
+        return Unlocked(Akar(P));
+    }
+    else
+    {
+        if(SearchTree(Left(P), ID))
+        {
+            return IsUnlocked(Left(P), ID);
+        }
+        else
+        {
+            return IsUnlocked(Right(P), ID);
+        }
+    }
+}
+
+void UnlockSkill(BinTree *P, int ID, infoTree *X)
+/* I.S. P dan ID terdefinisi, X sembarang, infoTree dengan SkillID ID pasti ada di P */
+/* F.S. Skill dengan SkillID ID di unlock, X berisi info dari skill tersebut */
 {
     /* ALGORITMA */
     if(SkillID(Akar(*P)) == ID)
     {
         Unlocked(Akar(*P)) = true;
+        copystring (SkillName(*X), SkillName(Akar(*P)));
+        copystring(Description(*X), Description(Akar(*P)));
+        Unlocked(*X) = Unlocked(Akar(*P));
+        SkillID(*X) = SkillID(Akar(*P));
     }
     else
     {
         if(SearchTree(Left(*P), ID))
         {
-            UnlockSkill(&Left(*P), ID);
+            UnlockSkill(&Left(*P), ID, X);
         }
         else
         {
-            UnlockSkill(&Right(*P), ID);
+            UnlockSkill(&Right(*P), ID, X);
+        }
+    }
+}
+
+void UnlockSkillRandom(BinTree *P, int chanceLeft, int chanceRight, infoTree *X, boolean *locked)
+/* I.S. P, chanceLeft, dan chanceRight terdefinisi, X sembarang, locked berfungsi sebagai penanda(basis), ada skill yang belum di-unlock */
+/* F.S. X berisi info dari skill yang di-unlock secara acak */
+{
+    /* KAMUS LOKAL */
+    int totalChance, chosen;
+
+    /* ALGORITMA */
+    if(!Unlocked(Akar(*P)))
+    {
+        Unlocked(Akar(*P)) = true;
+        copystring (SkillName(*X), SkillName(Akar(*P)));
+        copystring(Description(*X), Description(Akar(*P)));
+        Unlocked(*X) = Unlocked(Akar(*P));
+        SkillID(*X) = SkillID(Akar(*P));
+        *locked = false;
+    }
+    else
+    {
+        totalChance = chanceLeft + chanceRight;
+        chosen = rand() % totalChance + 1;
+        if(chosen <= chanceLeft)
+        {
+            if(IsUnerLeft(*P))
+            {
+                UnlockSkillRandom(&Left(*P), chanceLeft, chanceRight, X, locked);
+            }
+            else if(IsUnerRight(*P))
+            {
+                UnlockSkillRandom(&Right(*P), chanceLeft, chanceRight, X, locked);
+            }
+            else if(IsBiner(*P))
+            {
+                UnlockSkillRandom(&Left(*P), chanceLeft, chanceRight, X, locked);   
+                if(*locked)
+                {
+                    UnlockSkillRandom(&Right(*P), chanceLeft, chanceRight, X, locked);
+                }
+            }
+        }
+        else
+        {
+            if(IsUnerRight(*P))
+            {
+                UnlockSkillRandom(&Right(*P), chanceLeft, chanceRight, X, locked);
+            }
+            else if(IsUnerLeft(*P))
+            {
+                UnlockSkillRandom(&Left(*P), chanceLeft, chanceRight, X, locked);
+            }
+            else if(IsBiner(*P))
+            {
+                UnlockSkillRandom(&Right(*P), chanceLeft, chanceRight, X, locked);   
+                if(*locked)
+                {
+                    UnlockSkillRandom(&Left(*P), chanceLeft, chanceRight, X, locked);
+                }
+            }
         }
     }
 }

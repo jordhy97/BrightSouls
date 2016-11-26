@@ -2,7 +2,7 @@ Muffin
 16
 3
 3
-6
+60
 A A B F
 A B A B
 B B B B

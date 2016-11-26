@@ -209,12 +209,19 @@ boolean IsLevelUp(Player P)
     int i, total;
 
     /* ALGORITMA */
-    total = 0;
-    for(i = 1; i <= Level(P); i++)
+    if(Level(P) == MaxLvl)
     {
-        total += 10 * i + 2;
+        return false;
     }
-    return (Exp(P) >= total);
+    else
+    {
+        total = 0;
+        for(i = 1; i <= Level(P); i++)
+        {
+            total += 10 * i + 2;
+        }
+        return (Exp(P) >= total);
+    }
 }
 
 void LevelUp (Player * P) 

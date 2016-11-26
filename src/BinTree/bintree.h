@@ -82,6 +82,12 @@ void DealokTree(BinTree *P);
 /* *** Predikat-Predikat Penting *** */
 boolean IsTreeEmpty (BinTree P);
 /* Mengirimkan true jika P adalah pohon biner kosong */
+boolean IsUnerLeft (BinTree P);
+/* Mengirimkan true jika pohon biner tidak kosong P adalah pohon unerleft: hanya mempunyai subpohon kiri */
+boolean IsUnerRight (BinTree P);
+/* Mengirimkan true jika pohon biner tidak kosong P adalah pohon unerright: hanya mempunyai subpohon kanan*/
+boolean IsBiner (BinTree P);
+/* Mengirimkan true jika pohon biner tidak kosong P adalah pohon biner: mempunyai subpohon kiri dan subpohon kanan*/
 
 /* Output */
 void PrintTree (BinTree P, int level, int h);
@@ -117,8 +123,15 @@ void AddDaun (BinTree *P, int ID, infoTree Y, boolean Kiri);
 /* F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika Kiri = true), atau 
         sebagai anak Kanan X (jika Kiri = false) */
 
-void UnlockSkill(BinTree *P, int ID);
-/* I.S. P dan ID terdefinisi, infoTree dengan SkillID ID pasti ada di P */
-/* F.S. Skill dengan SkillID ID di unlock */
+boolean IsUnlocked(BinTree P, int ID);
+/* Mengembalikan true jika Node dengan ID ID sudah di-unlocked */
+
+void UnlockSkill(BinTree *P, int ID, infoTree *X);
+/* I.S. P dan ID terdefinisi, X sembarang, infoTree dengan SkillID ID pasti ada di P */
+/* F.S. Skill dengan SkillID ID di unlock, X berisi info dari skill tersebut */
+
+void UnlockSkillRandom(BinTree *P, int chanceLeft, int chanceRight, infoTree *X, boolean *locked);
+/* I.S. P, chanceLeft, dan chanceRight terdefinisi, X sembarang, locked berfungsi sebagai penanda(basis), ada skill yang belum di-unlock */
+/* F.S. X berisi info dari skill yang di-unlock secara acak */
 
 #endif
