@@ -1,8 +1,8 @@
 Vizek
-120
-10
-12
-150
+290
+40
+60
+0
 A B F A
 B A B F
 A A A A

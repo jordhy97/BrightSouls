@@ -1,7 +1,7 @@
 Shades
-27
-6
-10
+43
+14
+20
 40
 A A A A
 B B B F

@@ -177,11 +177,11 @@ void wCreatePlayer(WINDOW *menu, Player *P, Kata nama, boolean *created, char *n
             Max_HP(*P) = 35;
             HP(*P) = 35;
             Strength(*P) = 6;
-            Defense(*P) = 3;
+            Defense(*P) = 2;
             break;
         case 3:
-            Max_HP(*P) = 50;
-            HP(*P) = 50;
+            Max_HP(*P) = 45;
+            HP(*P) = 45;
             Strength(*P) = 2;
             Defense(*P) = 6;
             break;           
@@ -218,7 +218,7 @@ boolean IsLevelUp(Player P)
         total = 0;
         for(i = 1; i <= Level(P); i++)
         {
-            total += 10 * i + 2;
+            total += i * 10 + (i-1) * 5;
         }
         return (Exp(P) >= total);
     }
@@ -234,55 +234,23 @@ void LevelUp (Player * P)
     /* ALGORITMA */
     srand(time(NULL));
     ++Level(*P);
-    bstr = rand() % 2 + 1;
-    bdef = rand() % 2 + 1;
-    bHP = rand() % 5 + 1;
-    Strength(*P) += (bstr + (Strength(*P)/10));
-    Defense(*P) += (bdef + (Defense(*P)/10));
-    HP(*P) += bHP + (Max_HP(*P)/20);
-    Max_HP(*P) += (bHP + (Max_HP(*P)/20));
+    if(Level(*P) > 10)
+    {
+        bstr = rand() % 3 + 2;
+        bdef = rand() % 3 + 2;
+        bHP = rand() % 10 + 1;
+    }
+    else
+    {
+        bstr = rand() % 3 + 1;
+        bdef = rand() % 3 + 1;
+        bHP = rand() % 5 + 1;
+    }
+    Strength(*P) += bstr;
+    Defense(*P) += bdef;
+    HP(*P) += bHP;
+    Max_HP(*P) += bHP;
 }
-
-// void AddSkill (Player * P) {
-// /* Daftar skill player pada tiap level */
-//     // Asumsi level tertinggi player adalah level 20
-//     switch (Level(*P)) {
-//         case 2: // Extra HP -> HP +5 (3 rounds per battle)
-//             MakeTree(2,Nil,Nil,&Skill(*P));
-// 			   break;
-//         case 4: // Extra Strength -> Str +1 (3 rounds per battle)
-//             AddDaun(&Skill(*P),2,4,1);
-//             break;
-//         case 6: // Extra Defense -> Def +1 (3 rounds per battle)
-//             AddDaun(&Skill(*P),2,6,0);
-//             break;
-//         case 8: // Swordsman -> Damage given +3 (3 rounds per battle)
-//             AddDaun(&Skill(*P),4,8,1);
-//             break;
-//         case 10: // Agile -> Damage taken -3 (3 rounds per battle)
-//             AddDaun(&Skill(*P),6,10,1);
-//             break;
-//         case 12: // Sharp Eye -> Know all enemy movements (3 rounds per battle)
-//             AddDaun(&Skill(*P),4,12,0);
-//             break;
-//         case 14: // Vampire -> Absorb 25% of enemy HP and add it to your own
-//             AddDaun(&Skill(*P),6,14,0);
-//             break;
-//         case 16: // Paralyzed Enemy -> Battle only have 5 rounds (1 time per map)
-//             AddDaun(&Skill(*P),8,16,1);
-//             break;
-//         case 17: // Veteran -> Exp x2 per battle (permanent)
-//             AddDaun(&Skill(*P),10,17,1);
-//             break;
-//         case 18: // Stealth -> Avoid Enemy (1 time per map)
-//             AddDaun(&Skill(*P),12,18,1);
-//             break;
-//         case 19: // Super Healer -> Heal yourself 100% (1 time per battle)
-//             AddDaun(&Skill(*P),14,19,1);
-//             break;
-
-// 	}
-// }
 
 /*int main() {
     int i;

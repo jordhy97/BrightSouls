@@ -1,8 +1,8 @@
 Harpies
-63
-14
-10
-151
+92
+23
+35
+64
 B B B F
 A F A F
 B A B F

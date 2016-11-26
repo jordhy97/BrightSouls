@@ -1,15 +1,15 @@
 Abraxas
-24
-6
+25
 8
-24
+40
+50
 B B A F
 A B F F
 A B A B
-B B B B
-F A F A
+B F B B
+F A F B
 F B B B
 A A A A
 B F B B
-F F A A
+F A B A
 B F A F*

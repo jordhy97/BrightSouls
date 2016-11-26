@@ -1,8 +1,8 @@
 Medusa
-80
-6
-5
-90
+40
+24
+100
+125
 B B A F
 B F A A
 A A A F

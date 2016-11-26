@@ -1,8 +1,8 @@
 Dementor
-45
-8
-6
-27
+52
+11
+12
+32
 A A B F
 F F A B
 B B B B

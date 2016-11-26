@@ -1,8 +1,8 @@
 Odysseus
-90
-7
-6
-100
+147
+43
+51
+0
 B F A F
 B F F A
 A F F B

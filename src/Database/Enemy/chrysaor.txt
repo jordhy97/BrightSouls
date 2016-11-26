@@ -1,8 +1,8 @@
 Chrysaor
-45
-9
-8
-60
+73
+17
+20
+54
 A B F A
 F F A B
 B B F A

@@ -1,8 +1,8 @@
 Centaur
-83
-13
-11
-194
+102
+30
+40
+70
 A B F B
 B B B A
 F B A B

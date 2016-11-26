@@ -1,8 +1,8 @@
 Nagini
-48
-10
-10
-80
+64
+21
+31
+57
 A B F A
 B A B F
 A A A A

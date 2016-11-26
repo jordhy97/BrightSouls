@@ -1,8 +1,8 @@
 Echidna
-40
-8
-11
-73
+62
+20
+30
+55
 A F F B
 A B F F
 B B B B

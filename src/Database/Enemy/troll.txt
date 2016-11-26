@@ -1,8 +1,8 @@
 Troll
-92
-12
-6
-115
+125
+30
+15
+72
 B A B A
 F A F A
 B B B B

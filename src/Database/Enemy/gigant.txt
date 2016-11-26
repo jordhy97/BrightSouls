@@ -1,8 +1,8 @@
 Gigant
-127
-16
-8
-170
+150
+35
+20
+76
 A A B F
 A B A F
 F F A B

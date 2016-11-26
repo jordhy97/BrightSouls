@@ -1,8 +1,8 @@
 Griffin
-75
-13
-9
-134
+81
+23
+33
+62
 F B A A
 B A B B
 A A A A
