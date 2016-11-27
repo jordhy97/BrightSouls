@@ -1,9 +1,12 @@
+/* File: Driver untuk ADT StackQueue */
+
 #include "stackqueue.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
-int main() {
+int main() 
+{
 	/* KAMUS */
 	Stack S;
 	ElmtStack Q;

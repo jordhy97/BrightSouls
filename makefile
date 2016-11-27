@@ -16,31 +16,31 @@ driver : mmesinkata mpoint mstackqueue menemy mjam mmatriks mbintree mplayer mpe
 main : BrightSouls
 
 mmesinkata : mmesinkata.o mesinkata.o mesinkar.o
-	$(CC) $(LFLAGS) mmesinkata.o mesinkata.o mesinkar.o -lncurses -o bin/mmesinkata
+	$(CC) $(LFLAGS) mmesinkata.o mesinkata.o mesinkar.o -lncurses -o bin/Driver/mmesinkata
 
 mpoint : mpoint.o point.o
-	$(CC) $(LFLAGS) mpoint.o point.o -o bin/mpoint
+	$(CC) $(LFLAGS) mpoint.o point.o -o bin/Driver/mpoint
 
 mstackqueue : mstackqueue.o stackqueue.o
-	$(CC) $(LFLAGS) mstackqueue.o stackqueue.o -lncurses -o bin/mstackqueue
+	$(CC) $(LFLAGS) mstackqueue.o stackqueue.o -lncurses -o bin/Driver/mstackqueue
 
 menemy : menemy.o enemy.o mesinkar.o mesinkata.o stackqueue.o
-	$(CC) $(LFLAGS) menemy.o enemy.o mesinkar.o mesinkata.o stackqueue.o -lncurses -o bin/menemy
+	$(CC) $(LFLAGS) menemy.o enemy.o mesinkar.o mesinkata.o stackqueue.o -lncurses -o bin/Driver/menemy
 
 mjam : mjam.o jam.o
-	$(CC) $(LFLAGS) mjam.o jam.o -lncurses -o bin/mjam 
+	$(CC) $(LFLAGS) mjam.o jam.o -lncurses -o bin/Driver/mjam 
 
 mmatriks : mmatriks.o matriks.o mesinkar.o
-	$(CC) $(LFLAGS) mmatriks.o matriks.o mesinkar.o -o bin/mmatriks 
+	$(CC) $(LFLAGS) mmatriks.o matriks.o mesinkar.o -o bin/Driver/mmatriks 
 
 mbintree : mbintree.o bintree.o mesinkar.o
-	$(CC) $(LFLAGS) mbintree.o bintree.o mesinkar.o -lncurses -o bin/mbintree
+	$(CC) $(LFLAGS) mbintree.o bintree.o mesinkar.o -lncurses -o bin/Driver/mbintree
 
 mplayer: mplayer.o player.o mesinkar.o mesinkata.o bintree.o point.o
-	$(CC) $(LFLAGS) mplayer.o player.o mesinkar.o mesinkata.o bintree.o point.o -lncurses -o bin/mplayer
+	$(CC) $(LFLAGS) mplayer.o player.o mesinkar.o mesinkata.o bintree.o point.o -lncurses -o bin/Driver/mplayer
 
 mpeta: mpeta.o peta.o mesinkar.o mesinkata.o matriks.o area.o point.o
-	$(CC) $(LFLAGS) mpeta.o peta.o mesinkar.o mesinkata.o matriks.o area.o point.o -lncurses -o bin/mpeta
+	$(CC) $(LFLAGS) mpeta.o peta.o mesinkar.o mesinkata.o matriks.o area.o point.o -lncurses -o bin/Driver/mpeta
 
 BrightSouls : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -lncurses -o bin/BrightSouls

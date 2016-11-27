@@ -1,6 +1,3 @@
-/* NIM/Nama     : 13515004/Jordhy Fernando */
-/* Nama file    : matriks.c                */
-/* Tanggal      : 29 Oktober 2016          */
 /* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada matriks.h */
 
 #include <stdio.h>

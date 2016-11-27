@@ -41,7 +41,7 @@ void LoadPlayer (Player *P, char *namafilePlayer, char *namafileSkill);
 /* I.S. P sembarang, namafilePlayer dan namafileSkill terdefinisi */
 /* F.S. P berisi data player dari file eksternal*/
 
-void CreatePlayer (Player *P);
+void CreatePlayer (Player *P, char *namafile);
 /* I.S. P sembarang */
 /* F.S. Membentuk player baru dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
 
@@ -58,8 +58,5 @@ boolean IsLevelUp(Player P);
 
 void LevelUp (Player * P);
 /* Menaikan level player bila sudah mencapai Exp tertentu */
-
-// void AddSkill (Player * P);
-/* Daftar skill player pada tiap level */
 
 #endif

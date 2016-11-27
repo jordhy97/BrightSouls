@@ -12,4 +12,4 @@ A A F B
 B B B A
 A A F B
 B F F A
-A B B B
+A B B B*

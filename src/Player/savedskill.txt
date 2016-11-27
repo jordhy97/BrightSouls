@@ -1,0 +1,45 @@
+1 1
+0 0
+Extra HP
+Permanently increase your Max HP by 5.
+2 0
+1 1
+Extra Strength
+Permanently increase your strength by 2.
+4 0
+2 1
+Swordsman
+Has 10% chance to increase damage given by 3.
+8 0
+4 1
+Paralyze
+Paralyzed enemy for 1 round (Command: P).
+5 0
+2 0
+Sharpeye
+Reveal enemy's command for the first round.
+9 0
+5 1
+Veteran
+Has 20% chance to get double exp.
+3 0
+1 0
+Extra Defense
+Permanently increase your defense by 2.
+6 0
+3 1
+Agile
+Has 10% chance to decrease damage taken by 3.
+10 0
+6 1
+Stealth
+Avoids battling enemy but decreases your HP by 10 (Command: STEALTH).
+7 0
+3 0
+Vampire
+Absorbs 50% of the damage given to your HP (Command: V).
+11 0
+7 1
+Mega Heal
+Heal 50% of your HP (Command: H).
+*

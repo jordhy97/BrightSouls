@@ -1,5 +1,3 @@
-/* Nama file    : mmpeta.c                 			*/
-/* Tanggal      : 10 November 2016         			*/
 /* Deskripsi    : Driver untuk peta.c dan area.c    */
 
 #include <stdio.h>
@@ -10,11 +8,11 @@ int main()
 	/* KAMUS */
 	int i, j;
 	Peta MAP;
-	POINT P;
+	POINT P, X;
 
 	/* ALGORITMA */
 	P = MakePOINT(2,3);
-	CreateRandomPeta(&MAP,"testpeta.txt");
+	CreateRandomPeta(&MAP,"../../src/Peta/testpeta.txt");
 	printf("TESTING PETA AND AREA\n\n");
 	printf("Isi MAP (diacak dari testpeta.txt):\n");
 	for(i = IDMin; i <= GetLastID(MAP); i++)
@@ -66,9 +64,9 @@ int main()
 	}
 	
 	printf("TESTING SAVE AND LOAD PETA\n\n");
-	SavePeta(MAP, "testsubpeta.txt", "testkoneksi.txt");
+	SavePeta(MAP, "../../src/Peta/testsubpeta.txt", "../../src/Peta/testkoneksi.txt");
 	DealokasiPeta(&MAP);
-	LoadPeta(&MAP, "testsubpeta.txt", "testkoneksi.txt");
+	LoadPeta(&MAP, "../../src/Peta/testsubpeta.txt", "../../src/Peta/testkoneksi.txt");
 	printf("Isi MAP (dari testsubpeta.txt):\n");
 	for(i = IDMin; i <= GetLastID(MAP); i++)
 	{
@@ -117,6 +115,44 @@ int main()
 			printf("\n");
 		}
 	}
+	X = MakePOINT(1,1);
+	if(IsPassable(SubPeta(MAP,1), X))
+	{
+		printf("Area 1 <1,1> is passable\n");
+	}
+	else
+	{	
+		printf("Area 1 <1,1> is not passable\n");
+	}
+	if(IsEnemy(SubPeta(MAP,1), X))
+	{
+		printf("Area 1 <1,1> is an enemy\n");
+	}	
+	else
+	{
+		printf("Area 1 <1,1> is not an enemy\n");
+	}
+	if(IsMedicine(SubPeta(MAP,1), X))
+	{
+		printf("Area 1 <1,1> is a medicine\n");
+	}
+	else
+	{
+		printf("Area 1 <1,1> is not a medicine\n");
+	}
+	if(IsBoss(SubPeta(MAP,1), X))
+	{
+		printf("Area 1 <1,1> is a boss\n");
+	}
+	else
+	{
+		printf("Area 1 <1,1> is not a boss\n");
+	}
+	ClearPOINT(&SubPeta(MAP,1), X);
+	printf("Area 1 <1,1> cleared\n");
+	printf("\n");
+	PrintArea(SubPeta(MAP,1), P);
+	printf("\n");
 	DealokasiPeta(&MAP);
 	return 0;
 }

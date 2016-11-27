@@ -1,3 +1,5 @@
+/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada mesinkata.h */
+
 #include "mesinkata.h"
 #include <stdio.h>
 

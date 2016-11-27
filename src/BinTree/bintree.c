@@ -1,3 +1,5 @@
+/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada bintree.h */
+
 #include "bintree.h"
 #include <stdlib.h>
 #include "../MesinKarKata/mesinkar.h"

@@ -1,4 +1,4 @@
-/* File: ADT Enemy */
+/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada enemy.h */
 
 #include "enemy.h"
 #include <stdio.h>

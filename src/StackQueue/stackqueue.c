@@ -1,3 +1,5 @@
+/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada stackqueue.h */
+
 #include "stackqueue.h"
 #include <time.h>
 #include <stdlib.h>

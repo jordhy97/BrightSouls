@@ -1,3 +1,5 @@
+/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada player.h */
+
 #include <stdio.h>
 #include "player.h"
 #include <time.h>
@@ -51,14 +53,16 @@ void LoadPlayer (Player *P, char *namafilePlayer, char *namafileSkill)
     LoadTree(namafileSkill, &Skill(*P));
 }
 
-void CreatePlayer (Player * P)
-/* I.S. P sembarang */
+void CreatePlayer (Player *P, char *namafile)
+/* I.S. P sembarang, namafile terdefinisi */
 /* F.S. Membentuk player baru dengan status yang sudah ditentukan berdasarkan pilihan user*/ 
 {
-    int input, i = 0;
+    /* KAMUS LOKAL */
+    int input;
+
+    /* ALGORITMA */
     printf("Enter Player Name: ");
     BacaKata(&Name(*P));
-    Name(*P).Length = i; 
     printf("Choose Player Speciality\n1. Balance\n2. HP\n3. Strength\n4. Defense\nChoice: ");
     scanf("%d",&input);
     if (input == 1) {
@@ -85,6 +89,9 @@ void CreatePlayer (Player * P)
         Strength(*P) = 3;
         Defense(*P) = 7;
     }
+    CArea(*P) = 1;
+    Position(*P) = MakePOINT(6,4);
+    LoadTree(namafile, &Skill(*P));
     Exp(*P) = 0;
     Level(*P) = 1;
 }
@@ -251,23 +258,3 @@ void LevelUp (Player * P)
     HP(*P) += bHP;
     Max_HP(*P) += bHP;
 }
-
-/*int main() {
-    int i;
-    Player P;
-    CreateNewPlayer(&P);
-    printf("\n");
-    printf("Player Name: ");
-    for (i = 0; i < Name(P).length; ++i) printf("%c",Name(P).word[i]);
-    printf("\n");
-    printf("HP: %d\nStr: %d\nDef: %d\nExp: %d\nLevel: %d\n",HP(P),Strength(P),Defense(P),Exp(P),Level(P));
-    printf("\n");
-    LevelUp(&P);
-    printf("\n");
-    printf("Player Name: ");
-    for (i = 0; i < Name(P).length; ++i) printf("%c",Name(P).word[i]);
-    printf("\n");
-    printf("HP: %d\nStr: %d\nDef: %d\nExp: %d\nLevel: %d\n",HP(P),Strength(P),Defense(P),Exp(P),Level(P));
-    printf("\n");
-    return 0;
-}*/

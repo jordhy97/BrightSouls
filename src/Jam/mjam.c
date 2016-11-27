@@ -1,5 +1,4 @@
- /* File 	 : mjam.c 					*/
-/* Topik	 : ADT JAM					*/
+/* File: Driver untuk ADT JAM */
 
 #include "jam.h"
 #include <stdio.h>

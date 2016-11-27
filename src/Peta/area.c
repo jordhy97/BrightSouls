@@ -1,3 +1,5 @@
+/* Deskripsi    : Realisasi/ kode program dari semua prototype yg didefinisikan pada area.h */
+
 #include "area.h"
 #include <stdlib.h>
 #include <stdio.h>

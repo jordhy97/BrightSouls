@@ -1,17 +1,19 @@
-/* Nama file    : mmatriks.c               */
-/* Tanggal      : 29 Oktober 2016          */
-/* Deskripsi    : Driver untuk matriks.c   */
+/* File: Driver untuk ADT MATRIKS */
+
 #include <stdio.h>
 #include "matriks.h"
 
 int main()
 {
+	/* KAMUS */
 	int Neff, i;
 	MATRIKS MTest[100];
+	
+	/* ALGORITMA */
 	Neff = 0;
 	printf("TESTING MATRIKS\n\n");
 	printf("BACA MATRIKS DARI FILE 'testmatriks.txt'\n");
-	STARTMATRIKS("testmatriks.txt");
+	STARTMATRIKS("../src/Matriks/testmatriks.txt");
 	while(!EndMATRIKS)
 	{
 		Neff++;
