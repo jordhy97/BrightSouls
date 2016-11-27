@@ -27,6 +27,10 @@ void New_Game(Player *P);
 /* I.S. P dan MAP Sembarang */
 /* F.S. Membuat player baru dengan nama dari input user atau tidak terbentuk apa-apa jika user membatalkan */
 
+void Prologue();
+/* I.S. Sembarang */
+/* F.S. Menampilkan prologue dari story */
+
 void Create_explore_border();
 /* I.S. sembarang */
 /* F.S. menampilkan ke layar border untuk mode eksplorasi */
@@ -54,6 +58,10 @@ int Damage (int str, int def,int base);
 void DisplaySkill(Player P);
 /* I.S. P terdefinisi */
 /* F.S. Menampilkan Skill yang sudah ter-unlock ke layar */
+
+void DisplayHelp();
+/* I.S. Sembarang */
+/* F.S. Menampilkan help menu */
 
 void Load(Player *P, Peta *MAP, JAM *PlayTime);
 /* I.S. P, MAP, dan PlayTime Sembarang */ 
@@ -95,6 +103,10 @@ void Pop_Up_Message(char *message, float t);
 void Loading_Screen();
 /* I.S. Sembarang */
 /* F.S. Menampilkan loading Screen */
+
+void Epilogue();
+/* I.S. Sembarang */
+/* F.S. Menampilkan epilogue dari story */
 
 void Game_Over();
 /* I.S. Sembarang */
@@ -139,7 +151,7 @@ int main()
 	title = create_newwin(Game_Height, Game_Width, Mid_y(Game_Height), Mid_x(Game_Width));
 	menu = create_newwin(4, 11,  Mid_y(Game_Height) + 22, Mid_x(Game_Width) + 95);
 	/* Load title screen */
-	START("src/Database/Text/title.txt");
+	START("../src/Database/Text/title.txt");
 	while(!EOP)
 	{
 		wprintw(title, "%c", CC);
@@ -155,7 +167,7 @@ int main()
 		noecho();
 		/* Refresh title screen */
 		wmove(title,0,0);
-		START("src/Database/Text/title.txt");
+		START("../src/Database/Text/title.txt");
 		while(!EOP)
 		{
 			wprintw(title, "%c", CC);
@@ -215,7 +227,11 @@ int main()
 				{	
 					if(new)
 					{
-						CreateRandomPeta(&MAP, "src/Database/New_Game/Areas.txt");
+						CreateRandomPeta(&MAP, "../src/Database/New_Game/Areas.txt");
+						Loading_Screen();
+						Prologue();
+						Loading_Screen();
+						DisplayHelp();
 					}
 					Loading_Screen();
 					explore(&P, &MAP, &PlayTime);
@@ -302,7 +318,7 @@ void New_Game(Player *P)
 	}
 	curs_set(0);
 	noecho();
-	wCreatePlayer(menu, P, nama, &created, "src/Database/New_Game/skill.txt");
+	wCreatePlayer(menu, P, nama, &created, "../src/Database/New_Game/skill.txt");
 	if(created)
 	{
 		Pop_Up_Message("Player successfully created", 3);
@@ -312,6 +328,32 @@ void New_Game(Player *P)
 	delwin(menu);
 }
 
+void Prologue()
+/* I.S. Sembarang */
+/* F.S. Menampilkan prologue dari story */
+{
+	/* KAMUS LOKAL */
+	WINDOW *win;
+
+	/* ALGORITMA */
+	curs_set(0);
+
+	win = create_newwin(8, 41, Mid_y(8), Mid_x(41));
+	scrollok(win, TRUE);
+	START("../src/Database/Text/prologue.txt");
+	while(!EOP)
+	{
+		wprintw(win, "%c", CC);
+		delay(0.2);
+		wrefresh(win);
+		ADV();
+	}
+	wrefresh(win);
+	delay(3);
+	clear();
+	refresh();
+	delwin(win);
+}
 
 void Create_explore_border()
 /* I.S. sembarang */
@@ -382,7 +424,7 @@ void SelectEnemy(TabEn TEnemy, Enemy *En, int LvlP)
 {
 	/* KAMUS LOKAL */
 	int chosen;
-	char *path = "src/Database/Enemy/";
+	char *path = "../src/Database/Enemy/";
 	char *txt = ".txt";
 	char filename[100];
 	int i, j;
@@ -419,7 +461,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 	/* KAMUS LOKAL */
 	WINDOW *P_Name, *P_Lvl, *P_HP, *P_Str, *P_Def, *P_Exp, *Message, *Command, *Map;
 	int starty, startx;
-	Kata Masukan, GU, GR, GD, GL, SKILL, SAVE, LOAD, EXIT, STEALTH;
+	Kata Masukan, GU, GR, GD, GL, SKILL, SAVE, LOAD, EXIT, STEALTH, HELP;
 	POINT NextPOINT;
 	boolean move, quit, win, game_over, end, stealth, UnlockedStealth;
 	TabEn TEnemy;
@@ -431,7 +473,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 	/* Inisialasi */
 	CurrArea = SubPeta(*MAP,CArea(*P));
 	START = AlokasiArea(Info(CurrArea));
-	LoadNamaEnemy(&TEnemy, "src/Database/Enemy/enemy.txt");
+	LoadNamaEnemy(&TEnemy, "../src/Database/Enemy/enemy.txt");
 	GetCurrentJAM(&StartPlay);
 
 	/* Create All Possible Command */
@@ -444,6 +486,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 	CreateKata(&LOAD, "LOAD");
 	CreateKata(&STEALTH, "STEALTH");
 	CreateKata(&EXIT, "EXIT");
+	CreateKata(&HELP, "HELP");
 
 	/* Create border */
 	Create_explore_border();
@@ -574,7 +617,6 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			wrefresh(P_Exp);
 			echo();
 			curs_set(1);
-			move = false;
 		}
 		else if(IsKataSama(Masukan, SAVE))
 		{
@@ -607,7 +649,6 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			wrefresh(P_Name);
 			curs_set(1);
 			echo();
-			move = false;
 		}
 		else if(IsKataSama(Masukan, LOAD))
 		{
@@ -643,7 +684,38 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			wrefresh(P_Exp);
 			curs_set(1);
 			echo();
+		}
+		else if(IsKataSama(Masukan, HELP))
+		{
+			//DisplayHelp
+			clear();
+			refresh();
+			curs_set(0);
+			noecho();
+			DisplayHelp();
 			move = false;
+			Create_explore_border();
+			wclear(P_Lvl);
+			wclear(P_HP);
+			wclear(P_Str);
+			wclear(P_Def);
+			wclear(P_Exp);
+			wclear(P_Name);
+			wmove(P_Name, 0, 0);
+			wTulisKata(P_Name, Name(*P));
+			wprintw(P_Lvl, "LVL: %d", Level(*P)); 
+			wprintw(P_HP, "HP: %d/%d", HP(*P), Max_HP(*P)); 
+			wprintw(P_Str, "STR: %d", Strength(*P)); 
+			wprintw(P_Def, "DEF: %d", Defense(*P));
+			wprintw(P_Exp, "EXP: %d", Exp(*P));;
+			wrefresh(P_Name);
+			wrefresh(P_Lvl);
+			wrefresh(P_HP);
+			wrefresh(P_Str);
+			wrefresh(P_Def);
+			wrefresh(P_Exp);
+			echo();
+			curs_set(1);
 		}
 		else if(IsKataSama(Masukan, STEALTH))
 		{
@@ -745,7 +817,7 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 			if(IsBoss(START, NextPOINT))
 			{
 				/* BATTLE */
-				LoadFileEnemy(&En, "src/Database/Enemy/boss.txt",'b');
+				LoadFileEnemy(&En, "../src/Database/Enemy/boss.txt",'b');
 				win = false;
 				clear();
 				refresh();
@@ -832,7 +904,8 @@ void explore(Player *P, Peta *MAP, JAM *PlayTime)
 	}
 	if(end)
 	{
-		Credits();
+		Epilogue();
+		Credits(); 
 	}
 	delwin(Command);
 	delwin(Message);
@@ -1726,6 +1799,33 @@ void DisplaySkill(Player P)
 	delwin(win);
 }
 
+void DisplayHelp()
+/* I.S. Sembarang */
+/* F.S. Menampilkan help menu */
+{
+	/* KAMUS LOKAL */
+	WINDOW *win, *border;
+
+	/* ALGORITMA */
+	border = create_newwin(Game_Height, Game_Width, Mid_y(Game_Height), Mid_x(Game_Width));
+	win = create_newwin(Game_Height - 2, Game_Width - 2, Mid_y(Game_Height) + 1, Mid_x(Game_Width) + 1);
+	wborder(border, 0, 0, 0, 0, 0, 0, 0, 0);
+	wrefresh(border);
+	START("../src/Database/Text/help.txt");
+	while(!EOP)
+	{
+		wprintw(win, "%c", CC);
+		ADV();
+	}
+	mvwprintw(win, 26, 0, "Press Any KEY to EXIT");
+	wrefresh(win);
+	wgetch(win);
+	clear();
+	refresh();
+	delwin(border);
+	delwin(win);
+}
+
 void Load(Player *P, Peta *MAP, JAM *PlayTime)
 /* I.S. P, MAP, dan PlayTime Sembarang */ 
 /* F.S. me-load pilihan user */
@@ -1759,8 +1859,8 @@ void Load(Player *P, Peta *MAP, JAM *PlayTime)
 	wrefresh(Exit_Border);	
 
 	/* Reading from external files */
-	Display_saveFile(slot1, "src/Database/State/savedata1.txt", &empty1);
-	Display_saveFile(slot2, "src/Database/State/savedata2.txt", &empty2);	
+	Display_saveFile(slot1, "../src/Database/State/savedata1.txt", &empty1);
+	Display_saveFile(slot2, "../src/Database/State/savedata2.txt", &empty2);	
 
 	/* Choosing Save File */
 	keypad(Exit, TRUE);
@@ -1827,19 +1927,19 @@ void Load(Player *P, Peta *MAP, JAM *PlayTime)
 	switch(pilihan)
 	{
 		case 1:
-			LoadPlayer(P, "src/Database/State/player1.txt", "src/Database/State/skill1.txt");
+			LoadPlayer(P, "../src/Database/State/player1.txt", "../src/Database/State/skill1.txt");
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
-			LoadPeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
-			GetOldPlayTime("src/Database/State/savedata1.txt", PlayTime);
+			LoadPeta(MAP,"../src/Database/State/subpeta1.txt", "../src/Database/State/koneksi1.txt");
+			GetOldPlayTime("../src/Database/State/savedata1.txt", PlayTime);
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 		case 2:
-			LoadPlayer(P, "src/Database/State/player2.txt", "src/Database/State/skill2.txt");
+			LoadPlayer(P, "../src/Database/State/player2.txt", "../src/Database/State/skill2.txt");
 			/* Dealokasi current peta */
 			DealokasiPeta(MAP);
-			LoadPeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
-			GetOldPlayTime("src/Database/State/savedata2.txt", PlayTime);
+			LoadPeta(MAP,"../src/Database/State/subpeta2.txt", "../src/Database/State/koneksi2.txt");
+			GetOldPlayTime("../src/Database/State/savedata2.txt", PlayTime);
 			Pop_Up_Message("File successfully loaded", 3);
 			break;
 	}
@@ -1968,8 +2068,8 @@ void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime)
 	{
 		/* Reading from external files */
 		chosen = false;
-		Display_saveFile(slot1, "src/Database/State/savedata1.txt", &empty1);
-		Display_saveFile(slot2, "src/Database/State/savedata2.txt", &empty2);	
+		Display_saveFile(slot1, "../src/Database/State/savedata1.txt", &empty1);
+		Display_saveFile(slot2, "../src/Database/State/savedata2.txt", &empty2);	
 		do
 		{	wmove(slot1, 0, 0);
 			wmove(slot2, 0, 0);
@@ -2028,15 +2128,15 @@ void Save(Player P, Peta MAP, JAM StartPlay, JAM PlayTime)
 		switch(pilihan)
 		{
 			case 1:
-				SavePlayer(P, "src/Database/State/player1.txt", "src/Database/State/skill1.txt");
-				SavePeta(MAP,"src/Database/State/subpeta1.txt", "src/Database/State/koneksi1.txt");
-				SaveFile("src/Database/State/savedata1.txt", P, StartPlay, PlayTime);
+				SavePlayer(P, "../src/Database/State/player1.txt", "../src/Database/State/skill1.txt");
+				SavePeta(MAP,"../src/Database/State/subpeta1.txt", "../src/Database/State/koneksi1.txt");
+				SaveFile("../src/Database/State/savedata1.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
 			case 2:
-				SavePlayer(P, "src/Database/State/player2.txt", "src/Database/State/skill2.txt");
-				SavePeta(MAP,"src/Database/State/subpeta2.txt", "src/Database/State/koneksi2.txt");
-				SaveFile("src/Database/State/savedata2.txt", P, StartPlay, PlayTime);
+				SavePlayer(P, "../src/Database/State/player2.txt", "../src/Database/State/skill2.txt");
+				SavePeta(MAP,"../src/Database/State/subpeta2.txt", "../src/Database/State/koneksi2.txt");
+				SaveFile("../src/Database/State/savedata2.txt", P, StartPlay, PlayTime);
 				Pop_Up_Message("File successfully saved", 3);
 				break;
 		}
@@ -2221,7 +2321,7 @@ void Loading_Screen()
 	for(j = 1; j <= ulang; j++)
 	{
 		i = 0;
-		START("src/Database/Text/title.txt");
+		START("../src/Database/Text/title.txt");
 		while(!EOP)
 		{
 			wprintw(win, "%c", CC);
@@ -2243,6 +2343,33 @@ void Loading_Screen()
 	delwin(win);
 }
 
+void Epilogue()
+/* I.S. Sembarang */
+/* F.S. Menampilkan prologue dari story */
+{
+	/* KAMUS LOKAL */
+	WINDOW *win;
+
+	/* ALGORITMA */
+	curs_set(0);
+
+	win = create_newwin(7, 35, Mid_y(7), Mid_x(35));
+	scrollok(win, TRUE);
+	START("../src/Database/Text/epilogue.txt");
+	while(!EOP)
+	{
+		wprintw(win, "%c", CC);
+		delay(0.3);
+		wrefresh(win);
+		ADV();
+	}
+	wrefresh(win);
+	delay(5);
+	clear();
+	refresh();
+	delwin(win);
+}
+
 void Game_Over()
 /* I.S. Sembarang */
 /* F.S. Menampilkan game over screen */
@@ -2254,7 +2381,7 @@ void Game_Over()
 	curs_set(0);
 
 	win = create_newwin(18, 76, Mid_y(18), Mid_x(76));
-	START("src/Database/Text/GameOver.txt");
+	START("../src/Database/Text/GameOver.txt");
 	while(!EOP)
 	{
 		wprintw(win, "%c", CC);
@@ -2280,7 +2407,7 @@ void Credits()
 	curs_set(0);
 
 	win = create_newwin(14, 52, Mid_y(14), Mid_x(52));
-	START("src/Database/Text/credit.txt");
+	START("../src/Database/Text/credit.txt");
 	while(!EOP)
 	{
 		wprintw(win, "%c", CC);

@@ -7,8 +7,7 @@
 int main()
 {
 	/* KAMUS */
-	JAM J1, J2, Jmin, Jmax;
-	int N, i;
+	JAM J1, J2;
 
 	/* ALGORITMA */
 	printf("TESTING JAM\n\n");

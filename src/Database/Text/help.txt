@@ -1,0 +1,22 @@
+Available commands:
+
+> Exploration:
+  GU         -- Go Up
+  GD         -- Go Down
+  GL         -- Go Left
+  GR         -- Go Right
+  SKILL      -- Shows learned skills
+  SAVE       -- Save Game
+  LOAD       -- Load Game
+  HELP       -- Shows help
+  EXIT       -- Back to main menu
+
+> Battle:
+  A          -- Attack
+  F          -- Flank
+  B          -- Block
+
+How battle works:
+> A beats F
+> F beats B
+> B beats A (but no damage)*

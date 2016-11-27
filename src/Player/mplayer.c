@@ -6,17 +6,17 @@
 int main() {
     int i;
     Player P;
-    CreateNewPlayer(&P);
+    CreatePlayer(&P);
     printf("\n");
     printf("Player Name: ");
-    for (i = 0; i < Name(P).length; ++i) printf("%c",Name(P).word[i]);
+    for (i = 0; i < Name(P).Length; ++i) printf("%c",Name(P).TabKata[i]);
     printf("\n");
     printf("HP: %d\nStr: %d\nDef: %d\nExp: %d\nLevel: %d\n",HP(P),Strength(P),Defense(P),Exp(P),Level(P));
     printf("\n");
     LevelUp(&P);
     printf("\n");
     printf("Player Name: ");
-    for (i = 0; i < Name(P).length; ++i) printf("%c",Name(P).word[i]);
+    for (i = 0; i < Name(P).Length; ++i) printf("%c",Name(P).TabKata[i]);
     printf("\n");
     printf("HP: %d\nStr: %d\nDef: %d\nExp: %d\nLevel: %d\n",HP(P),Strength(P),Defense(P),Exp(P),Level(P));
     printf("\n");

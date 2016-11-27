@@ -6,9 +6,7 @@
 int main ()
 {
 	ElmtStack Q;
-	int i;
 	Enemy T1,T2,T3;
-	TabEn NEnemy;
 	
 	/*load dan print file eksternal*/
 	LoadFileEnemy(&T1,"elf.txt",'e');
