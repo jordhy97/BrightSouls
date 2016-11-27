@@ -1093,6 +1093,8 @@ void battle(Player *P, Enemy En, boolean *game_over, boolean *win)
 	SkillUsed = false;
 	paralyzed = false;
 	echo();
+	agile = 0;
+	swordsman = 0;
 
 	/* BATTLE STARTS */
 	srand(time(NULL));

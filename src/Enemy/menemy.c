@@ -6,7 +6,7 @@
 int main ()
 {
 	/* KAMUS */
-	int i, j;
+	int i;
 	ElmtStack Q;
 	Enemy T1,T2,T3;
 	TabEn EnemyList;
